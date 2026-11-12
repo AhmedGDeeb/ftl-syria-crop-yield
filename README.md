@@ -309,3 +309,550 @@ data/processed/
 ```
 
 These are the ready-to-model tables: yields preserved, climate features preserved, anomaly years **tagged as features**, no rows dropped except partial-year edge cases.
+
+
+# Data Handling & DVC Workflow — Complete Guide
+
+This guide walks you through **every step** from raw CSVs on disk to DVC-tracked train/val/test splits, with OS-specific commands for **Windows (PowerShell)**, **macOS (bash/zsh)**, and **Linux (bash)**.
+
+---
+
+## Overview — The pipeline in one picture
+
+```
+data/raw/          →  build_dataset.py  →  data/processed/     →  split_dataset.py  →  data/interim/
+(FAO, NASA CSVs)                          (cleaned, stable names)                        (train/val/test)
+     │                                          │                                            │
+     ▼                                          ▼                                            ▼
+  dvc add                                    dvc add                                      dvc add
+  data/raw/                                  data/processed/                              data/interim/
+     │                                          │                                            │
+     ▼                                          ▼                                            ▼
+  git commit                                 git commit                                   git commit
+  data/raw.dvc                               data/processed.dvc                           data/interim.dvc
+```
+
+Each stage has **its own DVC pointer**, each is committed separately, and `dvc push` sends the actual data to the remote.
+
+---
+
+## Step 0 — Verify the DVC remote is configured
+
+Before you add anything, make sure DVC knows where to push.
+
+```bash
+dvc remote list
+```
+
+Expected output (example):
+
+```
+storage    s3://your-bucket/ftl-syria-crop-yield    (default)
+```
+
+If **nothing** is configured, set one up (pick one):
+
+```bash
+# Local folder (simplest — good for solo work)
+dvc remote add -d storage /path/to/dvc-storage
+
+# S3
+dvc remote add -d storage s3://your-bucket/ftl-syria-crop-yield
+
+# Google Drive (get the folder ID from the URL)
+dvc remote add -d storage gdrive://<folder-id>
+
+# SSH
+dvc remote add -d storage ssh://user@host/path
+```
+
+Then verify the `.dvc/config` file was updated:
+
+```bash
+cat .dvc/config
+```
+
+Commit this file once:
+
+```bash
+git add .dvc/config
+git commit -m "chore: configure DVC remote storage"
+```
+
+---
+
+## Step 1 — Add the raw data to DVC (once per dataset drop)
+
+The `data/raw/` folder holds untouched downloads (FAO `QCL_Syria_*.csv`, NASA `nasa_daily_*.csv`). These must **never** be in git.
+
+### Command — all three OSes
+
+```bash
+dvc add data/raw/
+```
+
+### What this does
+
+1. Computes hashes for every file under `data/raw/`.
+2. Writes `data/raw.dvc` (the pointer file, committed to git).
+3. Creates/updates `data/raw/.gitignore` (ignores the actual files from git).
+4. Copies the raw files into `.dvc/cache/` (local cache).
+
+### Commit
+
+```bash
+git add data/raw.dvc data/raw/.gitignore
+git commit -m "data(raw): add FAO + NASA source files via DVC"
+```
+
+### Push to remote
+
+```bash
+dvc push data/raw.dvc
+```
+
+### Verify
+
+```bash
+dvc status data/raw.dvc
+# Expected: "Data and pipelines are up to date."
+```
+
+---
+
+## Step 2 — Build processed data, then add to DVC
+
+### 2a. Run `build_dataset.py`
+
+```bash
+python -u src/data/build_dataset.py -f
+```
+
+This reads `data/raw/`, writes two files to `data/processed/`:
+
+```
+data/processed/fao_syria_yield.csv
+data/processed/nasa_syria_climate.csv
+```
+
+### 2b. Add to DVC — all three OSes
+
+```bash
+dvc add data/processed/
+```
+
+This tracks **all files** in `data/processed/` as one atomic unit:
+
+- `fao_syria_yield.csv`
+- `nasa_syria_climate.csv`
+- Plus any anomaly-flagged versions you generate later (`fao_with_anomaly_flags.csv`, etc.)
+
+### 2c. Commit the pointer
+
+```bash
+git add data/processed.dvc data/processed/.gitignore
+git commit -m "data(processed): add clean FAO + NASA datasets via DVC"
+```
+
+### 2d. Push
+
+```bash
+dvc push data/processed.dvc
+```
+
+### 2e. Verify
+
+```bash
+dvc status data/processed.dvc
+ls data/processed/              # mac/linux
+Get-ChildItem data\processed\   # Windows PowerShell
+```
+
+---
+
+## Step 3 — Split and add interim data to DVC
+
+### 3a. Run `split_dataset.py`
+
+```bash
+# All crops
+python -u src/data/split_dataset.py -f
+
+# Or filter to a single crop
+python -u src/data/split_dataset.py -f --crop Wheat
+```
+
+This writes to `data/interim/`:
+
+```
+data/interim/train.csv
+data/interim/val.csv
+data/interim/test.csv
+data/interim/split_metadata.json
+```
+
+### 3b. Add to DVC — all three OSes
+
+```bash
+dvc add data/interim/
+```
+
+### 3c. Commit the pointer
+
+```bash
+git add data/interim.dvc data/interim/.gitignore
+git commit -m "data(interim): add train/val/test splits via DVC"
+```
+
+### 3d. Push
+
+```bash
+dvc push data/interim.dvc
+```
+
+### 3e. Verify
+
+```bash
+dvc status data/interim.dvc
+```
+
+---
+
+## Step 4 — Refresh the pipeline after data updates
+
+When you rebuild any stage (e.g., you re-run `build_dataset.py` or `split_dataset.py -f`), DVC sees the files have changed but the `.dvc` pointer is stale. You must re-add and re-commit.
+
+### The pattern is the same for every stage
+
+```bash
+# 1. Regenerate data
+python -u src/data/split_dataset.py -f
+
+# 2. Re-track with DVC (hash changes)
+dvc add data/interim/
+
+# 3. Commit the new pointer
+git add data/interim.dvc data/interim/.gitignore
+git commit -m "data(interim): refresh splits after rebuild"
+
+# 4. Push new content
+dvc push data/interim.dvc
+```
+
+Do the same for `data/processed/` if `build_dataset.py` was re-run.
+
+---
+
+## OS-Specific command reference
+
+Most DVC/git commands are identical across OSes. The differences are **glob expansion**, **file deletion**, and **path separators**.
+
+### DVC & git — same on all three OSes
+
+```bash
+# These work identically on Windows PowerShell, macOS, and Linux
+dvc add data/processed/
+dvc status data/processed.dvc
+dvc push
+dvc pull
+git add data/processed.dvc data/processed/.gitignore
+git commit -m "message"
+```
+
+Use **forward slashes** (`data/processed/`) even on Windows — git and DVC both accept them everywhere, and they avoid escape-character issues in some shells.
+
+---
+
+### File listing & deletion — OS-specific
+
+#### Windows (PowerShell)
+
+```powershell
+# List files
+Get-ChildItem data\processed\
+
+# Delete old timestamped CSVs
+Get-ChildItem data\processed\fao_syria_yield_*_*.csv |
+    Remove-Item -Force
+
+# Remove old timestamped .dvc files if they exist
+Get-ChildItem data\processed\*_*_*.dvc -ErrorAction SilentlyContinue |
+    ForEach-Object { dvc remove $_.Name --yes }
+
+# List contents of the DVC cache
+Get-ChildItem .dvc\cache\files\md5\
+```
+
+#### macOS / Linux (bash/zsh)
+
+```bash
+# List files
+ls data/processed/
+
+# Delete old timestamped CSVs
+rm data/processed/fao_syria_yield_*_*.csv
+
+# Remove old timestamped .dvc files if they exist
+rm -f data/processed/*_*_*.dvc
+dvc gc                          # prune orphaned cache entries
+
+# List contents of the DVC cache
+ls .dvc/cache/files/md5/
+```
+
+---
+
+### Ensuring atomicity when adding a folder
+
+`dvc add <dir>` treats the folder as **one atomic unit** — all files inside are hashed together, so if you update `train.csv` but not `val.csv`, DVC will still mark the whole `data/interim/` as modified. That's what you want for train/val/test splits (they must stay synchronized).
+
+```bash
+# Correct: one .dvc pointer for the whole set
+dvc add data/interim/
+
+# Wrong: four independent pointers, easy to desync
+dvc add data/interim/train.csv
+dvc add data/interim/val.csv
+# ...
+```
+
+---
+
+## Full walkthrough — copy-paste ready
+
+### Windows PowerShell
+
+```powershell
+# ── 0. Verify remote
+dvc remote list
+
+# ── 1. Raw data → DVC
+dvc add data/raw/
+git add data/raw.dvc data/raw/.gitignore
+git commit -m "data(raw): add FAO + NASA source files via DVC"
+dvc push data/raw.dvc
+
+# ── 2. Build processed data
+python -u src/data/build_dataset.py -f
+
+# ── 3. Processed data → DVC
+dvc add data/processed/
+git add data/processed.dvc data/processed/.gitignore
+git commit -m "data(processed): add clean FAO + NASA datasets via DVC"
+dvc push data/processed.dvc
+
+# ── 4. Split
+python -u src/data/split_dataset.py -f
+
+# ── 5. Interim data → DVC
+dvc add data/interim/
+git add data/interim.dvc data/interim/.gitignore
+git commit -m "data(interim): add train/val/test splits via DVC"
+dvc push data/interim.dvc
+
+# ── 6. Verify everything
+dvc status
+Get-ChildItem data\processed\, data\interim\
+```
+
+### macOS / Linux
+
+```bash
+# ── 0. Verify remote
+dvc remote list
+
+# ── 1. Raw data → DVC
+dvc add data/raw/
+git add data/raw.dvc data/raw/.gitignore
+git commit -m "data(raw): add FAO + NASA source files via DVC"
+dvc push data/raw.dvc
+
+# ── 2. Build processed data
+python -u src/data/build_dataset.py -f
+
+# ── 3. Processed data → DVC
+dvc add data/processed/
+git add data/processed.dvc data/processed/.gitignore
+git commit -m "data(processed): add clean FAO + NASA datasets via DVC"
+dvc push data/processed.dvc
+
+# ── 4. Split
+python -u src/data/split_dataset.py -f
+
+# ── 5. Interim data → DVC
+dvc add data/interim/
+git add data/interim.dvc data/interim/.gitignore
+git commit -m "data(interim): add train/val/test splits via DVC"
+dvc push data/interim.dvc
+
+# ── 6. Verify everything
+dvc status
+ls data/processed/ data/interim/
+```
+
+---
+
+## Pulling the data on a fresh clone (any teammate, any OS)
+
+After `git clone`, the `.dvc` pointer files are present but the actual CSVs are **not** — they live on the remote. To materialize them:
+
+```bash
+# Everything
+dvc pull
+
+# Or only what you need
+dvc pull data/processed.dvc
+dvc pull data/interim.dvc
+```
+
+`dvc pull` works **identically** on Windows, macOS, and Linux.
+
+### Verify what was pulled
+
+```bash
+dvc list . --dvc-only -R
+```
+
+Expected output:
+
+```
+data/raw/
+data/processed/
+data/interim/
+```
+
+If a directory is missing from that list, its `.dvc` file wasn't committed.
+
+---
+
+## The root `.gitignore`
+
+Your project-root `.gitignore` should look like this so that actual data files never leak into git:
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Data — ALL managed by DVC
+data/raw/
+data/processed/
+data/interim/
+models/
+
+# DVC internal cache (never commit)
+.dvc/cache/
+.dvc/tmp/
+```
+
+**Important:** DVC creates a **per-folder** `.gitignore` (e.g., `data/interim/.gitignore`) that overrides the root one and lists exactly which files DVC tracks. That per-folder file **must** be committed:
+
+```bash
+git add data/interim/.gitignore
+```
+
+Without it, other clones would have no idea which files are DVC-tracked vs. truly ignored.
+
+---
+
+## Common pitfalls & fixes
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `dvc add` prints "No changes to 'data/interim/'" | The folder is already tracked and unchanged | Nothing to do — the pointer is current |
+| `git status` shows `data/interim/train.csv` as untracked | The DVC per-folder `.gitignore` wasn't committed | `git add data/interim/.gitignore && git commit` |
+| `dvc push` fails with "no remote" | Remote not configured | `dvc remote add -d storage <url>` then `git add .dvc/config` |
+| `dvc pull` on a fresh clone fails | Remote inaccessible, or `.dvc/config` not committed | Verify `dvc remote list`; ensure `.dvc/config` is in git |
+| Old timestamped `.dvc` files lingering | Manual rename of CSVs but not of `.dvc` | `Get-ChildItem data\processed\*.dvc` / `ls data/processed/*.dvc`, remove stale ones with `dvc remove <file> --yes` |
+| `dvc add data/processed/` after renaming files shows "no changes" | DVC sees same content under a new name — hash-based dedup | Fine — the pointer already covers the content; the file is now tracked under the new name |
+| Git commit shows `.csv` files accidentally | Root `.gitignore` missing or DVC's per-folder `.gitignore` didn't override | `git rm --cached data/interim/*.csv` to untrack, then confirm `.gitignore` is correct |
+
+---
+
+## Commit-message conventions
+
+Consistent messages keep your history readable:
+
+```
+data(raw): add FAO + NASA source files via DVC
+data(processed): add clean FAO + NASA datasets via DVC
+data(interim): add train/val/test splits via DVC
+
+data(interim): refresh splits after rebuild
+data(processed): refresh after build_dataset fix
+
+chore: configure DVC remote storage
+chore(dvc): prune orphaned cache entries
+```
+
+Pattern:
+
+- `data(<folder>):` — for data-related commits
+- `chore:` or `chore(dvc):` — for config / maintenance
+
+---
+
+## One-shot verification script
+
+Run this at the end to confirm everything is in order:
+
+### Windows PowerShell
+
+```powershell
+Write-Host "`n=== Git status ===" -ForegroundColor Cyan
+git status
+
+Write-Host "`n=== DVC tracked directories ===" -ForegroundColor Cyan
+dvc list . --dvc-only -R
+
+Write-Host "`n=== DVC status ===" -ForegroundColor Cyan
+dvc status
+
+Write-Host "`n=== Processed files ===" -ForegroundColor Cyan
+Get-ChildItem data\processed\*.csv | Select-Object Name, Length
+
+Write-Host "`n=== Interim files ===" -ForegroundColor Cyan
+Get-ChildItem data\interim\ | Select-Object Name, Length
+```
+
+### macOS / Linux
+
+```bash
+echo -e "\n=== Git status ===" && git status
+
+echo -e "\n=== DVC tracked directories ===" && dvc list . --dvc-only -R
+
+echo -e "\n=== DVC status ===" && dvc status
+
+echo -e "\n=== Processed files ===" && ls -lh data/processed/*.csv
+
+echo -e "\n=== Interim files ===" && ls -lh data/interim/
+```
+
+Expected at the end:
+
+- `git status` → clean (nothing to commit)
+- `dvc list` → shows `data/raw/`, `data/processed/`, `data/interim/`
+- `dvc status` → "up to date"
+- File listings → all the expected CSVs present with sensible sizes
+
+---
+
+## Summary — the flow at a glance
+
+| Step | Command | Commit |
+|---|---|---|
+| **Raw** | `dvc add data/raw/` | `data(raw): add sources via DVC` |
+| **Build** | `python -u src/data/build_dataset.py -f` | — |
+| **Processed** | `dvc add data/processed/` | `data(processed): add clean datasets via DVC` |
+| **Split** | `python -u src/data/split_dataset.py -f` | — |
+| **Interim** | `dvc add data/interim/` | `data(interim): add splits via DVC` |
+| **Push** | `dvc push` | — |
+
+Every stage is versioned, reproducible, and cross-platform. Anyone who clones the repo can `dvc pull` and immediately have the exact raw → processed → split data that matches the current commit.
