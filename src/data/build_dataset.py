@@ -159,6 +159,39 @@ NASA_KEEP_COLUMNS = [
     "rh2m", "solar_kwh_m2", "ws2m",
 ]
 
+# Canonical governorate metadata (from cities.csv).
+# Add to build_dataset.py near the top, next to NASA_KEEP_COLUMNS.
+GOVERNORATES = {
+    "aleppo":       {"name": "Aleppo",        "name_ar": "حلب",       "lat": 36.17, "lon": 37.61},
+    "al_hasakah":   {"name": "Al-Hasakah",    "name_ar": "الحسكة",    "lat": 36.42, "lon": 40.91},
+    "ar_raqqah":    {"name": "Ar-Raqqah",     "name_ar": "الرقة",     "lat": 36.01, "lon": 38.91},
+    "as_suwayda":   {"name": "As-Suwayda",    "name_ar": "السويداء",  "lat": 32.77, "lon": 36.92},
+    "daraa":        {"name": "Daraa",         "name_ar": "درعا",      "lat": 32.83, "lon": 36.17},
+    "deir_ez_zor":  {"name": "Deir ez-Zor",   "name_ar": "دير الزور", "lat": 35.25, "lon": 40.28},
+    "hama":         {"name": "Hama",          "name_ar": "حماة",      "lat": 35.30, "lon": 37.25},
+    "homs":         {"name": "Homs",          "name_ar": "حمص",       "lat": 34.26, "lon": 38.16},
+    "idlib":        {"name": "Idlib",         "name_ar": "إدلب",      "lat": 35.83, "lon": 36.68},
+    "latakia":      {"name": "Latakia",       "name_ar": "اللاذقية",  "lat": 35.57, "lon": 36.01},
+    "quneitra":     {"name": "Quneitra",      "name_ar": "القنيطرة",  "lat": 33.02, "lon": 35.79},
+    "tartus":       {"name": "Tartus",        "name_ar": "طرطوس",     "lat": 34.95, "lon": 36.09},
+    "damascus":     {"name": "Damascus",      "name_ar": "دمشق",      "lat": 33.46, "lon": 37.05},
+}
+
+
+def _gov_key_from_filename(path: Path) -> str | None:
+    """
+    Extract canonical governorate key from a filename of the form
+        nasa_daily_<gov>_<year>_<month>.csv
+    Returns lowercase with '-' and ' ' replaced by '_', e.g. 'deir_ez_zor'.
+    Returns None if the filename doesn't match the expected pattern.
+    """
+    stem = path.stem                       # e.g. "nasa_daily_tartus_2023_10"
+    m = re.match(r"nasa_daily_(.+)_(\d{4})_(\d{2})$", stem)
+    if not m:
+        return None
+    raw = m.group(1).lower().replace("-", "_").replace(" ", "_")
+    return raw
+
 
 def build_nasa_dataset(force: bool = False) -> Path | None:
     prefix = "nasa_syria_climate"
@@ -174,12 +207,37 @@ def build_nasa_dataset(force: bool = False) -> Path | None:
         )
 
     print(f"[INFO] Merging {len(files)} NASA files ...", flush=True)
+
     frames = []
+    unknown_keys = set()
+    per_gov_counts: dict[str, int] = {}
+
     for p in files:
+        gov_key = _gov_key_from_filename(p)
+        if gov_key is None:
+            print(f"  [WARN] Cannot parse governorate from filename: {p.name}",
+                  flush=True)
+            continue
+        if gov_key not in GOVERNORATES:
+            unknown_keys.add(gov_key)
+            # Still load it, but flag below — the file may belong to a governorate
+            # we haven't declared in GOVERNORATES.
         try:
-            frames.append(pd.read_csv(p))
+            d = pd.read_csv(p)
         except Exception as e:
             print(f"  [WARN] {p.name}: {e}", flush=True)
+            continue
+
+        # Inject governorate metadata from the filename
+        meta = GOVERNORATES.get(gov_key, {"name": gov_key, "name_ar": "",
+                                          "lat": float("nan"),
+                                          "lon": float("nan")})
+        d["governorate"] = meta["name"]
+        d["latitude"]    = meta["lat"]
+        d["longitude"]   = meta["lon"]
+
+        frames.append(d)
+        per_gov_counts[meta["name"]] = per_gov_counts.get(meta["name"], 0) + len(d)
 
     if not frames:
         raise SystemExit("No NASA file could be read.")
@@ -188,19 +246,37 @@ def build_nasa_dataset(force: bool = False) -> Path | None:
 
     missing = [c for c in NASA_KEEP_COLUMNS if c not in df.columns]
     if missing:
-        print(f"[WARN] NASA files are missing columns: {missing}", flush=True)
+        print(f"[WARN] NASA merged data is missing columns: {missing}",
+              flush=True)
     df = df[[c for c in NASA_KEEP_COLUMNS if c in df.columns]].copy()
 
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
-    df = df.dropna(subset=["date"])
+    df = df.dropna(subset=["date", "governorate"])
     df = df.drop_duplicates(subset=["governorate", "date"], keep="last")
 
     if df.empty:
         print("[WARN] NASA merge produced 0 rows.", flush=True)
         return None
 
+    # ---- Post-merge diagnostics -------------------------------------
+    n_govs = df["governorate"].nunique()
+    print(f"[INFO] Governorates in merged NASA data: {n_govs}", flush=True)
+    if n_govs < len(GOVERNORATES):
+        expected = set(GOVERNORATES[g]["name"] for g in GOVERNORATES)
+        found = set(df["governorate"].unique())
+        missing_govs = sorted(expected - found)
+        print(f"[WARN] Missing governorates: {missing_govs}", flush=True)
+    if unknown_keys:
+        print(f"[WARN] Unknown governorate keys in filenames: {sorted(unknown_keys)}",
+              flush=True)
+
+    print("\n[INFO] Rows per governorate:", flush=True)
+    for gov, n in sorted(per_gov_counts.items()):
+        print(f"  {gov:<14} {n:>7,}", flush=True)
+
+    # ---- Save --------------------------------------------------------
     start_year = int(df["date"].dt.year.min())
-    end_year = int(df["date"].dt.year.max())
+    end_year   = int(df["date"].dt.year.max())
 
     df = df.sort_values(["governorate", "date"]).reset_index(drop=True)
 
@@ -209,10 +285,9 @@ def build_nasa_dataset(force: bool = False) -> Path | None:
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(out_path, index=False)
-    print(f"[SAVED] {out_path.name}  rows={len(df)}  "
-          f"years={start_year}-{end_year}", flush=True)
+    print(f"\n[SAVED] {out_path.name}  rows={len(df):,}  "
+          f"governorates={n_govs}  years={start_year}-{end_year}", flush=True)
     return out_path
-
 
 # ------------------------------------------------------------------
 # CLI
