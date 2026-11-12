@@ -223,3 +223,89 @@ Your next step in the ML pipeline (Feature Engineering) will be:
 2. Aggregate the daily climate data into annual/seasonal statistics (e.g., `mean_temp`, `total_rainfall`, `max_heat_stress_days`).
 3. Join that annual climate summary with the FAO data using the `year` column.
 4. **That final joined table** is what you will feed into XGBoost and Decision Tree.
+
+
+## Summary — Anomaly Detection Work
+
+We built an anomaly-detection pipeline that mirrors the tutorial's Gaussian-based approach but adapts it to real Syrian data. Here's what we did, in order:
+
+---
+
+### 1. Two data sources, two detection pipelines
+
+| Dataset | Structure | Anomaly detector |
+|---|---|---|
+| **FAO** (`fao_syria_yield_*.csv`) | One time-series per **crop** (`year`, `yield_hg_ha`) | 2D Gaussian on `(year, yield)` + linear-detrended residual z-score |
+| **NASA** (`nasa_syria_climate_*.csv`) | Daily climate → aggregated to yearly, one series per **(governorate, feature)** | Same 2D Gaussian on `(year, feature)` + residual z-score |
+
+Both detectors use `z_thresh = 2.0` (`>2σ` deviation from trend) as the flag criterion.
+
+---
+
+### 2. Fixes we applied along the way
+
+| Bug | Fix |
+|---|---|
+| `.pfao_df(` from a bad search-replace | Restored to `.pdf(` |
+| `detect_anomalies_for_crop(df, …)` — `df` undefined | Changed to `fao_df` |
+| `norm[mask.values]` — `norm` is a NumPy array | Changed to `norm[mask]` and `sub['year'].values[mask]` |
+| NASA daily data had no `year` column | Created with `nasa_df['year'] = nasa_df['date'].dt.year` |
+| Raw NASA CSVs had no `governorate` column — only in the filename | Parsed governorate from `nasa_daily_<gov>_<year>_<month>.csv`, normalized to lowercase with `_`, injected `governorate`/`latitude`/`longitude` from a metadata dict |
+| `ValueError: array must not contain infs or NaNs` | Guarded `detect_anomalies_for_gov` with `np.isfinite` filter + graceful skip for insufficient data |
+| Plot cells ignored anomalies | Rewrote to overlay per-feature anomaly dots, red vertical bands, and per-year density strips |
+
+---
+
+### 3. Visualizations produced
+
+| Plot | Purpose |
+|---|---|
+| FAO — one panel per crop | Raw yield trajectory with anomalies marked red |
+| NASA — one panel per governorate | All 7 climate features, min–max normalized, each feature's anomalies as big colored dots; red bands where ≥2 features flagged |
+| Combined two-panel graph | **Top:** FAO yields + anomalies. **Bottom:** NASA climate features + anomalies (per-feature dots). Gold bands = years flagged in **both** datasets |
+
+---
+
+### 4. What the detectors found
+
+The Gaussian + residual approach flagged — as expected for Syrian data — the years where real structural events occurred:
+
+- **2007–2008** — multi-year drought (low precipitation, low humidity, high solar across most governorates)
+- **2010–2012** — conflict onset + dry spell (yield collapse, climate extremes aligned)
+- **2018–2021** — renewed drought and instability
+
+These are **not data noise** — they are the real-world events that make the dataset informative.
+
+---
+
+### 5. Handling strategy (the part the source notebook left out)
+
+The original `ML_Week5_Anomaly_Detection.ipynb` **only detects and plots** — it never prescribes handling. Our adaptation treats the detection output as **signal, not noise**, following the principle:
+
+> **Anomaly detection ≠ anomaly removal.**
+
+Recommended handling per anomaly category:
+
+| Category | Handling |
+|---|---|
+| **Conflict years (2011–2016)** | **Keep**, tag `conflict_year = 1` |
+| **Drought years (2007–08, 2021)** | **Keep**, tag `drought_year = 1` |
+| **FAOSTAT `flag='I'` (imputed) or `'E'` (estimated)** | Review — consider dropping or downweighting |
+| **FAO years with no explainable cause** | Winsorize (cap at 1st/99th percentile) |
+| **NASA years flagged across ≥4 governorates, same feature** | **Keep**, tag `climate_extreme_year = 1` |
+| **NASA years flagged in only 1–2 governorates** | **Keep** raw values; add `is_anomaly` dummy |
+| **Partial years (2026)** | **Drop** — measurement artifact |
+
+Implementation: add **binary anomaly features** (`yield_anomaly`, `climate_anomaly`, `drought_year`, `conflict_year`) to the data instead of removing the rows, so the downstream model learns *from* the extremes rather than being contaminated by them.
+
+---
+
+### 6. What to hand to the modeling stage
+
+```
+data/processed/
+├── fao_with_anomaly_flags.csv        # yields + yield_anomaly, drought_year, conflict_year
+└── nasa_with_anomaly_flags.csv       # yearly climate + climate_anomaly
+```
+
+These are the ready-to-model tables: yields preserved, climate features preserved, anomaly years **tagged as features**, no rows dropped except partial-year edge cases.
