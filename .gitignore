@@ -1,3 +1,10 @@
+# files and folders starting with
+.*
+./*
+
+# log files
+*.log
+
 # Data (tracked by DVC, not Git)
 data/raw/*
 data/interim/*

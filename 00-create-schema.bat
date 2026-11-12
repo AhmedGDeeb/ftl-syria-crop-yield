@@ -2,6 +2,7 @@
 setlocal enabledelayedexpansion
 REM ============================================================
 REM create-schema.bat — project bootstrap (Windows CMD/PowerShell)
+REM Safe to re-run: skips existing files and folders.
 REM ============================================================
 
 set "LOG=setup.log"
@@ -16,7 +17,7 @@ set "PYTHON_MIN_MAJOR=3"
 set "PYTHON_MIN_MINOR=10"
 
 REM ---------- 0. Preflight ----------
-call :Log "[0/6] Preflight checks ..."
+call :Log "[0/5] Preflight checks ..."
 
 where python >nul 2>&1
 if errorlevel 1 (
@@ -41,7 +42,7 @@ call :Log "   Python !PYVER! OK."
 call :Log ""
 
 REM ---------- 1. Directories ----------
-call :Log "[1/6] Creating directories ..."
+call :Log "[1/5] Creating directories ..."
 for %%D in (
     data data\raw data\interim data\processed
     src src\data src\features src\models src\utils
@@ -56,7 +57,7 @@ for %%D in (
 call :Log ""
 
 REM ---------- 2. Placeholder files ----------
-call :Log "[2/6] Creating placeholder files ..."
+call :Log "[2/5] Creating placeholder files ..."
 for %%F in (
     data\raw\.gitkeep data\interim\.gitkeep data\processed\.gitkeep
     models\.gitkeep metrics\.gitkeep
@@ -79,9 +80,14 @@ for %%F in (
 call :Log ""
 
 REM ---------- 3. Seed .gitignore ----------
-call :Log "[3/6] Checking .gitignore ..."
+call :Log "[3/5] Checking .gitignore ..."
 if not exist ".gitignore" (
     (
+        echo # files and folders starting with
+        echo .*
+        echo ./*
+        echo # log files
+        echo *.log
         echo # Data ^(tracked by DVC, not Git^)
         echo data/raw/*
         echo data/interim/*
@@ -104,6 +110,7 @@ if not exist ".gitignore" (
         echo *.egg-info/
         echo .venv/
         echo venv/
+        echo .wheel/
         echo.
         echo # MLflow local tracking
         echo mlruns/
@@ -112,8 +119,10 @@ if not exist ".gitignore" (
         echo .vscode/
         echo .idea/
         echo.
-        echo # Logs
+        echo # Logs & Dev-Reqs
         echo setup.log
+        echo install-deps.log
+        echo dev-requirements.txt
     ) > ".gitignore"
     call :Log "   + .gitignore created"
 ) else (
@@ -122,7 +131,7 @@ if not exist ".gitignore" (
 call :Log ""
 
 REM ---------- 4. Write requirements.txt ----------
-call :Log "[4/6] Checking requirements.txt ..."
+call :Log "[4/5] Checking requirements.txt ..."
 if not exist "requirements.txt" (
     (
         echo # ---- Core data ^& ML ----
@@ -133,7 +142,6 @@ if not exist "requirements.txt" (
         echo.
         echo # ---- MLOps stack ----
         echo dvc^>=3.0
-        echo dvc-git^>=3.0
         echo mlflow^>=2.10
         echo pandera^>=0.19
         echo pyod^>=1.1
@@ -155,43 +163,22 @@ if not exist "requirements.txt" (
 )
 call :Log ""
 
-REM ---------- 5. Git and DVC Setup ----------
-call :Log "[5/6] Initializing Git and DVC ..."
-
+REM ---------- 5. Git Init ----------
+call :Log "[5/5] Initializing Git repository ..."
 if not exist ".git" (
     git init >> "%LOG%" 2>&1
     call :Log "   + Initialized Git repository"
 ) else (
     call :Log "   Git repository already exists"
 )
-
-if not exist ".dvc" (
-    dvc init --no-scm >> "%LOG%" 2>&1
-    call :Log "   + Initialized DVC"
-) else (
-    call :Log "   DVC already initialized"
-)
-
-if exist "data\raw" (
-    dvc add data\raw >> "%LOG%" 2>&1
-    call :Log "   + Added data\raw to DVC"
-)
 call :Log ""
 
-REM ---------- 6. Initial Git Commit ----------
-call :Log "[6/6] Making first Git commit ..."
-git add . >> "%LOG%" 2>&1
-git commit -m "chore: initial project bootstrap structure" >> "%LOG%" 2>&1
-call :Log "   + Created initial git commit"
+call :LogHeader "[DONE] Project structure & Git initialized."
 call :Log ""
-
-call :LogHeader "[DONE] Project structure & version control complete."
-call :Log ""
-call :Log "Next steps (Virtual Environment & Dependencies):"
-call :Log "  1. python -m venv .venv"
-call :Log "  2. .venv\Scripts\activate"
-call :Log "  3. python -m pip install --upgrade pip"
-call :Log "  4. pip install -r requirements.txt"
+call :Log "Next steps:"
+call :Log "  1. Create and activate your virtual environment however you prefer (e.g., python -m venv .venv then .\.venv\Scripts\activate)."
+call :Log "  2. Run '01-install-deps.bat' to verify and install packages."
+call :Log "  3. Run '02-track-dvc-git.bat' to initialize DVC and make your initial commit."
 
 endlocal
 exit /b 0
