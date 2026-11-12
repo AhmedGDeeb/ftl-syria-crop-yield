@@ -63,7 +63,7 @@ for %%F in (
     models\.gitkeep metrics\.gitkeep
     src\__init__.py src\data\__init__.py src\features\__init__.py
     src\models\__init__.py src\utils\__init__.py
-    src\data\ingest.py src\data\validate.py src\data\anomaly_check.py
+    src\data\ingest.py src\data\build_dataset.py src\data\validate.py src\data\anomaly_check.py
     src\features\build_features.py
     src\models\train.py src\models\evaluate.py
     src\utils\config.py
