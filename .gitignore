@@ -1,0 +1,32 @@
+# Data (tracked by DVC, not Git)
+data/raw/*
+data/interim/*
+data/processed/*
+data/raw/.gitkeep
+data/interim/.gitkeep
+data/processed/.gitkeep
+
+# Model artifacts (tracked by DVC)
+models/*
+models/.gitkeep
+
+# DVC internal cache
+.dvc/cache/
+.dvc/tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# MLflow local tracking
+mlruns/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+setup.log
