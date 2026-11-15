@@ -5,8 +5,10 @@
 # log files
 *.log
 
-# DBs
-*.db
+# MLflow
+mlflow.db
+mlruns/
+mlartifacts/
 
 # Data (tracked by DVC, not Git)
 data/raw/*

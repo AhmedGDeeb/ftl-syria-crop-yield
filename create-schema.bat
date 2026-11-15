@@ -1,3 +1,5 @@
+REM create-schema.bat
+
 @echo off
 setlocal enabledelayedexpansion
 REM ============================================================
@@ -86,8 +88,15 @@ if not exist ".gitignore" (
         echo # files and folders starting with
         echo .*
         echo ./*
+        echo.
         echo # log files
         echo *.log
+        echo.
+        echo # MLflow
+        echo mlflow.db
+        echo mlruns/
+        echo mlartifacts/
+        echo.
         echo # Data ^(tracked by DVC, not Git^)
         echo data/raw/*
         echo data/interim/*
