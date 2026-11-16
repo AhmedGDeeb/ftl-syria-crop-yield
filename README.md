@@ -472,6 +472,9 @@ climate and yield anomalies are coupled.
 <!-- TODO: commit the plotly HTML file -->
 [Interactive 3D view: `notebooks/figures/3d_peak_climate_space.html`](notebooks/figures/3d_peak_climate_space.html)
 
+![alt text](notebooks/figures/3d_peak_climate_space.png)
+
+
 The interactive 3D view (requires `plotly`) shows each crop's peak-yield
 year as a colored star in a `(T2M, Solar, Precip)` coordinate system, with
 wind speed encoded as marker color. A gray cloud of all years provides
