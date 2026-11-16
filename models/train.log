@@ -1,0 +1,2006 @@
+
+════════════════════════════════════════════════════════════════════════
+  SESSION START  2026-11-15T17:22:13.293259+00:00
+════════════════════════════════════════════════════════════════════════
+
+========================================================================
+  FTL Syria — train.py
+========================================================================
+[2026-11-15 08:22:13] Config file:  D:\2026\ftl-syria-crop-yield\config.yaml
+[2026-11-15 08:22:13] Split dir:    D:\2026\ftl-syria-crop-yield\data\interim
+[2026-11-15 08:22:13] Models dir:   D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:22:13] Log file:     D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:22:13] Crop filter:  all
+[2026-11-15 08:22:13] Model filter: both
+[2026-11-15 08:22:13] MLflow:       disabled
+[2026-11-15 08:22:13] Target:       yield_hg_ha
+[2026-11-15 08:22:13] Features (7 climate + 4 anomaly):
+[2026-11-15 08:22:13]   climate  t2m_mean
+[2026-11-15 08:22:13]   climate  t2m_max_extreme
+[2026-11-15 08:22:13]   climate  t2m_min_extreme
+[2026-11-15 08:22:13]   climate  precip_total
+[2026-11-15 08:22:13]   climate  rh2m_mean
+[2026-11-15 08:22:13]   climate  solar_mean
+[2026-11-15 08:22:13]   climate  ws2m_mean
+[2026-11-15 08:22:13]   anomaly  yield_anomaly
+[2026-11-15 08:22:13]   anomaly  drought_year
+[2026-11-15 08:22:13]   anomaly  conflict_year
+[2026-11-15 08:22:13]   anomaly  climate_anomaly
+
+========================================================================
+  Loading pre-split data
+========================================================================
+[2026-11-15 08:22:13]   train.csv:   378 rows, 16 crops, years 1991–2015
+[2026-11-15 08:22:13]   val.csv:    58 rows, 15 crops, years 2016–2019
+[2026-11-15 08:22:13]   test.csv:    72 rows, 15 crops, years 2020–2024
+[2026-11-15 08:22:13] Crops in train split: ['Apples', 'Barley', 'Chick peas, dry', 'Grapes', 'Lentils, dry', 'Maize (corn)', 'Oats', 'Olives', 'Potatoes', 'Rice', 'Sesame seed', 'Sorghum', 'Sugar beet', 'Sunflower seed', 'Tomatoes', 'Wheat']
+
+========================================================================
+  Crop: Apples
+========================================================================
+[2026-11-15 08:22:13]   [note] no BEST_PARAMS entry for 'Apples' — using default_params
+[2026-11-15 08:22:13]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:13]   [dt] saved → models\dt_apples.pkl
+[2026-11-15 08:22:13]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:13]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:13]   [dt] train  rmse=    835.97  mae=    608.44  r2=  0.723  smape=   9.07
+[2026-11-15 08:22:13]   [dt] val    rmse=    403.94  mae=    335.35  r2=  0.937  smape=   4.52
+[2026-11-15 08:22:13]   [dt] test   rmse=  3,833.98  mae=  3,156.54  r2=-15.068  smape=  46.06
+[2026-11-15 08:22:13]   [dt] top importances: solar_mean=0.41, t2m_min_extreme=0.20, precip_total=0.20, t2m_mean=0.19, t2m_max_extreme=0.00
+[2026-11-15 08:22:14]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:14]   [xgb] saved → models\xgb_apples.pkl
+[2026-11-15 08:22:14]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:14]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:14]   [xgb] train  rmse=    935.82  mae=    693.64  r2=  0.652  smape=  10.31
+[2026-11-15 08:22:14]   [xgb] val    rmse=    757.31  mae=    732.12  r2=  0.779  smape=  10.30
+[2026-11-15 08:22:14]   [xgb] test   rmse=  2,475.00  mae=  2,217.85  r2= -5.696  smape=  36.85
+[2026-11-15 08:22:14]   [xgb] top importances: t2m_max_extreme=0.18, solar_mean=0.16, t2m_min_extreme=0.15, t2m_mean=0.15, precip_total=0.14
+
+========================================================================
+  Crop: Barley
+========================================================================
+[2026-11-15 08:22:14]   [note] no BEST_PARAMS entry for 'Barley' — using default_params
+[2026-11-15 08:22:14]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:14]   [dt] saved → models\dt_barley.pkl
+[2026-11-15 08:22:14]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:14]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:14]   [dt] train  rmse=    254.11  mae=    194.18  r2=  0.210  smape=  34.17
+[2026-11-15 08:22:14]   [dt] val    rmse=    434.05  mae=    385.31  r2=  0.540  smape=  41.31
+[2026-11-15 08:22:14]   [dt] test   rmse=    606.83  mae=    555.47  r2= -0.281  smape=  88.12
+[2026-11-15 08:22:14]   [dt] top importances: precip_total=0.55, t2m_min_extreme=0.28, ws2m_mean=0.17, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:22:14]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:14]   [xgb] saved → models\xgb_barley.pkl
+[2026-11-15 08:22:14]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:14]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:14]   [xgb] train  rmse=    159.51  mae=    133.02  r2=  0.689  smape=  26.01
+[2026-11-15 08:22:14]   [xgb] val    rmse=    488.66  mae=    384.56  r2=  0.417  smape=  40.98
+[2026-11-15 08:22:14]   [xgb] test   rmse=    435.11  mae=    402.07  r2=  0.341  smape=  68.04
+[2026-11-15 08:22:14]   [xgb] top importances: t2m_mean=0.23, solar_mean=0.20, rh2m_mean=0.19, t2m_max_extreme=0.12, t2m_min_extreme=0.10
+
+========================================================================
+  Crop: Chick peas, dry
+========================================================================
+[2026-11-15 08:22:14]   [note] no BEST_PARAMS entry for 'Chick peas, dry' — using default_params
+[2026-11-15 08:22:14]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:14]   [dt] saved → models\dt_chick_peas,_dry.pkl
+[2026-11-15 08:22:14]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:14]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:14]   [dt] train  rmse=     62.23  mae=     46.55  r2=  0.725  smape=   7.09
+[2026-11-15 08:22:14]   [dt] val    rmse=     57.58  mae=     48.46  r2= -0.095  smape=   8.58
+[2026-11-15 08:22:14]   [dt] test   rmse=    216.34  mae=    181.03  r2= -0.666  smape=  28.44
+[2026-11-15 08:22:14]   [dt] top importances: rh2m_mean=0.61, t2m_mean=0.12, ws2m_mean=0.11, t2m_min_extreme=0.10, solar_mean=0.05
+[2026-11-15 08:22:14]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:14]   [xgb] saved → models\xgb_chick_peas,_dry.pkl
+[2026-11-15 08:22:14]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:14]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:14]   [xgb] train  rmse=     65.33  mae=     49.09  r2=  0.696  smape=   7.56
+[2026-11-15 08:22:14]   [xgb] val    rmse=     27.77  mae=     25.66  r2=  0.745  smape=   4.10
+[2026-11-15 08:22:14]   [xgb] test   rmse=    170.60  mae=    134.58  r2= -0.036  smape=  22.27
+[2026-11-15 08:22:14]   [xgb] top importances: rh2m_mean=0.26, t2m_mean=0.16, precip_total=0.15, t2m_max_extreme=0.14, ws2m_mean=0.12
+
+========================================================================
+  Crop: Grapes
+========================================================================
+[2026-11-15 08:22:14]   [note] no BEST_PARAMS entry for 'Grapes' — using default_params
+[2026-11-15 08:22:14]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:15]   [dt] saved → models\dt_grapes.pkl
+[2026-11-15 08:22:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:15]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:15]   [dt] train  rmse=    695.13  mae=    533.43  r2=  0.650  smape=   8.96
+[2026-11-15 08:22:15]   [dt] val    rmse=    946.57  mae=    807.76  r2= -5.076  smape=  14.38
+[2026-11-15 08:22:15]   [dt] test   rmse=  1,371.08  mae=  1,302.09  r2=-29.830  smape=  24.09
+[2026-11-15 08:22:15]   [dt] top importances: t2m_min_extreme=0.45, t2m_max_extreme=0.30, rh2m_mean=0.22, solar_mean=0.03, t2m_mean=0.00
+[2026-11-15 08:22:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:15]   [xgb] saved → models\xgb_grapes.pkl
+[2026-11-15 08:22:15]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:15]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:15]   [xgb] train  rmse=    634.41  mae=    506.82  r2=  0.709  smape=   8.60
+[2026-11-15 08:22:15]   [xgb] val    rmse=    490.91  mae=    418.85  r2= -0.634  smape=   7.72
+[2026-11-15 08:22:15]   [xgb] test   rmse=    774.13  mae=    710.40  r2= -8.828  smape=  12.66
+[2026-11-15 08:22:15]   [xgb] top importances: t2m_min_extreme=0.18, precip_total=0.17, t2m_max_extreme=0.15, rh2m_mean=0.15, t2m_mean=0.13
+
+========================================================================
+  Crop: Lentils, dry
+========================================================================
+[2026-11-15 08:22:15]   [note] no BEST_PARAMS entry for 'Lentils, dry' — using default_params
+[2026-11-15 08:22:15]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:15]   [dt] saved → models\dt_lentils,_dry.pkl
+[2026-11-15 08:22:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:15]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:15]   [dt] train  rmse=    147.26  mae=    108.69  r2=  0.699  smape=  14.15
+[2026-11-15 08:22:15]   [dt] val    rmse=    137.90  mae=    118.28  r2=  0.270  smape=  14.83
+[2026-11-15 08:22:15]   [dt] test   rmse=    325.49  mae=    300.48  r2= -0.759  smape=  45.46
+[2026-11-15 08:22:15]   [dt] top importances: rh2m_mean=0.66, t2m_mean=0.30, ws2m_mean=0.03, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:22:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:15]   [xgb] saved → models\xgb_lentils,_dry.pkl
+[2026-11-15 08:22:15]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:15]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:15]   [xgb] train  rmse=    132.38  mae=    110.23  r2=  0.757  smape=  15.25
+[2026-11-15 08:22:15]   [xgb] val    rmse=    130.30  mae=    115.43  r2=  0.348  smape=  14.36
+[2026-11-15 08:22:15]   [xgb] test   rmse=    307.70  mae=    235.80  r2= -0.572  smape=  34.24
+[2026-11-15 08:22:15]   [xgb] top importances: rh2m_mean=0.28, t2m_mean=0.17, t2m_min_extreme=0.14, t2m_max_extreme=0.13, solar_mean=0.11
+
+========================================================================
+  Crop: Maize (corn)
+========================================================================
+[2026-11-15 08:22:15]   [note] no BEST_PARAMS entry for 'Maize (corn)' — using default_params
+[2026-11-15 08:22:15]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:15]   [dt] saved → models\dt_maize_(corn).pkl
+[2026-11-15 08:22:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:15]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:15]   [dt] train  rmse=    373.28  mae=    281.71  r2=  0.673  smape=   7.45
+[2026-11-15 08:22:15]   [dt] val    rmse=    118.64  mae=    104.32  r2=  0.915  smape=   2.81
+[2026-11-15 08:22:15]   [dt] test   rmse=  2,178.46  mae=  1,959.92  r2= -5.448  smape=  40.68
+[2026-11-15 08:22:15]   [dt] top importances: precip_total=0.47, t2m_mean=0.40, t2m_max_extreme=0.13, t2m_min_extreme=0.00, rh2m_mean=0.00
+[2026-11-15 08:22:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:16]   [xgb] saved → models\xgb_maize_(corn).pkl
+[2026-11-15 08:22:16]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:16]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:16]   [xgb] train  rmse=    367.08  mae=    260.88  r2=  0.684  smape=   6.72
+[2026-11-15 08:22:16]   [xgb] val    rmse=    215.26  mae=    195.50  r2=  0.719  smape=   5.00
+[2026-11-15 08:22:16]   [xgb] test   rmse=  2,040.65  mae=  1,813.84  r2= -4.658  smape=  36.59
+[2026-11-15 08:22:16]   [xgb] top importances: precip_total=0.23, t2m_min_extreme=0.16, rh2m_mean=0.14, solar_mean=0.14, t2m_mean=0.13
+
+========================================================================
+  Crop: Oats
+========================================================================
+[2026-11-15 08:22:16]   [note] no BEST_PARAMS entry for 'Oats' — using default_params
+[2026-11-15 08:22:16]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:16]   [dt] saved → models\dt_oats.pkl
+[2026-11-15 08:22:16]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:16]   [dt] n = 22 train / 2 val / 4 test
+[2026-11-15 08:22:16]   [dt] train  rmse=    224.49  mae=    177.81  r2=  0.741  smape=  14.23
+[2026-11-15 08:22:16]   [dt] val    rmse=    188.89  mae=    187.89  r2= -3.008  smape=  16.75
+[2026-11-15 08:22:16]   [dt] test   rmse=    700.30  mae=    516.70  r2=-90.156  smape=  34.00
+[2026-11-15 08:22:16]   [dt] top importances: t2m_max_extreme=0.98, rh2m_mean=0.02, t2m_mean=0.00, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:22:16]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:16]   [xgb] saved → models\xgb_oats.pkl
+[2026-11-15 08:22:16]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:16]   [xgb] n = 22 train / 2 val / 4 test
+[2026-11-15 08:22:16]   [xgb] train  rmse=    212.67  mae=    156.27  r2=  0.768  smape=  12.64
+[2026-11-15 08:22:16]   [xgb] val    rmse=     24.71  mae=     24.18  r2=  0.931  smape=   1.99
+[2026-11-15 08:22:16]   [xgb] test   rmse=    460.17  mae=    438.28  r2=-38.360  smape=  33.02
+[2026-11-15 08:22:16]   [xgb] top importances: t2m_max_extreme=0.23, rh2m_mean=0.15, precip_total=0.14, t2m_min_extreme=0.13, ws2m_mean=0.13
+
+========================================================================
+  Crop: Olives
+========================================================================
+[2026-11-15 08:22:16]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:16]   [dt] saved → models\dt_olives.pkl
+[2026-11-15 08:22:16]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:16]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:16]   [dt] train  rmse=    237.10  mae=    169.67  r2=  0.663  smape=  14.51
+[2026-11-15 08:22:16]   [dt] val    rmse=    107.03  mae=     70.29  r2=  0.323  smape=   6.10
+[2026-11-15 08:22:16]   [dt] test   rmse=    410.76  mae=    353.48  r2= -2.839  smape=  28.86
+[2026-11-15 08:22:16]   [dt] top importances: t2m_mean=0.51, t2m_max_extreme=0.40, ws2m_mean=0.10, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:22:16]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:16]   [xgb] saved → models\xgb_olives.pkl
+[2026-11-15 08:22:16]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:16]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:16]   [xgb] train  rmse=    206.03  mae=    158.80  r2=  0.746  smape=  13.60
+[2026-11-15 08:22:16]   [xgb] val    rmse=    111.32  mae=    100.01  r2=  0.268  smape=   9.18
+[2026-11-15 08:22:16]   [xgb] test   rmse=    291.37  mae=    273.45  r2= -0.932  smape=  23.32
+[2026-11-15 08:22:16]   [xgb] top importances: t2m_max_extreme=0.20, t2m_mean=0.16, ws2m_mean=0.16, t2m_min_extreme=0.14, solar_mean=0.13
+
+========================================================================
+  Crop: Potatoes
+========================================================================
+[2026-11-15 08:22:16]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:17]   [dt] saved → models\dt_potatoes.pkl
+[2026-11-15 08:22:17]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:17]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:17]   [dt] train  rmse=  1,142.09  mae=    868.22  r2=  0.568  smape=   4.48
+[2026-11-15 08:22:17]   [dt] val    rmse=    260.05  mae=    215.05  r2=  0.960  smape=   0.90
+[2026-11-15 08:22:17]   [dt] test   rmse=  3,020.97  mae=  2,537.33  r2=-12.513  smape=  11.44
+[2026-11-15 08:22:17]   [dt] top importances: rh2m_mean=0.48, t2m_mean=0.38, t2m_min_extreme=0.14, t2m_max_extreme=0.00, precip_total=0.00
+[2026-11-15 08:22:17]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:17]   [xgb] saved → models\xgb_potatoes.pkl
+[2026-11-15 08:22:17]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:17]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:17]   [xgb] train  rmse=  1,061.10  mae=    838.95  r2=  0.627  smape=   4.41
+[2026-11-15 08:22:17]   [xgb] val    rmse=  1,976.24  mae=  1,935.66  r2= -1.290  smape=   8.28
+[2026-11-15 08:22:17]   [xgb] test   rmse=  2,603.75  mae=  2,529.56  r2= -9.038  smape=  11.26
+[2026-11-15 08:22:17]   [xgb] top importances: solar_mean=0.17, t2m_mean=0.16, precip_total=0.15, ws2m_mean=0.15, t2m_max_extreme=0.14
+
+========================================================================
+  Crop: Rice
+========================================================================
+[2026-11-15 08:22:17]   [note] no BEST_PARAMS entry for 'Rice' — using default_params
+[2026-11-15 08:22:17]   [dt] SKIPPED: empty val (0) or test (0)
+[2026-11-15 08:22:17]   [xgb] SKIPPED: empty val (0) or test (0)
+
+========================================================================
+  Crop: Sesame seed
+========================================================================
+[2026-11-15 08:22:17]   [note] no BEST_PARAMS entry for 'Sesame seed' — using default_params
+[2026-11-15 08:22:17]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:17]   [dt] saved → models\dt_sesame_seed.pkl
+[2026-11-15 08:22:17]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:17]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:17]   [dt] train  rmse=     75.55  mae=     62.73  r2=  0.886  smape=  10.66
+[2026-11-15 08:22:17]   [dt] val    rmse=     47.57  mae=     40.70  r2=  0.043  smape=   5.41
+[2026-11-15 08:22:17]   [dt] test   rmse=    280.67  mae=    204.83  r2=-12.778  smape=  31.07
+[2026-11-15 08:22:17]   [dt] top importances: t2m_mean=0.38, rh2m_mean=0.32, ws2m_mean=0.28, t2m_min_extreme=0.02, t2m_max_extreme=0.00
+[2026-11-15 08:22:17]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:17]   [xgb] saved → models\xgb_sesame_seed.pkl
+[2026-11-15 08:22:18]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:18]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:18]   [xgb] train  rmse=    133.69  mae=     91.13  r2=  0.642  smape=  14.67
+[2026-11-15 08:22:18]   [xgb] val    rmse=     64.38  mae=     51.84  r2= -0.754  smape=   6.98
+[2026-11-15 08:22:18]   [xgb] test   rmse=    166.92  mae=    136.76  r2= -3.874  smape=  17.97
+[2026-11-15 08:22:18]   [xgb] top importances: rh2m_mean=0.23, solar_mean=0.17, ws2m_mean=0.16, t2m_mean=0.12, precip_total=0.12
+
+========================================================================
+  Crop: Sorghum
+========================================================================
+[2026-11-15 08:22:18]   [note] no BEST_PARAMS entry for 'Sorghum' — using default_params
+[2026-11-15 08:22:18]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:18]   [dt] saved → models\dt_sorghum.pkl
+[2026-11-15 08:22:18]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:18]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:18]   [dt] train  rmse=    178.59  mae=    120.12  r2=  0.886  smape=  11.46
+[2026-11-15 08:22:18]   [dt] val    rmse=    205.35  mae=    184.88  r2= -0.385  smape=  10.61
+[2026-11-15 08:22:18]   [dt] test   rmse=    517.08  mae=    436.45  r2= -1.101  smape=  28.81
+[2026-11-15 08:22:18]   [dt] top importances: solar_mean=0.58, rh2m_mean=0.24, ws2m_mean=0.18, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:22:18]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:18]   [xgb] saved → models\xgb_sorghum.pkl
+[2026-11-15 08:22:18]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:18]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:18]   [xgb] train  rmse=    265.89  mae=    199.92  r2=  0.746  smape=  18.25
+[2026-11-15 08:22:18]   [xgb] val    rmse=    295.08  mae=    262.64  r2= -1.860  smape=  15.14
+[2026-11-15 08:22:18]   [xgb] test   rmse=    384.38  mae=    313.34  r2= -0.161  smape=  19.31
+[2026-11-15 08:22:18]   [xgb] top importances: rh2m_mean=0.21, t2m_mean=0.18, solar_mean=0.16, t2m_min_extreme=0.15, ws2m_mean=0.11
+
+========================================================================
+  Crop: Sugar beet
+========================================================================
+[2026-11-15 08:22:18]   [note] no BEST_PARAMS entry for 'Sugar beet' — using default_params
+[2026-11-15 08:22:18]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:18]   [dt] saved → models\dt_sugar_beet.pkl
+[2026-11-15 08:22:18]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:18]   [dt] n = 25 train / 4 val / 3 test
+[2026-11-15 08:22:18]   [dt] train  rmse=  4,678.44  mae=  3,559.93  r2=  0.533  smape=   7.79
+[2026-11-15 08:22:18]   [dt] val    rmse=  5,062.41  mae=  4,750.65  r2=  0.318  smape=  11.59
+[2026-11-15 08:22:18]   [dt] test   rmse= 18,444.73  mae= 18,330.11  r2= -1.349  smape=  39.94
+[2026-11-15 08:22:18]   [dt] top importances: ws2m_mean=0.36, t2m_mean=0.27, t2m_min_extreme=0.25, precip_total=0.11, t2m_max_extreme=0.00
+[2026-11-15 08:22:18]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:19]   [xgb] saved → models\xgb_sugar_beet.pkl
+[2026-11-15 08:22:19]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:19]   [xgb] n = 25 train / 4 val / 3 test
+[2026-11-15 08:22:19]   [xgb] train  rmse=  4,272.01  mae=  2,793.28  r2=  0.611  smape=   6.07
+[2026-11-15 08:22:19]   [xgb] val    rmse=  4,223.88  mae=  3,351.22  r2=  0.525  smape=   8.60
+[2026-11-15 08:22:19]   [xgb] test   rmse= 11,800.19  mae= 11,779.97  r2=  0.039  smape=  26.79
+[2026-11-15 08:22:19]   [xgb] top importances: t2m_min_extreme=0.20, solar_mean=0.17, t2m_max_extreme=0.15, precip_total=0.14, rh2m_mean=0.12
+
+========================================================================
+  Crop: Sunflower seed
+========================================================================
+[2026-11-15 08:22:19]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:19]   [dt] saved → models\dt_sunflower_seed.pkl
+[2026-11-15 08:22:19]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:19]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:19]   [dt] train  rmse=    101.01  mae=     77.06  r2=  0.885  smape=   4.58
+[2026-11-15 08:22:19]   [dt] val    rmse=     32.82  mae=     25.86  r2=  0.705  smape=   1.58
+[2026-11-15 08:22:19]   [dt] test   rmse=    453.91  mae=    320.18  r2=-58.306  smape=  18.25
+[2026-11-15 08:22:19]   [dt] top importances: rh2m_mean=0.38, t2m_max_extreme=0.34, t2m_min_extreme=0.16, t2m_mean=0.06, solar_mean=0.05
+[2026-11-15 08:22:19]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:19]   [xgb] saved → models\xgb_sunflower_seed.pkl
+[2026-11-15 08:22:19]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:19]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:19]   [xgb] train  rmse=    142.35  mae=     95.89  r2=  0.771  smape=   5.73
+[2026-11-15 08:22:19]   [xgb] val    rmse=     54.61  mae=     39.75  r2=  0.182  smape=   2.36
+[2026-11-15 08:22:19]   [xgb] test   rmse=    284.36  mae=    239.24  r2=-22.276  smape=  14.85
+[2026-11-15 08:22:19]   [xgb] top importances: rh2m_mean=0.23, t2m_min_extreme=0.18, solar_mean=0.14, t2m_max_extreme=0.12, ws2m_mean=0.11
+
+========================================================================
+  Crop: Tomatoes
+========================================================================
+[2026-11-15 08:22:19]   [note] no BEST_PARAMS entry for 'Tomatoes' — using default_params
+[2026-11-15 08:22:19]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:19]   [dt] saved → models\dt_tomatoes.pkl
+[2026-11-15 08:22:19]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:19]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:19]   [dt] train  rmse=  8,155.71  mae=  5,816.14  r2=  0.783  smape=  13.01
+[2026-11-15 08:22:19]   [dt] val    rmse= 15,350.82  mae= 13,229.08  r2= -2.663  smape=  21.34
+[2026-11-15 08:22:19]   [dt] test   rmse= 13,532.34  mae= 12,528.42  r2= -8.482  smape=  24.43
+[2026-11-15 08:22:19]   [dt] top importances: solar_mean=0.62, rh2m_mean=0.19, t2m_max_extreme=0.11, t2m_min_extreme=0.07, t2m_mean=0.00
+[2026-11-15 08:22:20]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:20]   [xgb] saved → models\xgb_tomatoes.pkl
+[2026-11-15 08:22:20]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:20]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:20]   [xgb] train  rmse=  7,739.54  mae=  6,423.99  r2=  0.805  smape=  17.47
+[2026-11-15 08:22:20]   [xgb] val    rmse= 12,837.15  mae= 10,401.64  r2= -1.562  smape=  15.94
+[2026-11-15 08:22:20]   [xgb] test   rmse=  8,518.61  mae=  7,727.26  r2= -2.757  smape=  13.79
+[2026-11-15 08:22:20]   [xgb] top importances: solar_mean=0.29, t2m_mean=0.15, ws2m_mean=0.14, precip_total=0.14, t2m_max_extreme=0.11
+
+========================================================================
+  Crop: Wheat
+========================================================================
+[2026-11-15 08:22:20]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:20]   [dt] saved → models\dt_wheat.pkl
+[2026-11-15 08:22:20]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:22:20]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:20]   [dt] train  rmse=    178.27  mae=    149.56  r2=  0.806  smape=   6.76
+[2026-11-15 08:22:20]   [dt] val    rmse=    157.48  mae=    135.66  r2=  0.867  smape=   8.61
+[2026-11-15 08:22:20]   [dt] test   rmse=    737.99  mae=    710.81  r2= -2.002  smape=  43.07
+[2026-11-15 08:22:20]   [dt] top importances: t2m_mean=0.76, rh2m_mean=0.20, precip_total=0.04, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:22:20]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:22:20]   [xgb] saved → models\xgb_wheat.pkl
+[2026-11-15 08:22:20]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:22:20]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:22:20]   [xgb] train  rmse=    196.53  mae=    152.67  r2=  0.765  smape=   7.15
+[2026-11-15 08:22:20]   [xgb] val    rmse=    286.49  mae=    202.55  r2=  0.559  smape=  13.76
+[2026-11-15 08:22:20]   [xgb] test   rmse=    394.93  mae=    324.25  r2=  0.140  smape=  19.05
+[2026-11-15 08:22:20]   [xgb] top importances: rh2m_mean=0.27, t2m_mean=0.25, ws2m_mean=0.13, t2m_max_extreme=0.12, solar_mean=0.10
+[2026-11-15 08:22:20] 
+[saved] D:\2026\ftl-syria-crop-yield\models\feature_schema.json
+[2026-11-15 08:22:20] [saved] D:\2026\ftl-syria-crop-yield\models\training_summary.json
+
+========================================================================
+  Summary — 30 trained, 2 skipped
+========================================================================
+crop             model  train_rmse  val_rmse  test_rmse  test_r2
+---------------  -----  ----------  --------  ---------  -------
+Apples           dt     836         404       3,834      -15.068
+Apples           xgb    936         757       2,475      -5.696 
+Barley           dt     254         434       607        -0.281 
+Barley           xgb    160         489       435        0.341  
+Chick peas, dry  dt     62          58        216        -0.666 
+Chick peas, dry  xgb    65          28        171        -0.036 
+Grapes           dt     695         947       1,371      -29.830
+Grapes           xgb    634         491       774        -8.828 
+Lentils, dry     dt     147         138       325        -0.759 
+Lentils, dry     xgb    132         130       308        -0.572 
+Maize (corn)     dt     373         119       2,178      -5.448 
+Maize (corn)     xgb    367         215       2,041      -4.658 
+Oats             dt     224         189       700        -90.156
+Oats             xgb    213         25        460        -38.360
+Olives           dt     237         107       411        -2.839 
+Olives           xgb    206         111       291        -0.932 
+Potatoes         dt     1,142       260       3,021      -12.513
+Potatoes         xgb    1,061       1,976     2,604      -9.038 
+Sesame seed      dt     76          48        281        -12.778
+Sesame seed      xgb    134         64        167        -3.874 
+Sorghum          dt     179         205       517        -1.101 
+Sorghum          xgb    266         295       384        -0.161 
+Sugar beet       dt     4,678       5,062     18,445     -1.349 
+Sugar beet       xgb    4,272       4,224     11,800     0.039  
+Sunflower seed   dt     101         33        454        -58.306
+Sunflower seed   xgb    142         55        284        -22.276
+Tomatoes         dt     8,156       15,351    13,532     -8.482 
+Tomatoes         xgb    7,740       12,837    8,519      -2.757 
+Wheat            dt     178         157       738        -2.002 
+Wheat            xgb    197         286       395        0.140  
+[2026-11-15 08:22:20] 
+Skipped:
+[2026-11-15 08:22:20]   Rice             dt    — empty val (0) or test (0)
+[2026-11-15 08:22:20]   Rice             xgb   — empty val (0) or test (0)
+[2026-11-15 08:22:20] 
+Models in: D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:22:20] Full log:  D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:22:20] Session complete.
+
+
+════════════════════════════════════════════════════════════════════════
+  SESSION START  2026-11-15T17:23:40.869394+00:00
+════════════════════════════════════════════════════════════════════════
+
+========================================================================
+  FTL Syria — train.py
+========================================================================
+[2026-11-15 08:23:40] Config file:  D:\2026\ftl-syria-crop-yield\config.yaml
+[2026-11-15 08:23:40] Split dir:    D:\2026\ftl-syria-crop-yield\data\interim
+[2026-11-15 08:23:40] Models dir:   D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:23:40] Log file:     D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:23:40] Crop filter:  all
+[2026-11-15 08:23:40] Model filter: both
+[2026-11-15 08:23:40] MLflow:       disabled
+[2026-11-15 08:23:40] Target:       yield_hg_ha
+[2026-11-15 08:23:40] Features (7 climate + 4 anomaly):
+[2026-11-15 08:23:40]   climate  t2m_mean
+[2026-11-15 08:23:40]   climate  t2m_max_extreme
+[2026-11-15 08:23:40]   climate  t2m_min_extreme
+[2026-11-15 08:23:40]   climate  precip_total
+[2026-11-15 08:23:40]   climate  rh2m_mean
+[2026-11-15 08:23:40]   climate  solar_mean
+[2026-11-15 08:23:40]   climate  ws2m_mean
+[2026-11-15 08:23:40]   anomaly  yield_anomaly
+[2026-11-15 08:23:40]   anomaly  drought_year
+[2026-11-15 08:23:40]   anomaly  conflict_year
+[2026-11-15 08:23:40]   anomaly  climate_anomaly
+
+========================================================================
+  Loading pre-split data
+========================================================================
+[2026-11-15 08:23:40]   train.csv:   378 rows, 16 crops, years 1991–2015
+[2026-11-15 08:23:40]   val.csv:    58 rows, 15 crops, years 2016–2019
+[2026-11-15 08:23:41]   test.csv:    72 rows, 15 crops, years 2020–2024
+[2026-11-15 08:23:41] Crops in train split: ['Apples', 'Barley', 'Chick peas, dry', 'Grapes', 'Lentils, dry', 'Maize (corn)', 'Oats', 'Olives', 'Potatoes', 'Rice', 'Sesame seed', 'Sorghum', 'Sugar beet', 'Sunflower seed', 'Tomatoes', 'Wheat']
+
+========================================================================
+  Crop: Apples
+========================================================================
+[2026-11-15 08:23:41]   [note] no BEST_PARAMS entry for 'Apples' — using default_params
+[2026-11-15 08:23:41]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [dt] saved → models\dt_apples.pkl
+[2026-11-15 08:23:41]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:41]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [dt] train  rmse=    835.97  mae=    608.44  r2=  0.723  smape=   9.07
+[2026-11-15 08:23:41]   [dt] val    rmse=    403.94  mae=    335.35  r2=  0.937  smape=   4.52
+[2026-11-15 08:23:41]   [dt] test   rmse=  3,833.98  mae=  3,156.54  r2=-15.068  smape=  46.06
+[2026-11-15 08:23:41]   [dt] top importances: solar_mean=0.41, t2m_min_extreme=0.20, precip_total=0.20, t2m_mean=0.19, t2m_max_extreme=0.00
+[2026-11-15 08:23:41]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [xgb] saved → models\xgb_apples.pkl
+[2026-11-15 08:23:41]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:41]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [xgb] train  rmse=    935.82  mae=    693.64  r2=  0.652  smape=  10.31
+[2026-11-15 08:23:41]   [xgb] val    rmse=    757.31  mae=    732.12  r2=  0.779  smape=  10.30
+[2026-11-15 08:23:41]   [xgb] test   rmse=  2,475.00  mae=  2,217.85  r2= -5.696  smape=  36.85
+[2026-11-15 08:23:41]   [xgb] top importances: t2m_max_extreme=0.18, solar_mean=0.16, t2m_min_extreme=0.15, t2m_mean=0.15, precip_total=0.14
+
+========================================================================
+  Crop: Barley
+========================================================================
+[2026-11-15 08:23:41]   [note] no BEST_PARAMS entry for 'Barley' — using default_params
+[2026-11-15 08:23:41]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [dt] saved → models\dt_barley.pkl
+[2026-11-15 08:23:41]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:41]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [dt] train  rmse=    254.11  mae=    194.18  r2=  0.210  smape=  34.17
+[2026-11-15 08:23:41]   [dt] val    rmse=    434.05  mae=    385.31  r2=  0.540  smape=  41.31
+[2026-11-15 08:23:41]   [dt] test   rmse=    606.83  mae=    555.47  r2= -0.281  smape=  88.12
+[2026-11-15 08:23:41]   [dt] top importances: precip_total=0.55, t2m_min_extreme=0.28, ws2m_mean=0.17, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:23:41]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [xgb] saved → models\xgb_barley.pkl
+[2026-11-15 08:23:41]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:41]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [xgb] train  rmse=    159.51  mae=    133.02  r2=  0.689  smape=  26.01
+[2026-11-15 08:23:41]   [xgb] val    rmse=    488.66  mae=    384.56  r2=  0.417  smape=  40.98
+[2026-11-15 08:23:41]   [xgb] test   rmse=    435.11  mae=    402.07  r2=  0.341  smape=  68.04
+[2026-11-15 08:23:41]   [xgb] top importances: t2m_mean=0.23, solar_mean=0.20, rh2m_mean=0.19, t2m_max_extreme=0.12, t2m_min_extreme=0.10
+
+========================================================================
+  Crop: Chick peas, dry
+========================================================================
+[2026-11-15 08:23:41]   [note] no BEST_PARAMS entry for 'Chick peas, dry' — using default_params
+[2026-11-15 08:23:41]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [dt] saved → models\dt_chick_peas,_dry.pkl
+[2026-11-15 08:23:41]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:41]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [dt] train  rmse=     62.23  mae=     46.55  r2=  0.725  smape=   7.09
+[2026-11-15 08:23:41]   [dt] val    rmse=     57.58  mae=     48.46  r2= -0.095  smape=   8.58
+[2026-11-15 08:23:41]   [dt] test   rmse=    216.34  mae=    181.03  r2= -0.666  smape=  28.44
+[2026-11-15 08:23:41]   [dt] top importances: rh2m_mean=0.61, t2m_mean=0.12, ws2m_mean=0.11, t2m_min_extreme=0.10, solar_mean=0.05
+[2026-11-15 08:23:41]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [xgb] saved → models\xgb_chick_peas,_dry.pkl
+[2026-11-15 08:23:41]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:41]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [xgb] train  rmse=     65.33  mae=     49.09  r2=  0.696  smape=   7.56
+[2026-11-15 08:23:41]   [xgb] val    rmse=     27.77  mae=     25.66  r2=  0.745  smape=   4.10
+[2026-11-15 08:23:41]   [xgb] test   rmse=    170.60  mae=    134.58  r2= -0.036  smape=  22.27
+[2026-11-15 08:23:41]   [xgb] top importances: rh2m_mean=0.26, t2m_mean=0.16, precip_total=0.15, t2m_max_extreme=0.14, ws2m_mean=0.12
+
+========================================================================
+  Crop: Grapes
+========================================================================
+[2026-11-15 08:23:41]   [note] no BEST_PARAMS entry for 'Grapes' — using default_params
+[2026-11-15 08:23:41]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:41]   [dt] saved → models\dt_grapes.pkl
+[2026-11-15 08:23:41]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:41]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:41]   [dt] train  rmse=    695.13  mae=    533.43  r2=  0.650  smape=   8.96
+[2026-11-15 08:23:41]   [dt] val    rmse=    946.57  mae=    807.76  r2= -5.076  smape=  14.38
+[2026-11-15 08:23:41]   [dt] test   rmse=  1,371.08  mae=  1,302.09  r2=-29.830  smape=  24.09
+[2026-11-15 08:23:41]   [dt] top importances: t2m_min_extreme=0.45, t2m_max_extreme=0.30, rh2m_mean=0.22, solar_mean=0.03, t2m_mean=0.00
+[2026-11-15 08:23:42]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:42]   [xgb] saved → models\xgb_grapes.pkl
+[2026-11-15 08:23:42]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:42]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:42]   [xgb] train  rmse=    634.41  mae=    506.82  r2=  0.709  smape=   8.60
+[2026-11-15 08:23:42]   [xgb] val    rmse=    490.91  mae=    418.85  r2= -0.634  smape=   7.72
+[2026-11-15 08:23:42]   [xgb] test   rmse=    774.13  mae=    710.40  r2= -8.828  smape=  12.66
+[2026-11-15 08:23:42]   [xgb] top importances: t2m_min_extreme=0.18, precip_total=0.17, t2m_max_extreme=0.15, rh2m_mean=0.15, t2m_mean=0.13
+
+========================================================================
+  Crop: Lentils, dry
+========================================================================
+[2026-11-15 08:23:42]   [note] no BEST_PARAMS entry for 'Lentils, dry' — using default_params
+[2026-11-15 08:23:42]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:42]   [dt] saved → models\dt_lentils,_dry.pkl
+[2026-11-15 08:23:42]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:42]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:42]   [dt] train  rmse=    147.26  mae=    108.69  r2=  0.699  smape=  14.15
+[2026-11-15 08:23:42]   [dt] val    rmse=    137.90  mae=    118.28  r2=  0.270  smape=  14.83
+[2026-11-15 08:23:42]   [dt] test   rmse=    325.49  mae=    300.48  r2= -0.759  smape=  45.46
+[2026-11-15 08:23:42]   [dt] top importances: rh2m_mean=0.66, t2m_mean=0.30, ws2m_mean=0.03, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:23:42]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:42]   [xgb] saved → models\xgb_lentils,_dry.pkl
+[2026-11-15 08:23:42]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:42]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:42]   [xgb] train  rmse=    132.38  mae=    110.23  r2=  0.757  smape=  15.25
+[2026-11-15 08:23:42]   [xgb] val    rmse=    130.30  mae=    115.43  r2=  0.348  smape=  14.36
+[2026-11-15 08:23:42]   [xgb] test   rmse=    307.70  mae=    235.80  r2= -0.572  smape=  34.24
+[2026-11-15 08:23:42]   [xgb] top importances: rh2m_mean=0.28, t2m_mean=0.17, t2m_min_extreme=0.14, t2m_max_extreme=0.13, solar_mean=0.11
+
+========================================================================
+  Crop: Maize (corn)
+========================================================================
+[2026-11-15 08:23:42]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:42]   [dt] saved → models\dt_maize_(corn).pkl
+[2026-11-15 08:23:42]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:42]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:42]   [dt] train  rmse=    373.28  mae=    281.71  r2=  0.673  smape=   7.45
+[2026-11-15 08:23:42]   [dt] val    rmse=    118.64  mae=    104.32  r2=  0.915  smape=   2.81
+[2026-11-15 08:23:42]   [dt] test   rmse=  2,178.46  mae=  1,959.92  r2= -5.448  smape=  40.68
+[2026-11-15 08:23:42]   [dt] top importances: precip_total=0.47, t2m_mean=0.40, t2m_max_extreme=0.13, t2m_min_extreme=0.00, rh2m_mean=0.00
+[2026-11-15 08:23:42]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:43]   [xgb] saved → models\xgb_maize_(corn).pkl
+[2026-11-15 08:23:43]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:43]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:43]   [xgb] train  rmse=    367.08  mae=    260.88  r2=  0.684  smape=   6.72
+[2026-11-15 08:23:43]   [xgb] val    rmse=    215.26  mae=    195.50  r2=  0.719  smape=   5.00
+[2026-11-15 08:23:43]   [xgb] test   rmse=  2,040.65  mae=  1,813.84  r2= -4.658  smape=  36.59
+[2026-11-15 08:23:43]   [xgb] top importances: precip_total=0.23, t2m_min_extreme=0.16, rh2m_mean=0.14, solar_mean=0.14, t2m_mean=0.13
+
+========================================================================
+  Crop: Oats
+========================================================================
+[2026-11-15 08:23:43]   [note] no BEST_PARAMS entry for 'Oats' — using default_params
+[2026-11-15 08:23:43]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:43]   [dt] saved → models\dt_oats.pkl
+[2026-11-15 08:23:43]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:43]   [dt] n = 22 train / 2 val / 4 test
+[2026-11-15 08:23:43]   [dt] train  rmse=    224.49  mae=    177.81  r2=  0.741  smape=  14.23
+[2026-11-15 08:23:43]   [dt] val    rmse=    188.89  mae=    187.89  r2= -3.008  smape=  16.75
+[2026-11-15 08:23:43]   [dt] test   rmse=    700.30  mae=    516.70  r2=-90.156  smape=  34.00
+[2026-11-15 08:23:43]   [dt] top importances: t2m_max_extreme=0.98, rh2m_mean=0.02, t2m_mean=0.00, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:23:43]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:43]   [xgb] saved → models\xgb_oats.pkl
+[2026-11-15 08:23:43]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:43]   [xgb] n = 22 train / 2 val / 4 test
+[2026-11-15 08:23:43]   [xgb] train  rmse=    212.67  mae=    156.27  r2=  0.768  smape=  12.64
+[2026-11-15 08:23:43]   [xgb] val    rmse=     24.71  mae=     24.18  r2=  0.931  smape=   1.99
+[2026-11-15 08:23:43]   [xgb] test   rmse=    460.17  mae=    438.28  r2=-38.360  smape=  33.02
+[2026-11-15 08:23:43]   [xgb] top importances: t2m_max_extreme=0.23, rh2m_mean=0.15, precip_total=0.14, t2m_min_extreme=0.13, ws2m_mean=0.13
+
+========================================================================
+  Crop: Olives
+========================================================================
+[2026-11-15 08:23:43]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:43]   [dt] saved → models\dt_olives.pkl
+[2026-11-15 08:23:43]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:43]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:43]   [dt] train  rmse=    237.10  mae=    169.67  r2=  0.663  smape=  14.51
+[2026-11-15 08:23:43]   [dt] val    rmse=    107.03  mae=     70.29  r2=  0.323  smape=   6.10
+[2026-11-15 08:23:43]   [dt] test   rmse=    410.76  mae=    353.48  r2= -2.839  smape=  28.86
+[2026-11-15 08:23:43]   [dt] top importances: t2m_mean=0.51, t2m_max_extreme=0.40, ws2m_mean=0.10, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:23:43]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:43]   [xgb] saved → models\xgb_olives.pkl
+[2026-11-15 08:23:43]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:43]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:43]   [xgb] train  rmse=    206.03  mae=    158.80  r2=  0.746  smape=  13.60
+[2026-11-15 08:23:43]   [xgb] val    rmse=    111.32  mae=    100.01  r2=  0.268  smape=   9.18
+[2026-11-15 08:23:43]   [xgb] test   rmse=    291.37  mae=    273.45  r2= -0.932  smape=  23.32
+[2026-11-15 08:23:44]   [xgb] top importances: t2m_max_extreme=0.20, t2m_mean=0.16, ws2m_mean=0.16, t2m_min_extreme=0.14, solar_mean=0.13
+
+========================================================================
+  Crop: Potatoes
+========================================================================
+[2026-11-15 08:23:44]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:44]   [dt] saved → models\dt_potatoes.pkl
+[2026-11-15 08:23:44]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:44]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:44]   [dt] train  rmse=  1,142.09  mae=    868.22  r2=  0.568  smape=   4.48
+[2026-11-15 08:23:44]   [dt] val    rmse=    260.05  mae=    215.05  r2=  0.960  smape=   0.90
+[2026-11-15 08:23:44]   [dt] test   rmse=  3,020.97  mae=  2,537.33  r2=-12.513  smape=  11.44
+[2026-11-15 08:23:44]   [dt] top importances: rh2m_mean=0.48, t2m_mean=0.38, t2m_min_extreme=0.14, t2m_max_extreme=0.00, precip_total=0.00
+[2026-11-15 08:23:44]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:44]   [xgb] saved → models\xgb_potatoes.pkl
+[2026-11-15 08:23:44]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:44]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:44]   [xgb] train  rmse=  1,061.10  mae=    838.95  r2=  0.627  smape=   4.41
+[2026-11-15 08:23:44]   [xgb] val    rmse=  1,976.24  mae=  1,935.66  r2= -1.290  smape=   8.28
+[2026-11-15 08:23:44]   [xgb] test   rmse=  2,603.75  mae=  2,529.56  r2= -9.038  smape=  11.26
+[2026-11-15 08:23:44]   [xgb] top importances: solar_mean=0.17, t2m_mean=0.16, precip_total=0.15, ws2m_mean=0.15, t2m_max_extreme=0.14
+
+========================================================================
+  Crop: Rice
+========================================================================
+[2026-11-15 08:23:44]   [note] no BEST_PARAMS entry for 'Rice' — using default_params
+[2026-11-15 08:23:44]   [dt] SKIPPED: empty val (0) or test (0)
+[2026-11-15 08:23:44]   [xgb] SKIPPED: empty val (0) or test (0)
+
+========================================================================
+  Crop: Sesame seed
+========================================================================
+[2026-11-15 08:23:44]   [note] no BEST_PARAMS entry for 'Sesame seed' — using default_params
+[2026-11-15 08:23:44]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:44]   [dt] saved → models\dt_sesame_seed.pkl
+[2026-11-15 08:23:44]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:44]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:44]   [dt] train  rmse=     75.55  mae=     62.73  r2=  0.886  smape=  10.66
+[2026-11-15 08:23:44]   [dt] val    rmse=     47.57  mae=     40.70  r2=  0.043  smape=   5.41
+[2026-11-15 08:23:44]   [dt] test   rmse=    280.67  mae=    204.83  r2=-12.778  smape=  31.07
+[2026-11-15 08:23:44]   [dt] top importances: t2m_mean=0.38, rh2m_mean=0.32, ws2m_mean=0.28, t2m_min_extreme=0.02, t2m_max_extreme=0.00
+[2026-11-15 08:23:44]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:44]   [xgb] saved → models\xgb_sesame_seed.pkl
+[2026-11-15 08:23:44]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:44]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:44]   [xgb] train  rmse=    133.69  mae=     91.13  r2=  0.642  smape=  14.67
+[2026-11-15 08:23:44]   [xgb] val    rmse=     64.38  mae=     51.84  r2= -0.754  smape=   6.98
+[2026-11-15 08:23:44]   [xgb] test   rmse=    166.92  mae=    136.76  r2= -3.874  smape=  17.97
+[2026-11-15 08:23:44]   [xgb] top importances: rh2m_mean=0.23, solar_mean=0.17, ws2m_mean=0.16, t2m_mean=0.12, precip_total=0.12
+
+========================================================================
+  Crop: Sorghum
+========================================================================
+[2026-11-15 08:23:44]   [note] no BEST_PARAMS entry for 'Sorghum' — using default_params
+[2026-11-15 08:23:45]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [dt] saved → models\dt_sorghum.pkl
+[2026-11-15 08:23:45]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:45]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:45]   [dt] train  rmse=    178.59  mae=    120.12  r2=  0.886  smape=  11.46
+[2026-11-15 08:23:45]   [dt] val    rmse=    205.35  mae=    184.88  r2= -0.385  smape=  10.61
+[2026-11-15 08:23:45]   [dt] test   rmse=    517.08  mae=    436.45  r2= -1.101  smape=  28.81
+[2026-11-15 08:23:45]   [dt] top importances: solar_mean=0.58, rh2m_mean=0.24, ws2m_mean=0.18, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:23:45]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [xgb] saved → models\xgb_sorghum.pkl
+[2026-11-15 08:23:45]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:45]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:45]   [xgb] train  rmse=    265.89  mae=    199.92  r2=  0.746  smape=  18.25
+[2026-11-15 08:23:45]   [xgb] val    rmse=    295.08  mae=    262.64  r2= -1.860  smape=  15.14
+[2026-11-15 08:23:45]   [xgb] test   rmse=    384.38  mae=    313.34  r2= -0.161  smape=  19.31
+[2026-11-15 08:23:45]   [xgb] top importances: rh2m_mean=0.21, t2m_mean=0.18, solar_mean=0.16, t2m_min_extreme=0.15, ws2m_mean=0.11
+
+========================================================================
+  Crop: Sugar beet
+========================================================================
+[2026-11-15 08:23:45]   [note] no BEST_PARAMS entry for 'Sugar beet' — using default_params
+[2026-11-15 08:23:45]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [dt] saved → models\dt_sugar_beet.pkl
+[2026-11-15 08:23:45]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:45]   [dt] n = 25 train / 4 val / 3 test
+[2026-11-15 08:23:45]   [dt] train  rmse=  4,678.44  mae=  3,559.93  r2=  0.533  smape=   7.79
+[2026-11-15 08:23:45]   [dt] val    rmse=  5,062.41  mae=  4,750.65  r2=  0.318  smape=  11.59
+[2026-11-15 08:23:45]   [dt] test   rmse= 18,444.73  mae= 18,330.11  r2= -1.349  smape=  39.94
+[2026-11-15 08:23:45]   [dt] top importances: ws2m_mean=0.36, t2m_mean=0.27, t2m_min_extreme=0.25, precip_total=0.11, t2m_max_extreme=0.00
+[2026-11-15 08:23:45]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [xgb] saved → models\xgb_sugar_beet.pkl
+[2026-11-15 08:23:45]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:45]   [xgb] n = 25 train / 4 val / 3 test
+[2026-11-15 08:23:45]   [xgb] train  rmse=  4,272.01  mae=  2,793.28  r2=  0.611  smape=   6.07
+[2026-11-15 08:23:45]   [xgb] val    rmse=  4,223.88  mae=  3,351.22  r2=  0.525  smape=   8.60
+[2026-11-15 08:23:45]   [xgb] test   rmse= 11,800.19  mae= 11,779.97  r2=  0.039  smape=  26.79
+[2026-11-15 08:23:45]   [xgb] top importances: t2m_min_extreme=0.20, solar_mean=0.17, t2m_max_extreme=0.15, precip_total=0.14, rh2m_mean=0.12
+
+========================================================================
+  Crop: Sunflower seed
+========================================================================
+[2026-11-15 08:23:45]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [dt] saved → models\dt_sunflower_seed.pkl
+[2026-11-15 08:23:45]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:45]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:45]   [dt] train  rmse=    101.01  mae=     77.06  r2=  0.885  smape=   4.58
+[2026-11-15 08:23:45]   [dt] val    rmse=     32.82  mae=     25.86  r2=  0.705  smape=   1.58
+[2026-11-15 08:23:45]   [dt] test   rmse=    453.91  mae=    320.18  r2=-58.306  smape=  18.25
+[2026-11-15 08:23:45]   [dt] top importances: rh2m_mean=0.38, t2m_max_extreme=0.34, t2m_min_extreme=0.16, t2m_mean=0.06, solar_mean=0.05
+[2026-11-15 08:23:45]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [xgb] saved → models\xgb_sunflower_seed.pkl
+[2026-11-15 08:23:45]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:45]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:45]   [xgb] train  rmse=    142.35  mae=     95.89  r2=  0.771  smape=   5.73
+[2026-11-15 08:23:45]   [xgb] val    rmse=     54.61  mae=     39.75  r2=  0.182  smape=   2.36
+[2026-11-15 08:23:45]   [xgb] test   rmse=    284.36  mae=    239.24  r2=-22.276  smape=  14.85
+[2026-11-15 08:23:45]   [xgb] top importances: rh2m_mean=0.23, t2m_min_extreme=0.18, solar_mean=0.14, t2m_max_extreme=0.12, ws2m_mean=0.11
+
+========================================================================
+  Crop: Tomatoes
+========================================================================
+[2026-11-15 08:23:45]   [note] no BEST_PARAMS entry for 'Tomatoes' — using default_params
+[2026-11-15 08:23:45]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:45]   [dt] saved → models\dt_tomatoes.pkl
+[2026-11-15 08:23:45]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:45]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:45]   [dt] train  rmse=  8,155.71  mae=  5,816.14  r2=  0.783  smape=  13.01
+[2026-11-15 08:23:45]   [dt] val    rmse= 15,350.82  mae= 13,229.08  r2= -2.663  smape=  21.34
+[2026-11-15 08:23:45]   [dt] test   rmse= 13,532.34  mae= 12,528.42  r2= -8.482  smape=  24.43
+[2026-11-15 08:23:46]   [dt] top importances: solar_mean=0.62, rh2m_mean=0.19, t2m_max_extreme=0.11, t2m_min_extreme=0.07, t2m_mean=0.00
+[2026-11-15 08:23:46]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:46]   [xgb] saved → models\xgb_tomatoes.pkl
+[2026-11-15 08:23:46]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:46]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:46]   [xgb] train  rmse=  7,739.54  mae=  6,423.99  r2=  0.805  smape=  17.47
+[2026-11-15 08:23:46]   [xgb] val    rmse= 12,837.15  mae= 10,401.64  r2= -1.562  smape=  15.94
+[2026-11-15 08:23:46]   [xgb] test   rmse=  8,518.61  mae=  7,727.26  r2= -2.757  smape=  13.79
+[2026-11-15 08:23:46]   [xgb] top importances: solar_mean=0.29, t2m_mean=0.15, ws2m_mean=0.14, precip_total=0.14, t2m_max_extreme=0.11
+
+========================================================================
+  Crop: Wheat
+========================================================================
+[2026-11-15 08:23:46]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:46]   [dt] saved → models\dt_wheat.pkl
+[2026-11-15 08:23:46]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:23:46]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:46]   [dt] train  rmse=    178.27  mae=    149.56  r2=  0.806  smape=   6.76
+[2026-11-15 08:23:46]   [dt] val    rmse=    157.48  mae=    135.66  r2=  0.867  smape=   8.61
+[2026-11-15 08:23:46]   [dt] test   rmse=    737.99  mae=    710.81  r2= -2.002  smape=  43.07
+[2026-11-15 08:23:46]   [dt] top importances: t2m_mean=0.76, rh2m_mean=0.20, precip_total=0.04, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:23:46]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:23:46]   [xgb] saved → models\xgb_wheat.pkl
+[2026-11-15 08:23:46]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:23:46]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:23:46]   [xgb] train  rmse=    196.53  mae=    152.67  r2=  0.765  smape=   7.15
+[2026-11-15 08:23:46]   [xgb] val    rmse=    286.49  mae=    202.55  r2=  0.559  smape=  13.76
+[2026-11-15 08:23:46]   [xgb] test   rmse=    394.93  mae=    324.25  r2=  0.140  smape=  19.05
+[2026-11-15 08:23:46]   [xgb] top importances: rh2m_mean=0.27, t2m_mean=0.25, ws2m_mean=0.13, t2m_max_extreme=0.12, solar_mean=0.10
+[2026-11-15 08:23:46] 
+[saved] D:\2026\ftl-syria-crop-yield\models\feature_schema.json
+[2026-11-15 08:23:46] [saved] D:\2026\ftl-syria-crop-yield\models\training_summary.json
+
+========================================================================
+  Summary — 30 trained, 2 skipped
+========================================================================
+crop             model  train_rmse  val_rmse  test_rmse  test_r2
+---------------  -----  ----------  --------  ---------  -------
+Apples           dt     836         404       3,834      -15.068
+Apples           xgb    936         757       2,475      -5.696 
+Barley           dt     254         434       607        -0.281 
+Barley           xgb    160         489       435        0.341  
+Chick peas, dry  dt     62          58        216        -0.666 
+Chick peas, dry  xgb    65          28        171        -0.036 
+Grapes           dt     695         947       1,371      -29.830
+Grapes           xgb    634         491       774        -8.828 
+Lentils, dry     dt     147         138       325        -0.759 
+Lentils, dry     xgb    132         130       308        -0.572 
+Maize (corn)     dt     373         119       2,178      -5.448 
+Maize (corn)     xgb    367         215       2,041      -4.658 
+Oats             dt     224         189       700        -90.156
+Oats             xgb    213         25        460        -38.360
+Olives           dt     237         107       411        -2.839 
+Olives           xgb    206         111       291        -0.932 
+Potatoes         dt     1,142       260       3,021      -12.513
+Potatoes         xgb    1,061       1,976     2,604      -9.038 
+Sesame seed      dt     76          48        281        -12.778
+Sesame seed      xgb    134         64        167        -3.874 
+Sorghum          dt     179         205       517        -1.101 
+Sorghum          xgb    266         295       384        -0.161 
+Sugar beet       dt     4,678       5,062     18,445     -1.349 
+Sugar beet       xgb    4,272       4,224     11,800     0.039  
+Sunflower seed   dt     101         33        454        -58.306
+Sunflower seed   xgb    142         55        284        -22.276
+Tomatoes         dt     8,156       15,351    13,532     -8.482 
+Tomatoes         xgb    7,740       12,837    8,519      -2.757 
+Wheat            dt     178         157       738        -2.002 
+Wheat            xgb    197         286       395        0.140  
+[2026-11-15 08:23:46] 
+Skipped:
+[2026-11-15 08:23:46]   Rice             dt    — empty val (0) or test (0)
+[2026-11-15 08:23:46]   Rice             xgb   — empty val (0) or test (0)
+[2026-11-15 08:23:46] 
+Models in: D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:23:46] Full log:  D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:23:46] Session complete.
+
+
+════════════════════════════════════════════════════════════════════════
+  SESSION START  2026-11-15T17:30:11.602180+00:00
+════════════════════════════════════════════════════════════════════════
+
+========================================================================
+  FTL Syria — train.py
+========================================================================
+[2026-11-15 08:30:11] Config file:  D:\2026\ftl-syria-crop-yield\config.yaml
+[2026-11-15 08:30:11] Split dir:    D:\2026\ftl-syria-crop-yield\data\interim
+[2026-11-15 08:30:11] Models dir:   D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:30:11] Log file:     D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:30:11] Crop filter:  all
+[2026-11-15 08:30:11] Model filter: both
+[2026-11-15 08:30:11] MLflow:       disabled
+[2026-11-15 08:30:11] Target:       yield_hg_ha
+[2026-11-15 08:30:11] Features (7 climate + 4 anomaly):
+[2026-11-15 08:30:11]   climate  t2m_mean
+[2026-11-15 08:30:11]   climate  t2m_max_extreme
+[2026-11-15 08:30:11]   climate  t2m_min_extreme
+[2026-11-15 08:30:11]   climate  precip_total
+[2026-11-15 08:30:11]   climate  rh2m_mean
+[2026-11-15 08:30:11]   climate  solar_mean
+[2026-11-15 08:30:11]   climate  ws2m_mean
+[2026-11-15 08:30:11]   anomaly  yield_anomaly
+[2026-11-15 08:30:11]   anomaly  drought_year
+[2026-11-15 08:30:11]   anomaly  conflict_year
+[2026-11-15 08:30:11]   anomaly  climate_anomaly
+
+========================================================================
+  Loading pre-split data
+========================================================================
+[2026-11-15 08:30:11]   train.csv:   378 rows, 16 crops, years 1991–2015
+[2026-11-15 08:30:11]   val.csv:    58 rows, 15 crops, years 2016–2019
+[2026-11-15 08:30:11]   test.csv:    72 rows, 15 crops, years 2020–2024
+[2026-11-15 08:30:11] Crops in train split: ['Apples', 'Barley', 'Chick peas, dry', 'Grapes', 'Lentils, dry', 'Maize (corn)', 'Oats', 'Olives', 'Potatoes', 'Rice', 'Sesame seed', 'Sorghum', 'Sugar beet', 'Sunflower seed', 'Tomatoes', 'Wheat']
+
+========================================================================
+  Crop: Apples
+========================================================================
+[2026-11-15 08:30:11]   [note] no BEST_PARAMS entry for 'Apples' — using default_params
+[2026-11-15 08:30:11]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:11]   [dt] saved → models\dt_apples.pkl
+[2026-11-15 08:30:11]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:11]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:11]   [dt] train  rmse=    835.97  mae=    608.44  r2=  0.723  smape=   9.07
+[2026-11-15 08:30:11]   [dt] val    rmse=    403.94  mae=    335.35  r2=  0.937  smape=   4.52
+[2026-11-15 08:30:11]   [dt] test   rmse=  3,833.98  mae=  3,156.54  r2=-15.068  smape=  46.06
+[2026-11-15 08:30:11]   [dt] top importances: solar_mean=0.41, t2m_min_extreme=0.20, precip_total=0.20, t2m_mean=0.19, t2m_max_extreme=0.00
+[2026-11-15 08:30:11]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [xgb] saved → models\xgb_apples.pkl
+[2026-11-15 08:30:12]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:12]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [xgb] train  rmse=    935.82  mae=    693.64  r2=  0.652  smape=  10.31
+[2026-11-15 08:30:12]   [xgb] val    rmse=    757.31  mae=    732.12  r2=  0.779  smape=  10.30
+[2026-11-15 08:30:12]   [xgb] test   rmse=  2,475.00  mae=  2,217.85  r2= -5.696  smape=  36.85
+[2026-11-15 08:30:12]   [xgb] top importances: t2m_max_extreme=0.18, solar_mean=0.16, t2m_min_extreme=0.15, t2m_mean=0.15, precip_total=0.14
+
+========================================================================
+  Crop: Barley
+========================================================================
+[2026-11-15 08:30:12]   [note] no BEST_PARAMS entry for 'Barley' — using default_params
+[2026-11-15 08:30:12]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [dt] saved → models\dt_barley.pkl
+[2026-11-15 08:30:12]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:12]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [dt] train  rmse=    254.11  mae=    194.18  r2=  0.210  smape=  34.17
+[2026-11-15 08:30:12]   [dt] val    rmse=    434.05  mae=    385.31  r2=  0.540  smape=  41.31
+[2026-11-15 08:30:12]   [dt] test   rmse=    606.83  mae=    555.47  r2= -0.281  smape=  88.12
+[2026-11-15 08:30:12]   [dt] top importances: precip_total=0.55, t2m_min_extreme=0.28, ws2m_mean=0.17, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:30:12]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [xgb] saved → models\xgb_barley.pkl
+[2026-11-15 08:30:12]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:12]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [xgb] train  rmse=    159.51  mae=    133.02  r2=  0.689  smape=  26.01
+[2026-11-15 08:30:12]   [xgb] val    rmse=    488.66  mae=    384.56  r2=  0.417  smape=  40.98
+[2026-11-15 08:30:12]   [xgb] test   rmse=    435.11  mae=    402.07  r2=  0.341  smape=  68.04
+[2026-11-15 08:30:12]   [xgb] top importances: t2m_mean=0.23, solar_mean=0.20, rh2m_mean=0.19, t2m_max_extreme=0.12, t2m_min_extreme=0.10
+
+========================================================================
+  Crop: Chick peas, dry
+========================================================================
+[2026-11-15 08:30:12]   [note] no BEST_PARAMS entry for 'Chick peas, dry' — using default_params
+[2026-11-15 08:30:12]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [dt] saved → models\dt_chick_peas,_dry.pkl
+[2026-11-15 08:30:12]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:12]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [dt] train  rmse=     62.23  mae=     46.55  r2=  0.725  smape=   7.09
+[2026-11-15 08:30:12]   [dt] val    rmse=     57.58  mae=     48.46  r2= -0.095  smape=   8.58
+[2026-11-15 08:30:12]   [dt] test   rmse=    216.34  mae=    181.03  r2= -0.666  smape=  28.44
+[2026-11-15 08:30:12]   [dt] top importances: rh2m_mean=0.61, t2m_mean=0.12, ws2m_mean=0.11, t2m_min_extreme=0.10, solar_mean=0.05
+[2026-11-15 08:30:12]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [xgb] saved → models\xgb_chick_peas,_dry.pkl
+[2026-11-15 08:30:12]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:12]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [xgb] train  rmse=     65.33  mae=     49.09  r2=  0.696  smape=   7.56
+[2026-11-15 08:30:12]   [xgb] val    rmse=     27.77  mae=     25.66  r2=  0.745  smape=   4.10
+[2026-11-15 08:30:12]   [xgb] test   rmse=    170.60  mae=    134.58  r2= -0.036  smape=  22.27
+[2026-11-15 08:30:12]   [xgb] top importances: rh2m_mean=0.26, t2m_mean=0.16, precip_total=0.15, t2m_max_extreme=0.14, ws2m_mean=0.12
+
+========================================================================
+  Crop: Grapes
+========================================================================
+[2026-11-15 08:30:12]   [note] no BEST_PARAMS entry for 'Grapes' — using default_params
+[2026-11-15 08:30:12]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [dt] saved → models\dt_grapes.pkl
+[2026-11-15 08:30:12]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:12]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [dt] train  rmse=    695.13  mae=    533.43  r2=  0.650  smape=   8.96
+[2026-11-15 08:30:12]   [dt] val    rmse=    946.57  mae=    807.76  r2= -5.076  smape=  14.38
+[2026-11-15 08:30:12]   [dt] test   rmse=  1,371.08  mae=  1,302.09  r2=-29.830  smape=  24.09
+[2026-11-15 08:30:12]   [dt] top importances: t2m_min_extreme=0.45, t2m_max_extreme=0.30, rh2m_mean=0.22, solar_mean=0.03, t2m_mean=0.00
+[2026-11-15 08:30:12]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [xgb] saved → models\xgb_grapes.pkl
+[2026-11-15 08:30:12]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:12]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [xgb] train  rmse=    634.41  mae=    506.82  r2=  0.709  smape=   8.60
+[2026-11-15 08:30:12]   [xgb] val    rmse=    490.91  mae=    418.85  r2= -0.634  smape=   7.72
+[2026-11-15 08:30:12]   [xgb] test   rmse=    774.13  mae=    710.40  r2= -8.828  smape=  12.66
+[2026-11-15 08:30:12]   [xgb] top importances: t2m_min_extreme=0.18, precip_total=0.17, t2m_max_extreme=0.15, rh2m_mean=0.15, t2m_mean=0.13
+
+========================================================================
+  Crop: Lentils, dry
+========================================================================
+[2026-11-15 08:30:12]   [note] no BEST_PARAMS entry for 'Lentils, dry' — using default_params
+[2026-11-15 08:30:12]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:12]   [dt] saved → models\dt_lentils,_dry.pkl
+[2026-11-15 08:30:12]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:12]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:12]   [dt] train  rmse=    147.26  mae=    108.69  r2=  0.699  smape=  14.15
+[2026-11-15 08:30:12]   [dt] val    rmse=    137.90  mae=    118.28  r2=  0.270  smape=  14.83
+[2026-11-15 08:30:12]   [dt] test   rmse=    325.49  mae=    300.48  r2= -0.759  smape=  45.46
+[2026-11-15 08:30:12]   [dt] top importances: rh2m_mean=0.66, t2m_mean=0.30, ws2m_mean=0.03, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:30:13]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:13]   [xgb] saved → models\xgb_lentils,_dry.pkl
+[2026-11-15 08:30:13]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:13]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:13]   [xgb] train  rmse=    132.38  mae=    110.23  r2=  0.757  smape=  15.25
+[2026-11-15 08:30:13]   [xgb] val    rmse=    130.30  mae=    115.43  r2=  0.348  smape=  14.36
+[2026-11-15 08:30:13]   [xgb] test   rmse=    307.70  mae=    235.80  r2= -0.572  smape=  34.24
+[2026-11-15 08:30:13]   [xgb] top importances: rh2m_mean=0.28, t2m_mean=0.17, t2m_min_extreme=0.14, t2m_max_extreme=0.13, solar_mean=0.11
+
+========================================================================
+  Crop: Maize (corn)
+========================================================================
+[2026-11-15 08:30:13]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:13]   [dt] saved → models\dt_maize_(corn).pkl
+[2026-11-15 08:30:13]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:13]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:13]   [dt] train  rmse=    373.28  mae=    281.71  r2=  0.673  smape=   7.45
+[2026-11-15 08:30:13]   [dt] val    rmse=    118.64  mae=    104.32  r2=  0.915  smape=   2.81
+[2026-11-15 08:30:13]   [dt] test   rmse=  2,178.46  mae=  1,959.92  r2= -5.448  smape=  40.68
+[2026-11-15 08:30:13]   [dt] top importances: precip_total=0.47, t2m_mean=0.40, t2m_max_extreme=0.13, t2m_min_extreme=0.00, rh2m_mean=0.00
+[2026-11-15 08:30:13]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:13]   [xgb] saved → models\xgb_maize_(corn).pkl
+[2026-11-15 08:30:13]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:13]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:13]   [xgb] train  rmse=    367.08  mae=    260.88  r2=  0.684  smape=   6.72
+[2026-11-15 08:30:13]   [xgb] val    rmse=    215.26  mae=    195.50  r2=  0.719  smape=   5.00
+[2026-11-15 08:30:13]   [xgb] test   rmse=  2,040.65  mae=  1,813.84  r2= -4.658  smape=  36.59
+[2026-11-15 08:30:13]   [xgb] top importances: precip_total=0.23, t2m_min_extreme=0.16, rh2m_mean=0.14, solar_mean=0.14, t2m_mean=0.13
+
+========================================================================
+  Crop: Oats
+========================================================================
+[2026-11-15 08:30:13]   [note] no BEST_PARAMS entry for 'Oats' — using default_params
+[2026-11-15 08:30:13]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:13]   [dt] saved → models\dt_oats.pkl
+[2026-11-15 08:30:13]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:13]   [dt] n = 22 train / 2 val / 4 test
+[2026-11-15 08:30:13]   [dt] train  rmse=    224.49  mae=    177.81  r2=  0.741  smape=  14.23
+[2026-11-15 08:30:13]   [dt] val    rmse=    188.89  mae=    187.89  r2= -3.008  smape=  16.75
+[2026-11-15 08:30:13]   [dt] test   rmse=    700.30  mae=    516.70  r2=-90.156  smape=  34.00
+[2026-11-15 08:30:13]   [dt] top importances: t2m_max_extreme=0.98, rh2m_mean=0.02, t2m_mean=0.00, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:30:13]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:13]   [xgb] saved → models\xgb_oats.pkl
+[2026-11-15 08:30:13]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:13]   [xgb] n = 22 train / 2 val / 4 test
+[2026-11-15 08:30:13]   [xgb] train  rmse=    212.67  mae=    156.27  r2=  0.768  smape=  12.64
+[2026-11-15 08:30:13]   [xgb] val    rmse=     24.71  mae=     24.18  r2=  0.931  smape=   1.99
+[2026-11-15 08:30:13]   [xgb] test   rmse=    460.17  mae=    438.28  r2=-38.360  smape=  33.02
+[2026-11-15 08:30:13]   [xgb] top importances: t2m_max_extreme=0.23, rh2m_mean=0.15, precip_total=0.14, t2m_min_extreme=0.13, ws2m_mean=0.13
+
+========================================================================
+  Crop: Olives
+========================================================================
+[2026-11-15 08:30:13]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:13]   [dt] saved → models\dt_olives.pkl
+[2026-11-15 08:30:13]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:13]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:13]   [dt] train  rmse=    237.10  mae=    169.67  r2=  0.663  smape=  14.51
+[2026-11-15 08:30:13]   [dt] val    rmse=    107.03  mae=     70.29  r2=  0.323  smape=   6.10
+[2026-11-15 08:30:13]   [dt] test   rmse=    410.76  mae=    353.48  r2= -2.839  smape=  28.86
+[2026-11-15 08:30:13]   [dt] top importances: t2m_mean=0.51, t2m_max_extreme=0.40, ws2m_mean=0.10, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:30:13]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:14]   [xgb] saved → models\xgb_olives.pkl
+[2026-11-15 08:30:14]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:14]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:14]   [xgb] train  rmse=    206.03  mae=    158.80  r2=  0.746  smape=  13.60
+[2026-11-15 08:30:14]   [xgb] val    rmse=    111.32  mae=    100.01  r2=  0.268  smape=   9.18
+[2026-11-15 08:30:14]   [xgb] test   rmse=    291.37  mae=    273.45  r2= -0.932  smape=  23.32
+[2026-11-15 08:30:14]   [xgb] top importances: t2m_max_extreme=0.20, t2m_mean=0.16, ws2m_mean=0.16, t2m_min_extreme=0.14, solar_mean=0.13
+
+========================================================================
+  Crop: Potatoes
+========================================================================
+[2026-11-15 08:30:14]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:14]   [dt] saved → models\dt_potatoes.pkl
+[2026-11-15 08:30:14]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:14]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:14]   [dt] train  rmse=  1,142.09  mae=    868.22  r2=  0.568  smape=   4.48
+[2026-11-15 08:30:14]   [dt] val    rmse=    260.05  mae=    215.05  r2=  0.960  smape=   0.90
+[2026-11-15 08:30:14]   [dt] test   rmse=  3,020.97  mae=  2,537.33  r2=-12.513  smape=  11.44
+[2026-11-15 08:30:14]   [dt] top importances: rh2m_mean=0.48, t2m_mean=0.38, t2m_min_extreme=0.14, t2m_max_extreme=0.00, precip_total=0.00
+[2026-11-15 08:30:14]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:14]   [xgb] saved → models\xgb_potatoes.pkl
+[2026-11-15 08:30:14]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:14]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:14]   [xgb] train  rmse=  1,061.10  mae=    838.95  r2=  0.627  smape=   4.41
+[2026-11-15 08:30:14]   [xgb] val    rmse=  1,976.24  mae=  1,935.66  r2= -1.290  smape=   8.28
+[2026-11-15 08:30:14]   [xgb] test   rmse=  2,603.75  mae=  2,529.56  r2= -9.038  smape=  11.26
+[2026-11-15 08:30:14]   [xgb] top importances: solar_mean=0.17, t2m_mean=0.16, precip_total=0.15, ws2m_mean=0.15, t2m_max_extreme=0.14
+
+========================================================================
+  Crop: Rice
+========================================================================
+[2026-11-15 08:30:14]   [note] no BEST_PARAMS entry for 'Rice' — using default_params
+[2026-11-15 08:30:14]   [dt] SKIPPED: empty val (0) or test (0)
+[2026-11-15 08:30:14]   [xgb] SKIPPED: empty val (0) or test (0)
+
+========================================================================
+  Crop: Sesame seed
+========================================================================
+[2026-11-15 08:30:14]   [note] no BEST_PARAMS entry for 'Sesame seed' — using default_params
+[2026-11-15 08:30:14]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [dt] saved → models\dt_sesame_seed.pkl
+[2026-11-15 08:30:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:15]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:15]   [dt] train  rmse=     75.55  mae=     62.73  r2=  0.886  smape=  10.66
+[2026-11-15 08:30:15]   [dt] val    rmse=     47.57  mae=     40.70  r2=  0.043  smape=   5.41
+[2026-11-15 08:30:15]   [dt] test   rmse=    280.67  mae=    204.83  r2=-12.778  smape=  31.07
+[2026-11-15 08:30:15]   [dt] top importances: t2m_mean=0.38, rh2m_mean=0.32, ws2m_mean=0.28, t2m_min_extreme=0.02, t2m_max_extreme=0.00
+[2026-11-15 08:30:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [xgb] saved → models\xgb_sesame_seed.pkl
+[2026-11-15 08:30:15]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:15]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:15]   [xgb] train  rmse=    133.69  mae=     91.13  r2=  0.642  smape=  14.67
+[2026-11-15 08:30:15]   [xgb] val    rmse=     64.38  mae=     51.84  r2= -0.754  smape=   6.98
+[2026-11-15 08:30:15]   [xgb] test   rmse=    166.92  mae=    136.76  r2= -3.874  smape=  17.97
+[2026-11-15 08:30:15]   [xgb] top importances: rh2m_mean=0.23, solar_mean=0.17, ws2m_mean=0.16, t2m_mean=0.12, precip_total=0.12
+
+========================================================================
+  Crop: Sorghum
+========================================================================
+[2026-11-15 08:30:15]   [note] no BEST_PARAMS entry for 'Sorghum' — using default_params
+[2026-11-15 08:30:15]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [dt] saved → models\dt_sorghum.pkl
+[2026-11-15 08:30:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:15]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:15]   [dt] train  rmse=    178.59  mae=    120.12  r2=  0.886  smape=  11.46
+[2026-11-15 08:30:15]   [dt] val    rmse=    205.35  mae=    184.88  r2= -0.385  smape=  10.61
+[2026-11-15 08:30:15]   [dt] test   rmse=    517.08  mae=    436.45  r2= -1.101  smape=  28.81
+[2026-11-15 08:30:15]   [dt] top importances: solar_mean=0.58, rh2m_mean=0.24, ws2m_mean=0.18, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:30:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [xgb] saved → models\xgb_sorghum.pkl
+[2026-11-15 08:30:15]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:15]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:15]   [xgb] train  rmse=    265.89  mae=    199.92  r2=  0.746  smape=  18.25
+[2026-11-15 08:30:15]   [xgb] val    rmse=    295.08  mae=    262.64  r2= -1.860  smape=  15.14
+[2026-11-15 08:30:15]   [xgb] test   rmse=    384.38  mae=    313.34  r2= -0.161  smape=  19.31
+[2026-11-15 08:30:15]   [xgb] top importances: rh2m_mean=0.21, t2m_mean=0.18, solar_mean=0.16, t2m_min_extreme=0.15, ws2m_mean=0.11
+
+========================================================================
+  Crop: Sugar beet
+========================================================================
+[2026-11-15 08:30:15]   [note] no BEST_PARAMS entry for 'Sugar beet' — using default_params
+[2026-11-15 08:30:15]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [dt] saved → models\dt_sugar_beet.pkl
+[2026-11-15 08:30:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:15]   [dt] n = 25 train / 4 val / 3 test
+[2026-11-15 08:30:15]   [dt] train  rmse=  4,678.44  mae=  3,559.93  r2=  0.533  smape=   7.79
+[2026-11-15 08:30:15]   [dt] val    rmse=  5,062.41  mae=  4,750.65  r2=  0.318  smape=  11.59
+[2026-11-15 08:30:15]   [dt] test   rmse= 18,444.73  mae= 18,330.11  r2= -1.349  smape=  39.94
+[2026-11-15 08:30:15]   [dt] top importances: ws2m_mean=0.36, t2m_mean=0.27, t2m_min_extreme=0.25, precip_total=0.11, t2m_max_extreme=0.00
+[2026-11-15 08:30:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [xgb] saved → models\xgb_sugar_beet.pkl
+[2026-11-15 08:30:15]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:15]   [xgb] n = 25 train / 4 val / 3 test
+[2026-11-15 08:30:15]   [xgb] train  rmse=  4,272.01  mae=  2,793.28  r2=  0.611  smape=   6.07
+[2026-11-15 08:30:15]   [xgb] val    rmse=  4,223.88  mae=  3,351.22  r2=  0.525  smape=   8.60
+[2026-11-15 08:30:15]   [xgb] test   rmse= 11,800.19  mae= 11,779.97  r2=  0.039  smape=  26.79
+[2026-11-15 08:30:15]   [xgb] top importances: t2m_min_extreme=0.20, solar_mean=0.17, t2m_max_extreme=0.15, precip_total=0.14, rh2m_mean=0.12
+
+========================================================================
+  Crop: Sunflower seed
+========================================================================
+[2026-11-15 08:30:15]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:15]   [dt] saved → models\dt_sunflower_seed.pkl
+[2026-11-15 08:30:15]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:15]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:15]   [dt] train  rmse=    101.01  mae=     77.06  r2=  0.885  smape=   4.58
+[2026-11-15 08:30:15]   [dt] val    rmse=     32.82  mae=     25.86  r2=  0.705  smape=   1.58
+[2026-11-15 08:30:15]   [dt] test   rmse=    453.91  mae=    320.18  r2=-58.306  smape=  18.25
+[2026-11-15 08:30:15]   [dt] top importances: rh2m_mean=0.38, t2m_max_extreme=0.34, t2m_min_extreme=0.16, t2m_mean=0.06, solar_mean=0.05
+[2026-11-15 08:30:15]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:16]   [xgb] saved → models\xgb_sunflower_seed.pkl
+[2026-11-15 08:30:16]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:16]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:16]   [xgb] train  rmse=    142.35  mae=     95.89  r2=  0.771  smape=   5.73
+[2026-11-15 08:30:16]   [xgb] val    rmse=     54.61  mae=     39.75  r2=  0.182  smape=   2.36
+[2026-11-15 08:30:16]   [xgb] test   rmse=    284.36  mae=    239.24  r2=-22.276  smape=  14.85
+[2026-11-15 08:30:16]   [xgb] top importances: rh2m_mean=0.23, t2m_min_extreme=0.18, solar_mean=0.14, t2m_max_extreme=0.12, ws2m_mean=0.11
+
+========================================================================
+  Crop: Tomatoes
+========================================================================
+[2026-11-15 08:30:16]   [note] no BEST_PARAMS entry for 'Tomatoes' — using default_params
+[2026-11-15 08:30:16]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:16]   [dt] saved → models\dt_tomatoes.pkl
+[2026-11-15 08:30:16]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:16]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:16]   [dt] train  rmse=  8,155.71  mae=  5,816.14  r2=  0.783  smape=  13.01
+[2026-11-15 08:30:16]   [dt] val    rmse= 15,350.82  mae= 13,229.08  r2= -2.663  smape=  21.34
+[2026-11-15 08:30:16]   [dt] test   rmse= 13,532.34  mae= 12,528.42  r2= -8.482  smape=  24.43
+[2026-11-15 08:30:16]   [dt] top importances: solar_mean=0.62, rh2m_mean=0.19, t2m_max_extreme=0.11, t2m_min_extreme=0.07, t2m_mean=0.00
+[2026-11-15 08:30:16]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:16]   [xgb] saved → models\xgb_tomatoes.pkl
+[2026-11-15 08:30:16]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:16]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:16]   [xgb] train  rmse=  7,739.54  mae=  6,423.99  r2=  0.805  smape=  17.47
+[2026-11-15 08:30:16]   [xgb] val    rmse= 12,837.15  mae= 10,401.64  r2= -1.562  smape=  15.94
+[2026-11-15 08:30:16]   [xgb] test   rmse=  8,518.61  mae=  7,727.26  r2= -2.757  smape=  13.79
+[2026-11-15 08:30:16]   [xgb] top importances: solar_mean=0.29, t2m_mean=0.15, ws2m_mean=0.14, precip_total=0.14, t2m_max_extreme=0.11
+
+========================================================================
+  Crop: Wheat
+========================================================================
+[2026-11-15 08:30:16]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:16]   [dt] saved → models\dt_wheat.pkl
+[2026-11-15 08:30:16]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:30:16]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:16]   [dt] train  rmse=    178.27  mae=    149.56  r2=  0.806  smape=   6.76
+[2026-11-15 08:30:16]   [dt] val    rmse=    157.48  mae=    135.66  r2=  0.867  smape=   8.61
+[2026-11-15 08:30:16]   [dt] test   rmse=    737.99  mae=    710.81  r2= -2.002  smape=  43.07
+[2026-11-15 08:30:16]   [dt] top importances: t2m_mean=0.76, rh2m_mean=0.20, precip_total=0.04, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:30:16]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:30:16]   [xgb] saved → models\xgb_wheat.pkl
+[2026-11-15 08:30:16]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:30:16]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:30:16]   [xgb] train  rmse=    196.53  mae=    152.67  r2=  0.765  smape=   7.15
+[2026-11-15 08:30:16]   [xgb] val    rmse=    286.49  mae=    202.55  r2=  0.559  smape=  13.76
+[2026-11-15 08:30:16]   [xgb] test   rmse=    394.93  mae=    324.25  r2=  0.140  smape=  19.05
+[2026-11-15 08:30:16]   [xgb] top importances: rh2m_mean=0.27, t2m_mean=0.25, ws2m_mean=0.13, t2m_max_extreme=0.12, solar_mean=0.10
+[2026-11-15 08:30:16] 
+[saved] D:\2026\ftl-syria-crop-yield\models\feature_schema.json
+[2026-11-15 08:30:16] [saved] D:\2026\ftl-syria-crop-yield\models\training_summary.json
+
+========================================================================
+  Summary — 30 trained, 2 skipped
+========================================================================
+crop             model  train_rmse  val_rmse  test_rmse  test_r2
+---------------  -----  ----------  --------  ---------  -------
+Apples           dt     836         404       3,834      -15.068
+Apples           xgb    936         757       2,475      -5.696 
+Barley           dt     254         434       607        -0.281 
+Barley           xgb    160         489       435        0.341  
+Chick peas, dry  dt     62          58        216        -0.666 
+Chick peas, dry  xgb    65          28        171        -0.036 
+Grapes           dt     695         947       1,371      -29.830
+Grapes           xgb    634         491       774        -8.828 
+Lentils, dry     dt     147         138       325        -0.759 
+Lentils, dry     xgb    132         130       308        -0.572 
+Maize (corn)     dt     373         119       2,178      -5.448 
+Maize (corn)     xgb    367         215       2,041      -4.658 
+Oats             dt     224         189       700        -90.156
+Oats             xgb    213         25        460        -38.360
+Olives           dt     237         107       411        -2.839 
+Olives           xgb    206         111       291        -0.932 
+Potatoes         dt     1,142       260       3,021      -12.513
+Potatoes         xgb    1,061       1,976     2,604      -9.038 
+Sesame seed      dt     76          48        281        -12.778
+Sesame seed      xgb    134         64        167        -3.874 
+Sorghum          dt     179         205       517        -1.101 
+Sorghum          xgb    266         295       384        -0.161 
+Sugar beet       dt     4,678       5,062     18,445     -1.349 
+Sugar beet       xgb    4,272       4,224     11,800     0.039  
+Sunflower seed   dt     101         33        454        -58.306
+Sunflower seed   xgb    142         55        284        -22.276
+Tomatoes         dt     8,156       15,351    13,532     -8.482 
+Tomatoes         xgb    7,740       12,837    8,519      -2.757 
+Wheat            dt     178         157       738        -2.002 
+Wheat            xgb    197         286       395        0.140  
+[2026-11-15 08:30:16] 
+Skipped:
+[2026-11-15 08:30:16]   Rice             dt    — empty val (0) or test (0)
+[2026-11-15 08:30:16]   Rice             xgb   — empty val (0) or test (0)
+[2026-11-15 08:30:16] 
+Models in: D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:30:16] Full log:  D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:30:16] Session complete.
+
+
+════════════════════════════════════════════════════════════════════════
+  SESSION START  2026-11-15T17:38:37.600068+00:00
+════════════════════════════════════════════════════════════════════════
+
+========================================================================
+  FTL Syria — train.py
+========================================================================
+[2026-11-15 08:38:37] Config file:  D:\2026\ftl-syria-crop-yield\config.yaml
+[2026-11-15 08:38:37] Split dir:    D:\2026\ftl-syria-crop-yield\data\interim
+[2026-11-15 08:38:37] Models dir:   D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:38:37] Log file:     D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:38:37] Crop filter:  all
+[2026-11-15 08:38:37] Model filter: both
+[2026-11-15 08:38:37] MLflow:       disabled
+[2026-11-15 08:38:37] Target:       yield_hg_ha
+[2026-11-15 08:38:37] Features (7 climate + 4 anomaly):
+[2026-11-15 08:38:37]   climate  t2m_mean
+[2026-11-15 08:38:37]   climate  t2m_max_extreme
+[2026-11-15 08:38:37]   climate  t2m_min_extreme
+[2026-11-15 08:38:37]   climate  precip_total
+[2026-11-15 08:38:37]   climate  rh2m_mean
+[2026-11-15 08:38:37]   climate  solar_mean
+[2026-11-15 08:38:37]   climate  ws2m_mean
+[2026-11-15 08:38:37]   anomaly  yield_anomaly
+[2026-11-15 08:38:37]   anomaly  drought_year
+[2026-11-15 08:38:37]   anomaly  conflict_year
+[2026-11-15 08:38:37]   anomaly  climate_anomaly
+
+========================================================================
+  Loading pre-split data
+========================================================================
+[2026-11-15 08:38:37]   train.csv:   378 rows, 16 crops, years 1991–2015
+[2026-11-15 08:38:37]   val.csv:    58 rows, 15 crops, years 2016–2019
+[2026-11-15 08:38:37]   test.csv:    72 rows, 15 crops, years 2020–2024
+[2026-11-15 08:38:37] Crops in train split: ['Apples', 'Barley', 'Chick peas, dry', 'Grapes', 'Lentils, dry', 'Maize (corn)', 'Oats', 'Olives', 'Potatoes', 'Rice', 'Sesame seed', 'Sorghum', 'Sugar beet', 'Sunflower seed', 'Tomatoes', 'Wheat']
+
+========================================================================
+  Crop: Apples
+========================================================================
+[2026-11-15 08:38:37]   [note] no BEST_PARAMS entry for 'Apples' — using default_params
+[2026-11-15 08:38:37]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:37]   [dt] saved → models\dt_apples.pkl
+[2026-11-15 08:38:37]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:37]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:37]   [dt] train  rmse=    835.97  mae=    608.44  r2=  0.723  smape=   9.07
+[2026-11-15 08:38:37]   [dt] val    rmse=    403.94  mae=    335.35  r2=  0.937  smape=   4.52
+[2026-11-15 08:38:37]   [dt] test   rmse=  3,833.98  mae=  3,156.54  r2=-15.068  smape=  46.06
+[2026-11-15 08:38:37]   [dt] top importances: solar_mean=0.41, t2m_min_extreme=0.20, precip_total=0.20, t2m_mean=0.19, t2m_max_extreme=0.00
+[2026-11-15 08:38:37]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:38]   [xgb] saved → models\xgb_apples.pkl
+[2026-11-15 08:38:38]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:38]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:38]   [xgb] train  rmse=    935.82  mae=    693.64  r2=  0.652  smape=  10.31
+[2026-11-15 08:38:38]   [xgb] val    rmse=    757.31  mae=    732.12  r2=  0.779  smape=  10.30
+[2026-11-15 08:38:38]   [xgb] test   rmse=  2,475.00  mae=  2,217.85  r2= -5.696  smape=  36.85
+[2026-11-15 08:38:38]   [xgb] top importances: t2m_max_extreme=0.18, solar_mean=0.16, t2m_min_extreme=0.15, t2m_mean=0.15, precip_total=0.14
+
+========================================================================
+  Crop: Barley
+========================================================================
+[2026-11-15 08:38:38]   [note] no BEST_PARAMS entry for 'Barley' — using default_params
+[2026-11-15 08:38:38]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:38]   [dt] saved → models\dt_barley.pkl
+[2026-11-15 08:38:38]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:38]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:38]   [dt] train  rmse=    254.11  mae=    194.18  r2=  0.210  smape=  34.17
+[2026-11-15 08:38:38]   [dt] val    rmse=    434.05  mae=    385.31  r2=  0.540  smape=  41.31
+[2026-11-15 08:38:38]   [dt] test   rmse=    606.83  mae=    555.47  r2= -0.281  smape=  88.12
+[2026-11-15 08:38:38]   [dt] top importances: precip_total=0.55, t2m_min_extreme=0.28, ws2m_mean=0.17, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:38:38]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:38]   [xgb] saved → models\xgb_barley.pkl
+[2026-11-15 08:38:38]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:38]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:38]   [xgb] train  rmse=    159.51  mae=    133.02  r2=  0.689  smape=  26.01
+[2026-11-15 08:38:38]   [xgb] val    rmse=    488.66  mae=    384.56  r2=  0.417  smape=  40.98
+[2026-11-15 08:38:38]   [xgb] test   rmse=    435.11  mae=    402.07  r2=  0.341  smape=  68.04
+[2026-11-15 08:38:38]   [xgb] top importances: t2m_mean=0.23, solar_mean=0.20, rh2m_mean=0.19, t2m_max_extreme=0.12, t2m_min_extreme=0.10
+
+========================================================================
+  Crop: Chick peas, dry
+========================================================================
+[2026-11-15 08:38:38]   [note] no BEST_PARAMS entry for 'Chick peas, dry' — using default_params
+[2026-11-15 08:38:38]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:38]   [dt] saved → models\dt_chick_peas,_dry.pkl
+[2026-11-15 08:38:38]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:38]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:38]   [dt] train  rmse=     62.23  mae=     46.55  r2=  0.725  smape=   7.09
+[2026-11-15 08:38:38]   [dt] val    rmse=     57.58  mae=     48.46  r2= -0.095  smape=   8.58
+[2026-11-15 08:38:38]   [dt] test   rmse=    216.34  mae=    181.03  r2= -0.666  smape=  28.44
+[2026-11-15 08:38:38]   [dt] top importances: rh2m_mean=0.61, t2m_mean=0.12, ws2m_mean=0.11, t2m_min_extreme=0.10, solar_mean=0.05
+[2026-11-15 08:38:38]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:38]   [xgb] saved → models\xgb_chick_peas,_dry.pkl
+[2026-11-15 08:38:38]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:38]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:38]   [xgb] train  rmse=     65.33  mae=     49.09  r2=  0.696  smape=   7.56
+[2026-11-15 08:38:38]   [xgb] val    rmse=     27.77  mae=     25.66  r2=  0.745  smape=   4.10
+[2026-11-15 08:38:38]   [xgb] test   rmse=    170.60  mae=    134.58  r2= -0.036  smape=  22.27
+[2026-11-15 08:38:38]   [xgb] top importances: rh2m_mean=0.26, t2m_mean=0.16, precip_total=0.15, t2m_max_extreme=0.14, ws2m_mean=0.12
+
+========================================================================
+  Crop: Grapes
+========================================================================
+[2026-11-15 08:38:38]   [note] no BEST_PARAMS entry for 'Grapes' — using default_params
+[2026-11-15 08:38:38]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:38]   [dt] saved → models\dt_grapes.pkl
+[2026-11-15 08:38:38]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:38]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:38]   [dt] train  rmse=    695.13  mae=    533.43  r2=  0.650  smape=   8.96
+[2026-11-15 08:38:38]   [dt] val    rmse=    946.57  mae=    807.76  r2= -5.076  smape=  14.38
+[2026-11-15 08:38:38]   [dt] test   rmse=  1,371.08  mae=  1,302.09  r2=-29.830  smape=  24.09
+[2026-11-15 08:38:38]   [dt] top importances: t2m_min_extreme=0.45, t2m_max_extreme=0.30, rh2m_mean=0.22, solar_mean=0.03, t2m_mean=0.00
+[2026-11-15 08:38:39]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:39]   [xgb] saved → models\xgb_grapes.pkl
+[2026-11-15 08:38:39]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:39]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:39]   [xgb] train  rmse=    634.41  mae=    506.82  r2=  0.709  smape=   8.60
+[2026-11-15 08:38:39]   [xgb] val    rmse=    490.91  mae=    418.85  r2= -0.634  smape=   7.72
+[2026-11-15 08:38:39]   [xgb] test   rmse=    774.13  mae=    710.40  r2= -8.828  smape=  12.66
+[2026-11-15 08:38:39]   [xgb] top importances: t2m_min_extreme=0.18, precip_total=0.17, t2m_max_extreme=0.15, rh2m_mean=0.15, t2m_mean=0.13
+
+========================================================================
+  Crop: Lentils, dry
+========================================================================
+[2026-11-15 08:38:39]   [note] no BEST_PARAMS entry for 'Lentils, dry' — using default_params
+[2026-11-15 08:38:39]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:39]   [dt] saved → models\dt_lentils,_dry.pkl
+[2026-11-15 08:38:39]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:39]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:39]   [dt] train  rmse=    147.26  mae=    108.69  r2=  0.699  smape=  14.15
+[2026-11-15 08:38:39]   [dt] val    rmse=    137.90  mae=    118.28  r2=  0.270  smape=  14.83
+[2026-11-15 08:38:39]   [dt] test   rmse=    325.49  mae=    300.48  r2= -0.759  smape=  45.46
+[2026-11-15 08:38:39]   [dt] top importances: rh2m_mean=0.66, t2m_mean=0.30, ws2m_mean=0.03, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:38:39]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:39]   [xgb] saved → models\xgb_lentils,_dry.pkl
+[2026-11-15 08:38:39]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:39]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:39]   [xgb] train  rmse=    132.38  mae=    110.23  r2=  0.757  smape=  15.25
+[2026-11-15 08:38:39]   [xgb] val    rmse=    130.30  mae=    115.43  r2=  0.348  smape=  14.36
+[2026-11-15 08:38:39]   [xgb] test   rmse=    307.70  mae=    235.80  r2= -0.572  smape=  34.24
+[2026-11-15 08:38:39]   [xgb] top importances: rh2m_mean=0.28, t2m_mean=0.17, t2m_min_extreme=0.14, t2m_max_extreme=0.13, solar_mean=0.11
+
+========================================================================
+  Crop: Maize (corn)
+========================================================================
+[2026-11-15 08:38:39]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:39]   [dt] saved → models\dt_maize_(corn).pkl
+[2026-11-15 08:38:39]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:39]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:39]   [dt] train  rmse=    373.28  mae=    281.71  r2=  0.673  smape=   7.45
+[2026-11-15 08:38:39]   [dt] val    rmse=    118.64  mae=    104.32  r2=  0.915  smape=   2.81
+[2026-11-15 08:38:39]   [dt] test   rmse=  2,178.46  mae=  1,959.92  r2= -5.448  smape=  40.68
+[2026-11-15 08:38:39]   [dt] top importances: precip_total=0.47, t2m_mean=0.40, t2m_max_extreme=0.13, t2m_min_extreme=0.00, rh2m_mean=0.00
+[2026-11-15 08:38:39]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:39]   [xgb] saved → models\xgb_maize_(corn).pkl
+[2026-11-15 08:38:39]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:39]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:39]   [xgb] train  rmse=    367.08  mae=    260.88  r2=  0.684  smape=   6.72
+[2026-11-15 08:38:39]   [xgb] val    rmse=    215.26  mae=    195.50  r2=  0.719  smape=   5.00
+[2026-11-15 08:38:39]   [xgb] test   rmse=  2,040.65  mae=  1,813.84  r2= -4.658  smape=  36.59
+[2026-11-15 08:38:39]   [xgb] top importances: precip_total=0.23, t2m_min_extreme=0.16, rh2m_mean=0.14, solar_mean=0.14, t2m_mean=0.13
+
+========================================================================
+  Crop: Oats
+========================================================================
+[2026-11-15 08:38:39]   [note] no BEST_PARAMS entry for 'Oats' — using default_params
+[2026-11-15 08:38:39]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:39]   [dt] saved → models\dt_oats.pkl
+[2026-11-15 08:38:40]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:40]   [dt] n = 22 train / 2 val / 4 test
+[2026-11-15 08:38:40]   [dt] train  rmse=    224.49  mae=    177.81  r2=  0.741  smape=  14.23
+[2026-11-15 08:38:40]   [dt] val    rmse=    188.89  mae=    187.89  r2= -3.008  smape=  16.75
+[2026-11-15 08:38:40]   [dt] test   rmse=    700.30  mae=    516.70  r2=-90.156  smape=  34.00
+[2026-11-15 08:38:40]   [dt] top importances: t2m_max_extreme=0.98, rh2m_mean=0.02, t2m_mean=0.00, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:38:40]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:40]   [xgb] saved → models\xgb_oats.pkl
+[2026-11-15 08:38:40]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:40]   [xgb] n = 22 train / 2 val / 4 test
+[2026-11-15 08:38:40]   [xgb] train  rmse=    212.67  mae=    156.27  r2=  0.768  smape=  12.64
+[2026-11-15 08:38:40]   [xgb] val    rmse=     24.71  mae=     24.18  r2=  0.931  smape=   1.99
+[2026-11-15 08:38:40]   [xgb] test   rmse=    460.17  mae=    438.28  r2=-38.360  smape=  33.02
+[2026-11-15 08:38:40]   [xgb] top importances: t2m_max_extreme=0.23, rh2m_mean=0.15, precip_total=0.14, t2m_min_extreme=0.13, ws2m_mean=0.13
+
+========================================================================
+  Crop: Olives
+========================================================================
+[2026-11-15 08:38:40]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:40]   [dt] saved → models\dt_olives.pkl
+[2026-11-15 08:38:40]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:40]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:40]   [dt] train  rmse=    237.10  mae=    169.67  r2=  0.663  smape=  14.51
+[2026-11-15 08:38:40]   [dt] val    rmse=    107.03  mae=     70.29  r2=  0.323  smape=   6.10
+[2026-11-15 08:38:40]   [dt] test   rmse=    410.76  mae=    353.48  r2= -2.839  smape=  28.86
+[2026-11-15 08:38:40]   [dt] top importances: t2m_mean=0.51, t2m_max_extreme=0.40, ws2m_mean=0.10, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 08:38:41]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:41]   [xgb] saved → models\xgb_olives.pkl
+[2026-11-15 08:38:41]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:41]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:41]   [xgb] train  rmse=    206.03  mae=    158.80  r2=  0.746  smape=  13.60
+[2026-11-15 08:38:41]   [xgb] val    rmse=    111.32  mae=    100.01  r2=  0.268  smape=   9.18
+[2026-11-15 08:38:41]   [xgb] test   rmse=    291.37  mae=    273.45  r2= -0.932  smape=  23.32
+[2026-11-15 08:38:41]   [xgb] top importances: t2m_max_extreme=0.20, t2m_mean=0.16, ws2m_mean=0.16, t2m_min_extreme=0.14, solar_mean=0.13
+
+========================================================================
+  Crop: Potatoes
+========================================================================
+[2026-11-15 08:38:41]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:42]   [dt] saved → models\dt_potatoes.pkl
+[2026-11-15 08:38:42]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:42]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:42]   [dt] train  rmse=  1,142.09  mae=    868.22  r2=  0.568  smape=   4.48
+[2026-11-15 08:38:42]   [dt] val    rmse=    260.05  mae=    215.05  r2=  0.960  smape=   0.90
+[2026-11-15 08:38:42]   [dt] test   rmse=  3,020.97  mae=  2,537.33  r2=-12.513  smape=  11.44
+[2026-11-15 08:38:42]   [dt] top importances: rh2m_mean=0.48, t2m_mean=0.38, t2m_min_extreme=0.14, t2m_max_extreme=0.00, precip_total=0.00
+[2026-11-15 08:38:42]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:42]   [xgb] saved → models\xgb_potatoes.pkl
+[2026-11-15 08:38:42]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:42]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:42]   [xgb] train  rmse=  1,061.10  mae=    838.95  r2=  0.627  smape=   4.41
+[2026-11-15 08:38:42]   [xgb] val    rmse=  1,976.24  mae=  1,935.66  r2= -1.290  smape=   8.28
+[2026-11-15 08:38:42]   [xgb] test   rmse=  2,603.75  mae=  2,529.56  r2= -9.038  smape=  11.26
+[2026-11-15 08:38:42]   [xgb] top importances: solar_mean=0.17, t2m_mean=0.16, precip_total=0.15, ws2m_mean=0.15, t2m_max_extreme=0.14
+
+========================================================================
+  Crop: Rice
+========================================================================
+[2026-11-15 08:38:42]   [note] no BEST_PARAMS entry for 'Rice' — using default_params
+[2026-11-15 08:38:42]   [dt] SKIPPED: empty val (0) or test (0)
+[2026-11-15 08:38:42]   [xgb] SKIPPED: empty val (0) or test (0)
+
+========================================================================
+  Crop: Sesame seed
+========================================================================
+[2026-11-15 08:38:42]   [note] no BEST_PARAMS entry for 'Sesame seed' — using default_params
+[2026-11-15 08:38:42]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:42]   [dt] saved → models\dt_sesame_seed.pkl
+[2026-11-15 08:38:42]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:42]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:42]   [dt] train  rmse=     75.55  mae=     62.73  r2=  0.886  smape=  10.66
+[2026-11-15 08:38:42]   [dt] val    rmse=     47.57  mae=     40.70  r2=  0.043  smape=   5.41
+[2026-11-15 08:38:42]   [dt] test   rmse=    280.67  mae=    204.83  r2=-12.778  smape=  31.07
+[2026-11-15 08:38:42]   [dt] top importances: t2m_mean=0.38, rh2m_mean=0.32, ws2m_mean=0.28, t2m_min_extreme=0.02, t2m_max_extreme=0.00
+[2026-11-15 08:38:43]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:43]   [xgb] saved → models\xgb_sesame_seed.pkl
+[2026-11-15 08:38:43]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:43]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:43]   [xgb] train  rmse=    133.69  mae=     91.13  r2=  0.642  smape=  14.67
+[2026-11-15 08:38:43]   [xgb] val    rmse=     64.38  mae=     51.84  r2= -0.754  smape=   6.98
+[2026-11-15 08:38:43]   [xgb] test   rmse=    166.92  mae=    136.76  r2= -3.874  smape=  17.97
+[2026-11-15 08:38:43]   [xgb] top importances: rh2m_mean=0.23, solar_mean=0.17, ws2m_mean=0.16, t2m_mean=0.12, precip_total=0.12
+
+========================================================================
+  Crop: Sorghum
+========================================================================
+[2026-11-15 08:38:43]   [note] no BEST_PARAMS entry for 'Sorghum' — using default_params
+[2026-11-15 08:38:43]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:43]   [dt] saved → models\dt_sorghum.pkl
+[2026-11-15 08:38:43]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:43]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:43]   [dt] train  rmse=    178.59  mae=    120.12  r2=  0.886  smape=  11.46
+[2026-11-15 08:38:43]   [dt] val    rmse=    205.35  mae=    184.88  r2= -0.385  smape=  10.61
+[2026-11-15 08:38:43]   [dt] test   rmse=    517.08  mae=    436.45  r2= -1.101  smape=  28.81
+[2026-11-15 08:38:43]   [dt] top importances: solar_mean=0.58, rh2m_mean=0.24, ws2m_mean=0.18, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 08:38:43]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:43]   [xgb] saved → models\xgb_sorghum.pkl
+[2026-11-15 08:38:43]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:43]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:43]   [xgb] train  rmse=    265.89  mae=    199.92  r2=  0.746  smape=  18.25
+[2026-11-15 08:38:43]   [xgb] val    rmse=    295.08  mae=    262.64  r2= -1.860  smape=  15.14
+[2026-11-15 08:38:43]   [xgb] test   rmse=    384.38  mae=    313.34  r2= -0.161  smape=  19.31
+[2026-11-15 08:38:43]   [xgb] top importances: rh2m_mean=0.21, t2m_mean=0.18, solar_mean=0.16, t2m_min_extreme=0.15, ws2m_mean=0.11
+
+========================================================================
+  Crop: Sugar beet
+========================================================================
+[2026-11-15 08:38:43]   [note] no BEST_PARAMS entry for 'Sugar beet' — using default_params
+[2026-11-15 08:38:43]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:44]   [dt] saved → models\dt_sugar_beet.pkl
+[2026-11-15 08:38:44]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:44]   [dt] n = 25 train / 4 val / 3 test
+[2026-11-15 08:38:44]   [dt] train  rmse=  4,678.44  mae=  3,559.93  r2=  0.533  smape=   7.79
+[2026-11-15 08:38:44]   [dt] val    rmse=  5,062.41  mae=  4,750.65  r2=  0.318  smape=  11.59
+[2026-11-15 08:38:44]   [dt] test   rmse= 18,444.73  mae= 18,330.11  r2= -1.349  smape=  39.94
+[2026-11-15 08:38:44]   [dt] top importances: ws2m_mean=0.36, t2m_mean=0.27, t2m_min_extreme=0.25, precip_total=0.11, t2m_max_extreme=0.00
+[2026-11-15 08:38:44]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:44]   [xgb] saved → models\xgb_sugar_beet.pkl
+[2026-11-15 08:38:44]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:44]   [xgb] n = 25 train / 4 val / 3 test
+[2026-11-15 08:38:44]   [xgb] train  rmse=  4,272.01  mae=  2,793.28  r2=  0.611  smape=   6.07
+[2026-11-15 08:38:44]   [xgb] val    rmse=  4,223.88  mae=  3,351.22  r2=  0.525  smape=   8.60
+[2026-11-15 08:38:44]   [xgb] test   rmse= 11,800.19  mae= 11,779.97  r2=  0.039  smape=  26.79
+[2026-11-15 08:38:44]   [xgb] top importances: t2m_min_extreme=0.20, solar_mean=0.17, t2m_max_extreme=0.15, precip_total=0.14, rh2m_mean=0.12
+
+========================================================================
+  Crop: Sunflower seed
+========================================================================
+[2026-11-15 08:38:44]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:44]   [dt] saved → models\dt_sunflower_seed.pkl
+[2026-11-15 08:38:44]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:44]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:44]   [dt] train  rmse=    101.01  mae=     77.06  r2=  0.885  smape=   4.58
+[2026-11-15 08:38:44]   [dt] val    rmse=     32.82  mae=     25.86  r2=  0.705  smape=   1.58
+[2026-11-15 08:38:44]   [dt] test   rmse=    453.91  mae=    320.18  r2=-58.306  smape=  18.25
+[2026-11-15 08:38:44]   [dt] top importances: rh2m_mean=0.38, t2m_max_extreme=0.34, t2m_min_extreme=0.16, t2m_mean=0.06, solar_mean=0.05
+[2026-11-15 08:38:44]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:45]   [xgb] saved → models\xgb_sunflower_seed.pkl
+[2026-11-15 08:38:45]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:45]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:45]   [xgb] train  rmse=    142.35  mae=     95.89  r2=  0.771  smape=   5.73
+[2026-11-15 08:38:45]   [xgb] val    rmse=     54.61  mae=     39.75  r2=  0.182  smape=   2.36
+[2026-11-15 08:38:45]   [xgb] test   rmse=    284.36  mae=    239.24  r2=-22.276  smape=  14.85
+[2026-11-15 08:38:45]   [xgb] top importances: rh2m_mean=0.23, t2m_min_extreme=0.18, solar_mean=0.14, t2m_max_extreme=0.12, ws2m_mean=0.11
+
+========================================================================
+  Crop: Tomatoes
+========================================================================
+[2026-11-15 08:38:45]   [note] no BEST_PARAMS entry for 'Tomatoes' — using default_params
+[2026-11-15 08:38:45]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:45]   [dt] saved → models\dt_tomatoes.pkl
+[2026-11-15 08:38:45]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:45]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:45]   [dt] train  rmse=  8,155.71  mae=  5,816.14  r2=  0.783  smape=  13.01
+[2026-11-15 08:38:45]   [dt] val    rmse= 15,350.82  mae= 13,229.08  r2= -2.663  smape=  21.34
+[2026-11-15 08:38:45]   [dt] test   rmse= 13,532.34  mae= 12,528.42  r2= -8.482  smape=  24.43
+[2026-11-15 08:38:45]   [dt] top importances: solar_mean=0.62, rh2m_mean=0.19, t2m_max_extreme=0.11, t2m_min_extreme=0.07, t2m_mean=0.00
+[2026-11-15 08:38:45]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:46]   [xgb] saved → models\xgb_tomatoes.pkl
+[2026-11-15 08:38:46]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:46]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:46]   [xgb] train  rmse=  7,739.54  mae=  6,423.99  r2=  0.805  smape=  17.47
+[2026-11-15 08:38:46]   [xgb] val    rmse= 12,837.15  mae= 10,401.64  r2= -1.562  smape=  15.94
+[2026-11-15 08:38:46]   [xgb] test   rmse=  8,518.61  mae=  7,727.26  r2= -2.757  smape=  13.79
+[2026-11-15 08:38:46]   [xgb] top importances: solar_mean=0.29, t2m_mean=0.15, ws2m_mean=0.14, precip_total=0.14, t2m_max_extreme=0.11
+
+========================================================================
+  Crop: Wheat
+========================================================================
+[2026-11-15 08:38:46]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:46]   [dt] saved → models\dt_wheat.pkl
+[2026-11-15 08:38:46]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 08:38:46]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:46]   [dt] train  rmse=    178.27  mae=    149.56  r2=  0.806  smape=   6.76
+[2026-11-15 08:38:46]   [dt] val    rmse=    157.48  mae=    135.66  r2=  0.867  smape=   8.61
+[2026-11-15 08:38:46]   [dt] test   rmse=    737.99  mae=    710.81  r2= -2.002  smape=  43.07
+[2026-11-15 08:38:46]   [dt] top importances: t2m_mean=0.76, rh2m_mean=0.20, precip_total=0.04, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 08:38:46]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 08:38:46]   [xgb] saved → models\xgb_wheat.pkl
+[2026-11-15 08:38:46]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 08:38:46]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 08:38:46]   [xgb] train  rmse=    196.53  mae=    152.67  r2=  0.765  smape=   7.15
+[2026-11-15 08:38:46]   [xgb] val    rmse=    286.49  mae=    202.55  r2=  0.559  smape=  13.76
+[2026-11-15 08:38:47]   [xgb] test   rmse=    394.93  mae=    324.25  r2=  0.140  smape=  19.05
+[2026-11-15 08:38:47]   [xgb] top importances: rh2m_mean=0.27, t2m_mean=0.25, ws2m_mean=0.13, t2m_max_extreme=0.12, solar_mean=0.10
+[2026-11-15 08:38:47] 
+[saved] D:\2026\ftl-syria-crop-yield\models\feature_schema.json
+[2026-11-15 08:38:47] [saved] D:\2026\ftl-syria-crop-yield\models\training_summary.json
+
+========================================================================
+  Summary — 30 trained, 2 skipped
+========================================================================
+crop             model  train_rmse  val_rmse  test_rmse  test_r2
+---------------  -----  ----------  --------  ---------  -------
+Apples           dt     836         404       3,834      -15.068
+Apples           xgb    936         757       2,475      -5.696 
+Barley           dt     254         434       607        -0.281 
+Barley           xgb    160         489       435        0.341  
+Chick peas, dry  dt     62          58        216        -0.666 
+Chick peas, dry  xgb    65          28        171        -0.036 
+Grapes           dt     695         947       1,371      -29.830
+Grapes           xgb    634         491       774        -8.828 
+Lentils, dry     dt     147         138       325        -0.759 
+Lentils, dry     xgb    132         130       308        -0.572 
+Maize (corn)     dt     373         119       2,178      -5.448 
+Maize (corn)     xgb    367         215       2,041      -4.658 
+Oats             dt     224         189       700        -90.156
+Oats             xgb    213         25        460        -38.360
+Olives           dt     237         107       411        -2.839 
+Olives           xgb    206         111       291        -0.932 
+Potatoes         dt     1,142       260       3,021      -12.513
+Potatoes         xgb    1,061       1,976     2,604      -9.038 
+Sesame seed      dt     76          48        281        -12.778
+Sesame seed      xgb    134         64        167        -3.874 
+Sorghum          dt     179         205       517        -1.101 
+Sorghum          xgb    266         295       384        -0.161 
+Sugar beet       dt     4,678       5,062     18,445     -1.349 
+Sugar beet       xgb    4,272       4,224     11,800     0.039  
+Sunflower seed   dt     101         33        454        -58.306
+Sunflower seed   xgb    142         55        284        -22.276
+Tomatoes         dt     8,156       15,351    13,532     -8.482 
+Tomatoes         xgb    7,740       12,837    8,519      -2.757 
+Wheat            dt     178         157       738        -2.002 
+Wheat            xgb    197         286       395        0.140  
+[2026-11-15 08:38:47] 
+Skipped:
+[2026-11-15 08:38:47]   Rice             dt    — empty val (0) or test (0)
+[2026-11-15 08:38:47]   Rice             xgb   — empty val (0) or test (0)
+[2026-11-15 08:38:47] 
+Models in: D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 08:38:47] Full log:  D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 08:38:47] Session complete.
+
+
+════════════════════════════════════════════════════════════════════════
+  SESSION START  2026-11-16T07:21:21.839634+00:00
+════════════════════════════════════════════════════════════════════════
+
+========================================================================
+  FTL Syria — train.py
+========================================================================
+[2026-11-15 22:21:21] Config file:  D:\2026\ftl-syria-crop-yield\config.yaml
+[2026-11-15 22:21:21] Split dir:    D:\2026\ftl-syria-crop-yield\data\interim
+[2026-11-15 22:21:21] Models dir:   D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 22:21:21] Log file:     D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 22:21:21] Crop filter:  all
+[2026-11-15 22:21:21] Model filter: both
+[2026-11-15 22:21:21] MLflow:       disabled
+[2026-11-15 22:21:21] Target:       yield_hg_ha
+[2026-11-15 22:21:21] Features (7 climate + 4 anomaly):
+[2026-11-15 22:21:21]   climate  t2m_mean
+[2026-11-15 22:21:21]   climate  t2m_max_extreme
+[2026-11-15 22:21:21]   climate  t2m_min_extreme
+[2026-11-15 22:21:21]   climate  precip_total
+[2026-11-15 22:21:21]   climate  rh2m_mean
+[2026-11-15 22:21:21]   climate  solar_mean
+[2026-11-15 22:21:21]   climate  ws2m_mean
+[2026-11-15 22:21:21]   anomaly  yield_anomaly
+[2026-11-15 22:21:21]   anomaly  drought_year
+[2026-11-15 22:21:21]   anomaly  conflict_year
+[2026-11-15 22:21:21]   anomaly  climate_anomaly
+
+========================================================================
+  Loading pre-split data
+========================================================================
+[2026-11-15 22:21:21]   train.csv:   378 rows, 16 crops, years 1991–2015
+[2026-11-15 22:21:21]   val.csv:    58 rows, 15 crops, years 2016–2019
+[2026-11-15 22:21:22]   test.csv:    72 rows, 15 crops, years 2020–2024
+[2026-11-15 22:21:22] Crops in train split: ['Apples', 'Barley', 'Chick peas, dry', 'Grapes', 'Lentils, dry', 'Maize (corn)', 'Oats', 'Olives', 'Potatoes', 'Rice', 'Sesame seed', 'Sorghum', 'Sugar beet', 'Sunflower seed', 'Tomatoes', 'Wheat']
+
+========================================================================
+  Crop: Apples
+========================================================================
+[2026-11-15 22:21:22]   [note] no BEST_PARAMS entry for 'Apples' — using default_params
+[2026-11-15 22:21:22]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:22]   [dt] saved → models\dt_apples.pkl
+[2026-11-15 22:21:22]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:22]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:22]   [dt] train  rmse=    835.97  mae=    608.44  r2=  0.723  smape=   9.07
+[2026-11-15 22:21:22]   [dt] val    rmse=    403.94  mae=    335.35  r2=  0.937  smape=   4.52
+[2026-11-15 22:21:22]   [dt] test   rmse=  3,833.98  mae=  3,156.54  r2=-15.068  smape=  46.06
+[2026-11-15 22:21:22]   [dt] top importances: solar_mean=0.41, t2m_min_extreme=0.20, precip_total=0.20, t2m_mean=0.19, t2m_max_extreme=0.00
+[2026-11-15 22:21:22]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:22]   [xgb] saved → models\xgb_apples.pkl
+[2026-11-15 22:21:22]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:22]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:22]   [xgb] train  rmse=    935.82  mae=    693.64  r2=  0.652  smape=  10.31
+[2026-11-15 22:21:22]   [xgb] val    rmse=    757.31  mae=    732.12  r2=  0.779  smape=  10.30
+[2026-11-15 22:21:22]   [xgb] test   rmse=  2,475.00  mae=  2,217.85  r2= -5.696  smape=  36.85
+[2026-11-15 22:21:22]   [xgb] top importances: t2m_max_extreme=0.18, solar_mean=0.16, t2m_min_extreme=0.15, t2m_mean=0.15, precip_total=0.14
+
+========================================================================
+  Crop: Barley
+========================================================================
+[2026-11-15 22:21:22]   [note] no BEST_PARAMS entry for 'Barley' — using default_params
+[2026-11-15 22:21:22]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:22]   [dt] saved → models\dt_barley.pkl
+[2026-11-15 22:21:22]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:22]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:22]   [dt] train  rmse=    254.11  mae=    194.18  r2=  0.210  smape=  34.17
+[2026-11-15 22:21:22]   [dt] val    rmse=    434.05  mae=    385.31  r2=  0.540  smape=  41.31
+[2026-11-15 22:21:22]   [dt] test   rmse=    606.83  mae=    555.47  r2= -0.281  smape=  88.12
+[2026-11-15 22:21:22]   [dt] top importances: precip_total=0.55, t2m_min_extreme=0.28, ws2m_mean=0.17, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 22:21:22]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:22]   [xgb] saved → models\xgb_barley.pkl
+[2026-11-15 22:21:22]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:22]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:22]   [xgb] train  rmse=    159.51  mae=    133.02  r2=  0.689  smape=  26.01
+[2026-11-15 22:21:22]   [xgb] val    rmse=    488.66  mae=    384.56  r2=  0.417  smape=  40.98
+[2026-11-15 22:21:22]   [xgb] test   rmse=    435.11  mae=    402.07  r2=  0.341  smape=  68.04
+[2026-11-15 22:21:22]   [xgb] top importances: t2m_mean=0.23, solar_mean=0.20, rh2m_mean=0.19, t2m_max_extreme=0.12, t2m_min_extreme=0.10
+
+========================================================================
+  Crop: Chick peas, dry
+========================================================================
+[2026-11-15 22:21:22]   [note] no BEST_PARAMS entry for 'Chick peas, dry' — using default_params
+[2026-11-15 22:21:22]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:22]   [dt] saved → models\dt_chick_peas,_dry.pkl
+[2026-11-15 22:21:22]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:22]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:22]   [dt] train  rmse=     62.23  mae=     46.55  r2=  0.725  smape=   7.09
+[2026-11-15 22:21:22]   [dt] val    rmse=     57.58  mae=     48.46  r2= -0.095  smape=   8.58
+[2026-11-15 22:21:22]   [dt] test   rmse=    216.34  mae=    181.03  r2= -0.666  smape=  28.44
+[2026-11-15 22:21:22]   [dt] top importances: rh2m_mean=0.61, t2m_mean=0.12, ws2m_mean=0.11, t2m_min_extreme=0.10, solar_mean=0.05
+[2026-11-15 22:21:22]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:23]   [xgb] saved → models\xgb_chick_peas,_dry.pkl
+[2026-11-15 22:21:23]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:23]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:23]   [xgb] train  rmse=     65.33  mae=     49.09  r2=  0.696  smape=   7.56
+[2026-11-15 22:21:23]   [xgb] val    rmse=     27.77  mae=     25.66  r2=  0.745  smape=   4.10
+[2026-11-15 22:21:23]   [xgb] test   rmse=    170.60  mae=    134.58  r2= -0.036  smape=  22.27
+[2026-11-15 22:21:23]   [xgb] top importances: rh2m_mean=0.26, t2m_mean=0.16, precip_total=0.15, t2m_max_extreme=0.14, ws2m_mean=0.12
+
+========================================================================
+  Crop: Grapes
+========================================================================
+[2026-11-15 22:21:23]   [note] no BEST_PARAMS entry for 'Grapes' — using default_params
+[2026-11-15 22:21:23]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:23]   [dt] saved → models\dt_grapes.pkl
+[2026-11-15 22:21:23]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:23]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:23]   [dt] train  rmse=    695.13  mae=    533.43  r2=  0.650  smape=   8.96
+[2026-11-15 22:21:23]   [dt] val    rmse=    946.57  mae=    807.76  r2= -5.076  smape=  14.38
+[2026-11-15 22:21:23]   [dt] test   rmse=  1,371.08  mae=  1,302.09  r2=-29.830  smape=  24.09
+[2026-11-15 22:21:23]   [dt] top importances: t2m_min_extreme=0.45, t2m_max_extreme=0.30, rh2m_mean=0.22, solar_mean=0.03, t2m_mean=0.00
+[2026-11-15 22:21:23]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:23]   [xgb] saved → models\xgb_grapes.pkl
+[2026-11-15 22:21:23]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:23]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:23]   [xgb] train  rmse=    634.41  mae=    506.82  r2=  0.709  smape=   8.60
+[2026-11-15 22:21:23]   [xgb] val    rmse=    490.91  mae=    418.85  r2= -0.634  smape=   7.72
+[2026-11-15 22:21:23]   [xgb] test   rmse=    774.13  mae=    710.40  r2= -8.828  smape=  12.66
+[2026-11-15 22:21:23]   [xgb] top importances: t2m_min_extreme=0.18, precip_total=0.17, t2m_max_extreme=0.15, rh2m_mean=0.15, t2m_mean=0.13
+
+========================================================================
+  Crop: Lentils, dry
+========================================================================
+[2026-11-15 22:21:23]   [note] no BEST_PARAMS entry for 'Lentils, dry' — using default_params
+[2026-11-15 22:21:23]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:23]   [dt] saved → models\dt_lentils,_dry.pkl
+[2026-11-15 22:21:23]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:23]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:23]   [dt] train  rmse=    147.26  mae=    108.69  r2=  0.699  smape=  14.15
+[2026-11-15 22:21:23]   [dt] val    rmse=    137.90  mae=    118.28  r2=  0.270  smape=  14.83
+[2026-11-15 22:21:23]   [dt] test   rmse=    325.49  mae=    300.48  r2= -0.759  smape=  45.46
+[2026-11-15 22:21:23]   [dt] top importances: rh2m_mean=0.66, t2m_mean=0.30, ws2m_mean=0.03, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 22:21:23]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:23]   [xgb] saved → models\xgb_lentils,_dry.pkl
+[2026-11-15 22:21:23]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:23]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:23]   [xgb] train  rmse=    132.38  mae=    110.23  r2=  0.757  smape=  15.25
+[2026-11-15 22:21:23]   [xgb] val    rmse=    130.30  mae=    115.43  r2=  0.348  smape=  14.36
+[2026-11-15 22:21:23]   [xgb] test   rmse=    307.70  mae=    235.80  r2= -0.572  smape=  34.24
+[2026-11-15 22:21:23]   [xgb] top importances: rh2m_mean=0.28, t2m_mean=0.17, t2m_min_extreme=0.14, t2m_max_extreme=0.13, solar_mean=0.11
+
+========================================================================
+  Crop: Maize (corn)
+========================================================================
+[2026-11-15 22:21:23]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:24]   [dt] saved → models\dt_maize_(corn).pkl
+[2026-11-15 22:21:24]   [dt] params: {'max_depth': 5, 'min_samples_leaf': 2, 'min_samples_split': 6, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:24]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:24]   [dt] train  rmse=    292.66  mae=    189.42  r2=  0.799  smape=   4.67
+[2026-11-15 22:21:24]   [dt] val    rmse=    129.85  mae=    104.68  r2=  0.898  smape=   2.80
+[2026-11-15 22:21:24]   [dt] test   rmse=  2,236.17  mae=  1,972.86  r2= -5.794  smape=  41.45
+[2026-11-15 22:21:24]   [dt] top importances: precip_total=0.43, t2m_mean=0.34, t2m_max_extreme=0.11, rh2m_mean=0.10, solar_mean=0.02
+[2026-11-15 22:21:24]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:24]   [xgb] saved → models\xgb_maize_(corn).pkl
+[2026-11-15 22:21:24]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.01, 'subsample': 1.0, 'colsample_bytree': 1.0, 'min_child_weight': 3}
+[2026-11-15 22:21:24]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:24]   [xgb] train  rmse=    556.68  mae=    420.83  r2=  0.273  smape=  10.77
+[2026-11-15 22:21:24]   [xgb] val    rmse=    296.73  mae=    261.30  r2=  0.467  smape=   6.73
+[2026-11-15 22:21:24]   [xgb] test   rmse=  2,022.47  mae=  1,813.60  r2= -4.558  smape=  36.46
+[2026-11-15 22:21:24]   [xgb] top importances: precip_total=0.44, rh2m_mean=0.23, t2m_min_extreme=0.18, t2m_mean=0.16, t2m_max_extreme=0.00
+
+========================================================================
+  Crop: Oats
+========================================================================
+[2026-11-15 22:21:24]   [note] no BEST_PARAMS entry for 'Oats' — using default_params
+[2026-11-15 22:21:24]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:24]   [dt] saved → models\dt_oats.pkl
+[2026-11-15 22:21:24]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:24]   [dt] n = 22 train / 2 val / 4 test
+[2026-11-15 22:21:24]   [dt] train  rmse=    224.49  mae=    177.81  r2=  0.741  smape=  14.23
+[2026-11-15 22:21:24]   [dt] val    rmse=    188.89  mae=    187.89  r2= -3.008  smape=  16.75
+[2026-11-15 22:21:24]   [dt] test   rmse=    700.30  mae=    516.70  r2=-90.156  smape=  34.00
+[2026-11-15 22:21:24]   [dt] top importances: t2m_max_extreme=0.98, rh2m_mean=0.02, t2m_mean=0.00, t2m_min_extreme=0.00, precip_total=0.00
+[2026-11-15 22:21:24]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:24]   [xgb] saved → models\xgb_oats.pkl
+[2026-11-15 22:21:24]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:24]   [xgb] n = 22 train / 2 val / 4 test
+[2026-11-15 22:21:24]   [xgb] train  rmse=    212.67  mae=    156.27  r2=  0.768  smape=  12.64
+[2026-11-15 22:21:24]   [xgb] val    rmse=     24.71  mae=     24.18  r2=  0.931  smape=   1.99
+[2026-11-15 22:21:24]   [xgb] test   rmse=    460.17  mae=    438.28  r2=-38.360  smape=  33.02
+[2026-11-15 22:21:25]   [xgb] top importances: t2m_max_extreme=0.23, rh2m_mean=0.15, precip_total=0.14, t2m_min_extreme=0.13, ws2m_mean=0.13
+
+========================================================================
+  Crop: Olives
+========================================================================
+[2026-11-15 22:21:25]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:25]   [dt] saved → models\dt_olives.pkl
+[2026-11-15 22:21:25]   [dt] params: {'max_depth': 2, 'min_samples_leaf': 5, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:25]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:25]   [dt] train  rmse=    309.91  mae=    233.26  r2=  0.424  smape=  19.27
+[2026-11-15 22:21:25]   [dt] val    rmse=    164.78  mae=    141.93  r2= -0.604  smape=  12.81
+[2026-11-15 22:21:25]   [dt] test   rmse=    501.77  mae=    472.47  r2= -4.729  smape=  36.25
+[2026-11-15 22:21:25]   [dt] top importances: t2m_max_extreme=0.62, precip_total=0.38, t2m_mean=0.00, t2m_min_extreme=0.00, rh2m_mean=0.00
+[2026-11-15 22:21:25]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:25]   [xgb] saved → models\xgb_olives.pkl
+[2026-11-15 22:21:25]   [xgb] params: {'n_estimators': 50, 'max_depth': 3, 'learning_rate': 0.01, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:25]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:25]   [xgb] train  rmse=    334.36  mae=    270.86  r2=  0.330  smape=  22.31
+[2026-11-15 22:21:25]   [xgb] val    rmse=    168.78  mae=    137.03  r2= -0.682  smape=  12.45
+[2026-11-15 22:21:25]   [xgb] test   rmse=    274.03  mae=    250.59  r2= -0.709  smape=  21.64
+[2026-11-15 22:21:25]   [xgb] top importances: t2m_max_extreme=0.24, ws2m_mean=0.17, t2m_mean=0.14, t2m_min_extreme=0.13, solar_mean=0.13
+
+========================================================================
+  Crop: Potatoes
+========================================================================
+[2026-11-15 22:21:25]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:25]   [dt] saved → models\dt_potatoes.pkl
+[2026-11-15 22:21:25]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:25]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:25]   [dt] train  rmse=  1,142.09  mae=    868.22  r2=  0.568  smape=   4.48
+[2026-11-15 22:21:25]   [dt] val    rmse=    260.05  mae=    215.05  r2=  0.960  smape=   0.90
+[2026-11-15 22:21:25]   [dt] test   rmse=  3,020.97  mae=  2,537.33  r2=-12.513  smape=  11.44
+[2026-11-15 22:21:25]   [dt] top importances: rh2m_mean=0.48, t2m_mean=0.38, t2m_min_extreme=0.14, t2m_max_extreme=0.00, precip_total=0.00
+[2026-11-15 22:21:25]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:25]   [xgb] saved → models\xgb_potatoes.pkl
+[2026-11-15 22:21:25]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:25]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:25]   [xgb] train  rmse=  1,061.10  mae=    838.95  r2=  0.627  smape=   4.41
+[2026-11-15 22:21:25]   [xgb] val    rmse=  1,976.24  mae=  1,935.66  r2= -1.290  smape=   8.28
+[2026-11-15 22:21:25]   [xgb] test   rmse=  2,603.75  mae=  2,529.56  r2= -9.038  smape=  11.26
+[2026-11-15 22:21:25]   [xgb] top importances: solar_mean=0.17, t2m_mean=0.16, precip_total=0.15, ws2m_mean=0.15, t2m_max_extreme=0.14
+
+========================================================================
+  Crop: Rice
+========================================================================
+[2026-11-15 22:21:25]   [note] no BEST_PARAMS entry for 'Rice' — using default_params
+[2026-11-15 22:21:25]   [dt] SKIPPED: empty val (0) or test (0)
+[2026-11-15 22:21:25]   [xgb] SKIPPED: empty val (0) or test (0)
+
+========================================================================
+  Crop: Sesame seed
+========================================================================
+[2026-11-15 22:21:25]   [note] no BEST_PARAMS entry for 'Sesame seed' — using default_params
+[2026-11-15 22:21:25]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:25]   [dt] saved → models\dt_sesame_seed.pkl
+[2026-11-15 22:21:25]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:25]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:25]   [dt] train  rmse=     75.55  mae=     62.73  r2=  0.886  smape=  10.66
+[2026-11-15 22:21:25]   [dt] val    rmse=     47.57  mae=     40.70  r2=  0.043  smape=   5.41
+[2026-11-15 22:21:25]   [dt] test   rmse=    280.67  mae=    204.83  r2=-12.778  smape=  31.07
+[2026-11-15 22:21:25]   [dt] top importances: t2m_mean=0.38, rh2m_mean=0.32, ws2m_mean=0.28, t2m_min_extreme=0.02, t2m_max_extreme=0.00
+[2026-11-15 22:21:25]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:26]   [xgb] saved → models\xgb_sesame_seed.pkl
+[2026-11-15 22:21:26]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:26]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:26]   [xgb] train  rmse=    133.69  mae=     91.13  r2=  0.642  smape=  14.67
+[2026-11-15 22:21:26]   [xgb] val    rmse=     64.38  mae=     51.84  r2= -0.754  smape=   6.98
+[2026-11-15 22:21:26]   [xgb] test   rmse=    166.92  mae=    136.76  r2= -3.874  smape=  17.97
+[2026-11-15 22:21:26]   [xgb] top importances: rh2m_mean=0.23, solar_mean=0.17, ws2m_mean=0.16, t2m_mean=0.12, precip_total=0.12
+
+========================================================================
+  Crop: Sorghum
+========================================================================
+[2026-11-15 22:21:26]   [note] no BEST_PARAMS entry for 'Sorghum' — using default_params
+[2026-11-15 22:21:26]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:26]   [dt] saved → models\dt_sorghum.pkl
+[2026-11-15 22:21:26]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:26]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:26]   [dt] train  rmse=    178.59  mae=    120.12  r2=  0.886  smape=  11.46
+[2026-11-15 22:21:26]   [dt] val    rmse=    205.35  mae=    184.88  r2= -0.385  smape=  10.61
+[2026-11-15 22:21:26]   [dt] test   rmse=    517.08  mae=    436.45  r2= -1.101  smape=  28.81
+[2026-11-15 22:21:26]   [dt] top importances: solar_mean=0.58, rh2m_mean=0.24, ws2m_mean=0.18, t2m_mean=0.00, t2m_max_extreme=0.00
+[2026-11-15 22:21:26]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:26]   [xgb] saved → models\xgb_sorghum.pkl
+[2026-11-15 22:21:26]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:26]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:26]   [xgb] train  rmse=    265.89  mae=    199.92  r2=  0.746  smape=  18.25
+[2026-11-15 22:21:26]   [xgb] val    rmse=    295.08  mae=    262.64  r2= -1.860  smape=  15.14
+[2026-11-15 22:21:26]   [xgb] test   rmse=    384.38  mae=    313.34  r2= -0.161  smape=  19.31
+[2026-11-15 22:21:26]   [xgb] top importances: rh2m_mean=0.21, t2m_mean=0.18, solar_mean=0.16, t2m_min_extreme=0.15, ws2m_mean=0.11
+
+========================================================================
+  Crop: Sugar beet
+========================================================================
+[2026-11-15 22:21:26]   [note] no BEST_PARAMS entry for 'Sugar beet' — using default_params
+[2026-11-15 22:21:26]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:26]   [dt] saved → models\dt_sugar_beet.pkl
+[2026-11-15 22:21:26]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:26]   [dt] n = 25 train / 4 val / 3 test
+[2026-11-15 22:21:26]   [dt] train  rmse=  4,678.44  mae=  3,559.93  r2=  0.533  smape=   7.79
+[2026-11-15 22:21:26]   [dt] val    rmse=  5,062.41  mae=  4,750.65  r2=  0.318  smape=  11.59
+[2026-11-15 22:21:26]   [dt] test   rmse= 18,444.73  mae= 18,330.11  r2= -1.349  smape=  39.94
+[2026-11-15 22:21:26]   [dt] top importances: ws2m_mean=0.36, t2m_mean=0.27, t2m_min_extreme=0.25, precip_total=0.11, t2m_max_extreme=0.00
+[2026-11-15 22:21:26]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:26]   [xgb] saved → models\xgb_sugar_beet.pkl
+[2026-11-15 22:21:26]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:26]   [xgb] n = 25 train / 4 val / 3 test
+[2026-11-15 22:21:26]   [xgb] train  rmse=  4,272.01  mae=  2,793.28  r2=  0.611  smape=   6.07
+[2026-11-15 22:21:26]   [xgb] val    rmse=  4,223.88  mae=  3,351.22  r2=  0.525  smape=   8.60
+[2026-11-15 22:21:26]   [xgb] test   rmse= 11,800.19  mae= 11,779.97  r2=  0.039  smape=  26.79
+[2026-11-15 22:21:26]   [xgb] top importances: t2m_min_extreme=0.20, solar_mean=0.17, t2m_max_extreme=0.15, precip_total=0.14, rh2m_mean=0.12
+
+========================================================================
+  Crop: Sunflower seed
+========================================================================
+[2026-11-15 22:21:26]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:26]   [dt] saved → models\dt_sunflower_seed.pkl
+[2026-11-15 22:21:26]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:26]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:26]   [dt] train  rmse=    101.01  mae=     77.06  r2=  0.885  smape=   4.58
+[2026-11-15 22:21:26]   [dt] val    rmse=     32.82  mae=     25.86  r2=  0.705  smape=   1.58
+[2026-11-15 22:21:26]   [dt] test   rmse=    453.91  mae=    320.18  r2=-58.306  smape=  18.25
+[2026-11-15 22:21:27]   [dt] top importances: rh2m_mean=0.38, t2m_max_extreme=0.34, t2m_min_extreme=0.16, t2m_mean=0.06, solar_mean=0.05
+[2026-11-15 22:21:27]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:27]   [xgb] saved → models\xgb_sunflower_seed.pkl
+[2026-11-15 22:21:27]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:27]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:27]   [xgb] train  rmse=    142.35  mae=     95.89  r2=  0.771  smape=   5.73
+[2026-11-15 22:21:27]   [xgb] val    rmse=     54.61  mae=     39.75  r2=  0.182  smape=   2.36
+[2026-11-15 22:21:27]   [xgb] test   rmse=    284.36  mae=    239.24  r2=-22.276  smape=  14.85
+[2026-11-15 22:21:27]   [xgb] top importances: rh2m_mean=0.23, t2m_min_extreme=0.18, solar_mean=0.14, t2m_max_extreme=0.12, ws2m_mean=0.11
+
+========================================================================
+  Crop: Tomatoes
+========================================================================
+[2026-11-15 22:21:27]   [note] no BEST_PARAMS entry for 'Tomatoes' — using default_params
+[2026-11-15 22:21:27]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:27]   [dt] saved → models\dt_tomatoes.pkl
+[2026-11-15 22:21:27]   [dt] params: {'max_depth': 3, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:27]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:27]   [dt] train  rmse=  8,155.71  mae=  5,816.14  r2=  0.783  smape=  13.01
+[2026-11-15 22:21:27]   [dt] val    rmse= 15,350.82  mae= 13,229.08  r2= -2.663  smape=  21.34
+[2026-11-15 22:21:27]   [dt] test   rmse= 13,532.34  mae= 12,528.42  r2= -8.482  smape=  24.43
+[2026-11-15 22:21:27]   [dt] top importances: solar_mean=0.62, rh2m_mean=0.19, t2m_max_extreme=0.11, t2m_min_extreme=0.07, t2m_mean=0.00
+[2026-11-15 22:21:27]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:27]   [xgb] saved → models\xgb_tomatoes.pkl
+[2026-11-15 22:21:27]   [xgb] params: {'n_estimators': 50, 'max_depth': 2, 'learning_rate': 0.05, 'subsample': 0.8, 'colsample_bytree': 0.8, 'min_child_weight': 3}
+[2026-11-15 22:21:27]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:27]   [xgb] train  rmse=  7,739.54  mae=  6,423.99  r2=  0.805  smape=  17.47
+[2026-11-15 22:21:27]   [xgb] val    rmse= 12,837.15  mae= 10,401.64  r2= -1.562  smape=  15.94
+[2026-11-15 22:21:27]   [xgb] test   rmse=  8,518.61  mae=  7,727.26  r2= -2.757  smape=  13.79
+[2026-11-15 22:21:27]   [xgb] top importances: solar_mean=0.29, t2m_mean=0.15, ws2m_mean=0.14, precip_total=0.14, t2m_max_extreme=0.11
+
+========================================================================
+  Crop: Wheat
+========================================================================
+[2026-11-15 22:21:27]   [dt] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:28]   [dt] saved → models\dt_wheat.pkl
+[2026-11-15 22:21:28]   [dt] params: {'max_depth': 2, 'min_samples_leaf': 2, 'min_samples_split': 2, 'ccp_alpha': 0.0}
+[2026-11-15 22:21:28]   [dt] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:28]   [dt] train  rmse=    278.13  mae=    203.95  r2=  0.529  smape=   9.22
+[2026-11-15 22:21:28]   [dt] val    rmse=    139.98  mae=    138.46  r2=  0.895  smape=   9.25
+[2026-11-15 22:21:28]   [dt] test   rmse=    708.60  mae=    665.48  r2= -1.768  smape=  40.54
+[2026-11-15 22:21:28]   [dt] top importances: t2m_mean=0.70, rh2m_mean=0.25, precip_total=0.05, t2m_max_extreme=0.00, t2m_min_extreme=0.00
+[2026-11-15 22:21:28]   [xgb] using 7/11 features (missing: ['yield_anomaly', 'drought_year', 'conflict_year', 'climate_anomaly'])
+[2026-11-15 22:21:28]   [xgb] saved → models\xgb_wheat.pkl
+[2026-11-15 22:21:28]   [xgb] params: {'n_estimators': 100, 'max_depth': 3, 'learning_rate': 0.01, 'subsample': 1.0, 'colsample_bytree': 1.0, 'min_child_weight': 1}
+[2026-11-15 22:21:28]   [xgb] n = 25 train / 4 val / 5 test
+[2026-11-15 22:21:28]   [xgb] train  rmse=    236.72  mae=    191.88  r2=  0.659  smape=   8.80
+[2026-11-15 22:21:28]   [xgb] val    rmse=    384.41  mae=    321.46  r2=  0.206  smape=  20.63
+[2026-11-15 22:21:28]   [xgb] test   rmse=    455.28  mae=    423.07  r2= -0.143  smape=  24.45
+[2026-11-15 22:21:28]   [xgb] top importances: t2m_mean=0.52, rh2m_mean=0.29, t2m_max_extreme=0.19, precip_total=0.00, t2m_min_extreme=0.00
+[2026-11-15 22:21:28] 
+[saved] D:\2026\ftl-syria-crop-yield\models\feature_schema.json
+[2026-11-15 22:21:28] [saved] D:\2026\ftl-syria-crop-yield\models\training_summary.json
+
+========================================================================
+  Summary — 30 trained, 2 skipped
+========================================================================
+crop             model  train_rmse  val_rmse  test_rmse  test_r2
+---------------  -----  ----------  --------  ---------  -------
+Apples           dt     836         404       3,834      -15.068
+Apples           xgb    936         757       2,475      -5.696 
+Barley           dt     254         434       607        -0.281 
+Barley           xgb    160         489       435        0.341  
+Chick peas, dry  dt     62          58        216        -0.666 
+Chick peas, dry  xgb    65          28        171        -0.036 
+Grapes           dt     695         947       1,371      -29.830
+Grapes           xgb    634         491       774        -8.828 
+Lentils, dry     dt     147         138       325        -0.759 
+Lentils, dry     xgb    132         130       308        -0.572 
+Maize (corn)     dt     293         130       2,236      -5.794 
+Maize (corn)     xgb    557         297       2,022      -4.558 
+Oats             dt     224         189       700        -90.156
+Oats             xgb    213         25        460        -38.360
+Olives           dt     310         165       502        -4.729 
+Olives           xgb    334         169       274        -0.709 
+Potatoes         dt     1,142       260       3,021      -12.513
+Potatoes         xgb    1,061       1,976     2,604      -9.038 
+Sesame seed      dt     76          48        281        -12.778
+Sesame seed      xgb    134         64        167        -3.874 
+Sorghum          dt     179         205       517        -1.101 
+Sorghum          xgb    266         295       384        -0.161 
+Sugar beet       dt     4,678       5,062     18,445     -1.349 
+Sugar beet       xgb    4,272       4,224     11,800     0.039  
+Sunflower seed   dt     101         33        454        -58.306
+Sunflower seed   xgb    142         55        284        -22.276
+Tomatoes         dt     8,156       15,351    13,532     -8.482 
+Tomatoes         xgb    7,740       12,837    8,519      -2.757 
+Wheat            dt     278         140       709        -1.768 
+Wheat            xgb    237         384       455        -0.143 
+[2026-11-15 22:21:28] 
+Skipped:
+[2026-11-15 22:21:28]   Rice             dt    — empty val (0) or test (0)
+[2026-11-15 22:21:28]   Rice             xgb   — empty val (0) or test (0)
+[2026-11-15 22:21:28] 
+Models in: D:\2026\ftl-syria-crop-yield\models
+[2026-11-15 22:21:28] Full log:  D:\2026\ftl-syria-crop-yield\models\train.log
+[2026-11-15 22:21:28] Session complete.
+
