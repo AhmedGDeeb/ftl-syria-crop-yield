@@ -1,0 +1,1 @@
+from src.deploy.predict import app

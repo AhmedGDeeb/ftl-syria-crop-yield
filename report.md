@@ -1718,9 +1718,345 @@ Then `curl` the same `/predict` endpoint as above.
 
 ## 15. Deployment
 
-> **TODO:** fill in once deployed to Render.
+This project is deployed on [Render](https://render.com) as a FastAPI web service. The service serves both a JSON API and a minimal HTML UI for crop-yield prediction.
 
-Live service URL: _TBD_
+| Item | Value |
+|---|---|
+| Live service URL | `https://ftl-syria-crop-yield.onrender.com/` |
+| Swagger UI | `https://ftl-syria-crop-yield.onrender.com//docs` |
+| HTML UI | `https://ftl-syria-crop-yield.onrender.com/` |
+| Health check | `https://ftl-syria-crop-yield.onrender.com/health` |
+| Source branch | `deploy` (runtime files only) |
+| Runtime | Python 3.14 (Render default) |
+| Plan | Free (Starter recommended for 30-model preload) |
+
+![alt text](share/deploy-6.JPG)
+
+---
+
+### 15.1 Repository layout for deployment
+
+The production service runs from a dedicated **`deploy` orphan branch** that contains only the files required at runtime — no notebooks, no raw data, no training scripts. This keeps builds fast and the deploy image small.
+
+Runtime files on the `deploy` branch:
+
+```
+deploy/
+├── main.py                      # entry point: `from src.deploy.predict import app`
+├── requirements-serve.txt       # runtime deps only
+├── render.yaml                  # Render IaC config
+├── config.yaml                  # optional; predict.py falls back to defaults
+├── src/
+│   ├── __init__.py
+│   └── deploy/
+│       ├── __init__.py          # ← REQUIRED for package import
+│       └── predict.py           # FastAPI app (routes, model cache, HTML UI)
+├── models/
+│   ├── feature_schema.json      # crop list, feature list, model filenames
+│   ├── training_summary.json    # optional; not read at runtime
+│   ├── dt_*.pkl                 # 15 decision-tree models
+│   └── xgb_*.pkl                # 15 XGBoost models
+└── data/
+    └── interim/
+        └── train.csv            # optional; used only for UI input defaults
+```
+
+> **Note:** `main.py` uses `from src.deploy.predict import app`. The `src/` and `src/deploy/` directories **must** contain `__init__.py`, otherwise Render raises `ModuleNotFoundError: No module named 'src.deploy.predict'`.
+
+---
+
+### 15.2 Prerequisites
+
+- A [Render](https://render.com) account (free tier is sufficient).
+- The repository pushed to GitHub / GitLab / Bitbucket.
+- A `deploy` branch containing the runtime files listed in §15.1.
+- `.pkl` model files **not** excluded by `.gitignore`. Verify:
+
+  ```bash
+  git check-ignore -v models/dt_apples.pkl
+  # (no output = not ignored, good)
+  ```
+
+---
+
+### 15.3 Building the `deploy` branch (one-time setup)
+
+The `deploy` branch is an **orphan branch** — it shares no history with `main`/`master`, so nothing from the full repo leaks in.
+
+```bash
+# 1. Start from a clean working tree
+git switch main
+git status                 # must be clean
+
+# 2. Create the orphan branch
+git switch --orphan deploy
+git rm -rf .
+
+# 3. Copy ONLY the runtime files into the repo root
+#    (adjust source paths to your local layout)
+cp main.py                   .
+cp requirements-serve.txt    .
+cp render.yaml               .
+cp config.yaml               .
+mkdir -p src/deploy
+cp src/deploy/__init__.py    src/deploy/
+cp src/deploy/predict.py     src/deploy/
+cp src/__init__.py           src/
+cp -r models/                models/
+mkdir -p data/interim
+cp data/interim/train.csv    data/interim/   # optional
+
+# 4. Verify the tracked tree
+git add -A
+git ls-files
+
+# 5. Commit and push
+git commit -m "Deploy branch: runtime files for Render"
+git push -u origin deploy
+```
+
+> ⚠️ **Windows case-sensitivity trap.** Windows filesystems are case-insensitive; Render runs Linux. Ensure the filename on disk is exactly `predict.py` (lowercase), not `Predict.py`, and that `src/deploy/__init__.py` exists on the branch — `git ls-files src/deploy` should list **both** files. Missing `__init__.py` is the #1 cause of `ModuleNotFoundError: No module named 'src.deploy.predict'`.
+
+---
+
+### 15.4 `render.yaml`
+
+```yaml
+services:
+  - type: web
+    name: crop-yield-api
+    runtime: python
+    branch: deploy
+    buildCommand: pip install -r requirements-serve.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+```
+
+Key points:
+
+- **`startCommand` must bind `0.0.0.0` and use `$PORT`.** Render injects `$PORT` at runtime; hardcoding a port causes *"No open ports detected"*.
+- **`healthCheckPath`** points at `/health` (defined in `predict.py`), which returns `{"status":"ok","models_loaded":N}`. Render uses this to decide when the service is live.
+- **`autoDeploy: true`** redeploys on every push to `deploy`. Set to `false` if you prefer manual deploys.
+- **`branch: deploy`** — the critical line that makes Render build from the orphan branch, not `main`.
+
+---
+
+### 15.5 Creating the service on Render
+
+1. Log in to Render → **New +** → **Web Service**.
+2. Connect your Git provider and select the repository.
+3. On the configuration form, set:
+
+   | Field | Value |
+   |---|---|
+   | Name | `crop-yield-api` |
+   | Region | Frankfurt (or nearest to your users) |
+   | Branch | **`deploy`** |
+   | Runtime | Python 3 |
+   | Build Command | `pip install -r requirements-serve.txt` |
+   | Start Command | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
+   | Health Check Path | `/health` |
+
+4. If `render.yaml` is present at the repo root of the `deploy` branch, Render offers **"Use existing render.yaml"** — accept it; the fields above are filled automatically.
+
+   ![Render new-web-service form](docs/images/render-new-service.png)
+
+5. Click **Create Web Service**. Render will clone `deploy`, install dependencies, and start uvicorn. First build takes ~2–5 min.
+
+![alt text](share/deploy-1.JPG)
+![alt text](share/deploy-2.JPG)
+![alt text](share/deploy-3.JPG)
+---
+
+### 15.6 Deploying updates
+
+Render pulls from Git on every push to the branch it watches. To ship a change:
+
+```bash
+git switch deploy
+# edit files…
+git add -A
+git commit -m "Update predict.py"
+git push origin deploy
+```
+
+Then watch the deploy in the dashboard:
+
+- **Events** tab → *"Deploy started"* → *"Build successful"* → *"Deploy live"*.
+- **Logs** tab → on success you should see:
+
+  ```
+  [startup] schema: /opt/render/project/src/models/feature_schema.json
+  [startup] crops:  ['Apples', 'Barley', …]
+  [startup] preloaded 30 models
+  INFO:     Uvicorn running on http://0.0.0.0:10000
+  ```
+
+![alt text](share/deploy-4.JPG)
+![alt text](share/deploy-5.JPG)
+If Auto-Deploy is disabled (Settings → *Build & Deploy* → *Auto-Deploy*), trigger a deploy manually with **Manual Deploy → Deploy latest commit**.
+
+---
+
+### 15.7 Verifying the deployment
+
+```bash
+BASE=https://<your-service>.onrender.com
+
+# 1. Liveness
+curl -s $BASE/health
+# → {"status":"ok","models_loaded":30}
+
+# 2. HTML UI is up
+curl -s -o /dev/null -w "%{http_code}\n" $BASE/
+# → 200
+
+# 3. Swagger UI
+curl -s -o /dev/null -w "%{http_code}\n" $BASE/docs
+# → 200
+
+# 4. POST /predict  (shape matches PredictRequest in predict.py:
+#    crop + model + features dict — NOT a list)
+curl -s -X POST $BASE/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+        "crop": "Wheat",
+        "model": "xgb",
+        "features": {
+          "t2m_mean": 15.2,
+          "t2m_max_extreme": 35.0,
+          "t2m_min_extreme": 2.1,
+          "precip_total": 120.5,
+          "rh2m_mean": 55.0,
+          "solar_mean": 18.3,
+          "ws2m_mean": 3.2
+        }
+      }'
+# → {"crop":"Wheat","model":"xgb","predicted_yield_hg_ha":…, "input_features":{…}}
+```
+
+Expected responses:
+
+| Request | Status | Meaning |
+|---|---|---|
+| `GET /` | 200 | HTML UI |
+| `GET /health` | 200 | Service alive |
+| `GET /docs` | 200 | Swagger UI |
+| `GET /predict` | **405** | Correct — `/predict` is POST-only |
+| `POST /predict` with valid body | 200 | Prediction |
+| `POST /predict` with missing feature | 422 | Validation error from `predict.py` |
+| `POST /predict` with unknown crop | 404 | Crop not in `feature_schema.json` |
+
+![Swagger UI with predict.py routes](docs/images/render-swagger.png)
+
+![alt text](share/deploy-1.JPG)
+
+---
+
+### 15.8 Troubleshooting
+
+The following are real failures observed during this deploy, with fixes.
+
+#### `ModuleNotFoundError: No module named 'src.deploy.predict'`
+
+The package import failed. Causes, in order of likelihood:
+
+1. `src/deploy/__init__.py` is missing **on the `deploy` branch** (present locally but never committed).  
+   Fix: `git add -f src/deploy/__init__.py src/deploy/predict.py && git commit && git push`.
+2. `predict.py` was renamed or is `Predict.py` on a case-insensitive filesystem.  
+   Fix: confirm with `git ls-files src/deploy | cat` — must show lowercase `predict.py`.
+3. A `.gitignore` rule excludes `src/deploy/`.  
+   Fix: `git check-ignore -v src/deploy/predict.py` to find the rule; narrow it or use `git add -f`.
+
+#### `ModuleNotFoundError: No module named 'src.deploy'`
+
+`src/` or `src/deploy/` isn't on the branch at all, or `src/__init__.py` is missing. Fix as above for both `__init__.py` files.
+
+#### `RuntimeError: Missing /opt/render/project/src/models/feature_schema.json`
+
+`models/` wasn't committed, or `predict.py`'s `PROJECT_ROOT` walks up the wrong number of levels. From `src/deploy/predict.py` the repo root is `.parent.parent.parent`, so:
+
+```python
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+MODELS_DIR   = PROJECT_ROOT / "models"
+```
+
+Confirm `git ls-files models` lists `feature_schema.json` and the `*.pkl` files.
+
+#### `No open ports detected`
+
+`startCommand` doesn't bind `$PORT` or doesn't use `--host 0.0.0.0`. Use exactly:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+#### `GET /predict` returns `{"detail":"Method Not Allowed"}`
+
+Not a bug — `/predict` only accepts `POST`. Use Swagger (`/docs`) or `curl -X POST` to test it. If you expected an **HTML form** and got 405/404, verify `main.py` is `from src.deploy.predict import app` (so `predict.py`'s `@app.get("/")` HTML route is registered), not a separate minimal app.
+
+#### Service crashes on startup / OOM
+
+`predict.py` calls `CACHE.preload_all()` in the `@app.on_event("startup")` handler, loading all 30 `.pkl` files. On Render's 512 MB free tier this can OOM. Options:
+
+- Upgrade to the Starter plan (1 GB+), **or**
+- Comment out `CACHE.preload_all()` in `predict.py` — models are then loaded lazily on first request per `(crop, model)` pair via `CACHE.get()`.
+
+---
+
+### 15.9 Costs and limits (free tier)
+
+| Resource | Free tier | Notes |
+|---|---|---|
+| Instance hours | 750 / month | Service sleeps after 15 min idle |
+| RAM | 512 MB | Likely too small for 30-model preload — see §15.8 |
+| Bandwidth | 100 GB / month | Plenty for this API |
+| Cold start | ~30–60 s | First request after idle is slow; consider a ping service |
+
+For production, upgrade to **Starter** (1 GB RAM, always-on) to avoid cold starts and OOM.
+
+---
+
+### 15.10 Rollback
+
+If a deploy breaks production:
+
+1. **Render dashboard** → service → **Events** → find a previous *"Deploy live"* → click **Rollback to this deploy**.
+2. Or revert the Git commit on `deploy` and push:
+
+   ```bash
+   git revert HEAD
+   git push origin deploy
+   ```
+
+---
+
+### 15.11 Local smoke test before pushing
+
+Reproduce Render's behavior locally from the `deploy` branch root:
+
+```bash
+pip install -r requirements-serve.txt
+uvicorn main:app --host 0.0.0.0 --port 9696
+```
+
+Then open `http://localhost:9696/` and `http://localhost:9696/docs`. If it starts here, it will start on Render — the only differences are `$PORT` injection and the 512 MB memory limit.
+
+---
+
+### 15.12 Deployment checklist
+
+- [x] `deploy` branch exists and is pushed
+- [x] `git ls-files src/deploy` shows both `__init__.py` and `predict.py` (lowercase)
+- [x] `git ls-files models` shows `feature_schema.json` and all `*.pkl`
+- [x] `git check-ignore -v models/*.pkl src/deploy/*` returns nothing
+- [x] `render.yaml` present with `branch: deploy`, `$PORT`, `healthCheckPath: /health`
+- [x] Render service branch set to `deploy`
+- [x] Build succeeds → Events shows *"Deploy live"*
+- [x] Logs show `[startup] preloaded N models`
+- [x] `GET /health`, `GET /`, `GET /docs` return 200
+- [x] `POST /predict` returns 200 with a numeric prediction
 
 ---
 
