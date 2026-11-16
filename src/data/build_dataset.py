@@ -1,9 +1,13 @@
 #!/usr/bin/env python
+# src/data/build_dataset.py
 """
 Merge raw FAO and NASA CSVs into single tidy datasets, keeping only
 project-relevant columns.
 
 Run AFTER src/data/ingest.py has populated data/raw/.
+
+All constants come from config.yaml (with in-code fallbacks if the file
+is missing or a key is absent). CLI flags override config values.
 
 Outputs (names include data year range + creation timestamp):
     data/processed/fao_syria_yield_<start>_<end>_<YYYYMMDD-HHMMSS>.csv
@@ -13,6 +17,7 @@ Usage:
     python -u src/data/build_dataset.py                    # both
     python -u src/data/build_dataset.py --source fao
     python -u src/data/build_dataset.py --source nasa -f
+    python -u src/data/build_dataset.py --config config.yaml
 """
 import argparse
 import re
@@ -21,30 +26,132 @@ from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = PROJECT_ROOT / "data" / "raw"
-PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+CONFIG_FILE = PROJECT_ROOT / "config.yaml"
 
-# ------------------------------------------------------------------
-# FAO — columns to keep
-# ------------------------------------------------------------------
-FAO_KEEP_COLUMNS = [
+
+# ==================================================================
+# Config loading (same pattern as ingest.py)
+# ==================================================================
+def _load_config() -> dict:
+    if not CONFIG_FILE.is_file():
+        print(f"[config] {CONFIG_FILE} not found — using in-code defaults.",
+              flush=True)
+        return {}
+    try:
+        with CONFIG_FILE.open(encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    except Exception as exc:
+        print(f"[config] failed to parse {CONFIG_FILE}: {exc} — using in-code defaults.",
+              flush=True)
+        return {}
+
+
+CFG = _load_config()
+
+
+def _cfg(*keys, default):
+    """Nested config lookup: _cfg('build_dataset', 'fao', 'keep_columns', default=[...])."""
+    node = CFG
+    for k in keys:
+        if not isinstance(node, dict) or k not in node:
+            return default
+        node = node[k]
+    return node if node is not None else default
+
+
+# ==================================================================
+# Paths
+# ==================================================================
+RAW_DIR       = PROJECT_ROOT / _cfg("build_dataset", "raw_dir",       default="data/raw")
+PROCESSED_DIR = PROJECT_ROOT / _cfg("build_dataset", "processed_dir", default="data/processed")
+
+TIMESTAMP_FORMAT = _cfg("build_dataset", "timestamp_format", default="%Y%m%d-%H%M%S")
+
+
+# ==================================================================
+# FAO constants (from config with in-code fallbacks)
+# ==================================================================
+FAO_KEEP_COLUMNS    = _cfg("build_dataset", "fao", "keep_columns", default=[
     "Area", "Item", "Item Code (CPC)",
     "Element", "Year", "Unit", "Value", "Flag",
-]
-
-YIELD_ELEMENT_CODE = 5412
-PRIMARY_CROP_ITEMS = [
+])
+FAO_YIELD_ELEMENT   = _cfg("build_dataset", "fao", "yield_element_code", default=5412)
+FAO_PRIMARY_CROPS   = _cfg("build_dataset", "fao", "primary_crops", default=[
     "Wheat", "Barley", "Maize", "Olives", "Grapes", "Apples",
     "Potatoes", "Tomatoes", "Rice", "Oats", "Rye", "Sorghum",
     "Chick peas, dry", "Lentils, dry", "Broad beans, dry",
     "Sugar beet", "Cotton seed", "Sunflower seed", "Sesame seed",
-]
+])
+FAO_OUTPUT_PREFIX   = _cfg("build_dataset", "fao", "output_prefix", default="fao_syria_yield")
+FAO_CSV_ENCODING    = _cfg("build_dataset", "fao", "csv_encoding",  default="latin-1")
 
 
+# ==================================================================
+# NASA constants (from config with in-code fallbacks)
+# ==================================================================
+NASA_KEEP_COLUMNS = _cfg("build_dataset", "nasa", "keep_columns", default=[
+    "governorate", "latitude", "longitude", "date",
+    "t2m", "t2m_max", "t2m_min", "prectotcorr",
+    "rh2m", "solar_kwh_m2", "ws2m",
+])
+NASA_OUTPUT_PREFIX = _cfg("build_dataset", "nasa", "output_prefix", default="nasa_syria_climate")
+NASA_FILENAME_RE   = _cfg("build_dataset", "nasa", "filename_regex",
+                          default=r"nasa_daily_(.+)_(\d{4})_(\d{2})$")
+
+
+# ==================================================================
+# Governorates — authoritative source is config.yaml (shared with ingest.py)
+# ==================================================================
+def _load_governorates() -> dict[str, dict]:
+    """Build a filename-key -> metadata dict from config.governorates.list.
+
+    Keys are lowercase, spaces and hyphens replaced by underscores, matching
+    the filename slugs produced by ingest.py's _nasa_file_path().
+    """
+    raw_list = _cfg("governorates", "list", default=[])
+    if not raw_list:
+        print("[config] no governorates.list in config.yaml — using in-code fallback.",
+              flush=True)
+        # Fallback identical shape to config; Arabic characters are correct UTF-8.
+        raw_list = [
+            {"name": "Aleppo",      "lat": 36.17, "lon": 37.61},
+            {"name": "Al-Hasakah",  "lat": 36.42, "lon": 40.91},
+            {"name": "Ar-Raqqah",   "lat": 36.01, "lon": 38.91},
+            {"name": "As-Suwayda",  "lat": 32.77, "lon": 36.92},
+            {"name": "Daraa",       "lat": 32.83, "lon": 36.17},
+            {"name": "Deir ez-Zor", "lat": 35.25, "lon": 40.28},
+            {"name": "Hama",        "lat": 35.30, "lon": 37.25},
+            {"name": "Homs",        "lat": 34.26, "lon": 38.16},
+            {"name": "Idlib",       "lat": 35.83, "lon": 36.68},
+            {"name": "Latakia",     "lat": 35.57, "lon": 36.01},
+            {"name": "Quneitra",    "lat": 33.02, "lon": 35.79},
+            {"name": "Tartus",      "lat": 34.95, "lon": 36.09},
+            {"name": "Damascus",    "lat": 33.46, "lon": 37.05},
+        ]
+
+    out = {}
+    for entry in raw_list:
+        name = entry["name"]
+        slug = name.lower().replace(" ", "_").replace("-", "_")
+        out[slug] = {
+            "name": name,
+            "lat":  entry["lat"],
+            "lon":  entry["lon"],
+        }
+    return out
+
+
+GOVERNORATES = _load_governorates()
+
+
+# ==================================================================
+# Helpers
+# ==================================================================
 def _timestamp() -> str:
-    return datetime.now().strftime("%Y%m%d-%H%M%S")
+    return datetime.now().strftime(TIMESTAMP_FORMAT)
 
 
 def _year_range(df: pd.DataFrame, year_col: str) -> tuple[int, int]:
@@ -54,9 +161,19 @@ def _year_range(df: pd.DataFrame, year_col: str) -> tuple[int, int]:
     return int(years.min()), int(years.max())
 
 
+def _find_existing(out_dir: Path, prefix: str) -> Path | None:
+    if not out_dir.exists():
+        return None
+    matches = sorted(out_dir.glob(f"{prefix}_*.csv"))
+    return matches[-1] if matches else None
+
+
+# ==================================================================
+# FAO builder
+# ==================================================================
 def _read_fao_file(path: Path) -> pd.DataFrame:
     """Read a single per-year FAO CSV; handle latin-1 and mixed types."""
-    df = pd.read_csv(path, encoding="latin-1", low_memory=False)
+    df = pd.read_csv(path, encoding=FAO_CSV_ENCODING, low_memory=False)
 
     if "Item Code (CPC)" in df.columns:
         # Two-step cast: float -> keep only whole numbers -> nullable Int64.
@@ -69,15 +186,8 @@ def _read_fao_file(path: Path) -> pd.DataFrame:
     return df
 
 
-def _find_existing(out_dir: Path, prefix: str) -> Path | None:
-    if not out_dir.exists():
-        return None
-    matches = sorted(out_dir.glob(f"{prefix}_*.csv"))
-    return matches[-1] if matches else None
-
-
 def build_fao_dataset(force: bool = False) -> Path | None:
-    prefix = "fao_syria_yield"
+    prefix = FAO_OUTPUT_PREFIX
     existing = _find_existing(PROCESSED_DIR, prefix)
     if existing and not force:
         print(f"[SKIP] {existing.name} exists. Use -f to rebuild.")
@@ -112,8 +222,8 @@ def build_fao_dataset(force: bool = False) -> Path | None:
         df = df[df["Element"].str.strip().str.lower() == "yield"].copy()
 
     # Keep only target crops
-    if "Item" in df.columns:
-        crop_pattern = "|".join(re.escape(c) for c in PRIMARY_CROP_ITEMS)
+    if "Item" in df.columns and FAO_PRIMARY_CROPS:
+        crop_pattern = "|".join(re.escape(c) for c in FAO_PRIMARY_CROPS)
         df = df[df["Item"].str.contains(crop_pattern, case=False, na=False)].copy()
 
     # Drop rows with no target value
@@ -150,43 +260,15 @@ def build_fao_dataset(force: bool = False) -> Path | None:
     return out_path
 
 
-# ------------------------------------------------------------------
-# NASA
-# ------------------------------------------------------------------
-NASA_KEEP_COLUMNS = [
-    "governorate", "latitude", "longitude", "date",
-    "t2m", "t2m_max", "t2m_min", "prectotcorr",
-    "rh2m", "solar_kwh_m2", "ws2m",
-]
-
-# Canonical governorate metadata (from cities.csv).
-# Add to build_dataset.py near the top, next to NASA_KEEP_COLUMNS.
-GOVERNORATES = {
-    "aleppo":       {"name": "Aleppo",        "name_ar": "حلب",       "lat": 36.17, "lon": 37.61},
-    "al_hasakah":   {"name": "Al-Hasakah",    "name_ar": "الحسكة",    "lat": 36.42, "lon": 40.91},
-    "ar_raqqah":    {"name": "Ar-Raqqah",     "name_ar": "الرقة",     "lat": 36.01, "lon": 38.91},
-    "as_suwayda":   {"name": "As-Suwayda",    "name_ar": "السويداء",  "lat": 32.77, "lon": 36.92},
-    "daraa":        {"name": "Daraa",         "name_ar": "درعا",      "lat": 32.83, "lon": 36.17},
-    "deir_ez_zor":  {"name": "Deir ez-Zor",   "name_ar": "دير الزور", "lat": 35.25, "lon": 40.28},
-    "hama":         {"name": "Hama",          "name_ar": "حماة",      "lat": 35.30, "lon": 37.25},
-    "homs":         {"name": "Homs",          "name_ar": "حمص",       "lat": 34.26, "lon": 38.16},
-    "idlib":        {"name": "Idlib",         "name_ar": "إدلب",      "lat": 35.83, "lon": 36.68},
-    "latakia":      {"name": "Latakia",       "name_ar": "اللاذقية",  "lat": 35.57, "lon": 36.01},
-    "quneitra":     {"name": "Quneitra",      "name_ar": "القنيطرة",  "lat": 33.02, "lon": 35.79},
-    "tartus":       {"name": "Tartus",        "name_ar": "طرطوس",     "lat": 34.95, "lon": 36.09},
-    "damascus":     {"name": "Damascus",      "name_ar": "دمشق",      "lat": 33.46, "lon": 37.05},
-}
-
-
+# ==================================================================
+# NASA builder
+# ==================================================================
 def _gov_key_from_filename(path: Path) -> str | None:
-    """
-    Extract canonical governorate key from a filename of the form
-        nasa_daily_<gov>_<year>_<month>.csv
-    Returns lowercase with '-' and ' ' replaced by '_', e.g. 'deir_ez_zor'.
-    Returns None if the filename doesn't match the expected pattern.
-    """
-    stem = path.stem                       # e.g. "nasa_daily_tartus_2023_10"
-    m = re.match(r"nasa_daily_(.+)_(\d{4})_(\d{2})$", stem)
+    """Extract canonical governorate key from a filename of the form
+    nasa_daily_<gov>_<year>_<month>.csv. Returns lowercase with '-'
+    and ' ' replaced by '_', e.g. 'deir_ez_zor'. None if no match."""
+    stem = path.stem
+    m = re.match(NASA_FILENAME_RE, stem)
     if not m:
         return None
     raw = m.group(1).lower().replace("-", "_").replace(" ", "_")
@@ -194,7 +276,7 @@ def _gov_key_from_filename(path: Path) -> str | None:
 
 
 def build_nasa_dataset(force: bool = False) -> Path | None:
-    prefix = "nasa_syria_climate"
+    prefix = NASA_OUTPUT_PREFIX
     existing = _find_existing(PROCESSED_DIR, prefix)
     if existing and not force:
         print(f"[SKIP] {existing.name} exists. Use -f to rebuild.")
@@ -220,18 +302,19 @@ def build_nasa_dataset(force: bool = False) -> Path | None:
             continue
         if gov_key not in GOVERNORATES:
             unknown_keys.add(gov_key)
-            # Still load it, but flag below — the file may belong to a governorate
-            # we haven't declared in GOVERNORATES.
+            # Still load it, but flag below — the file may belong to a
+            # governorate not declared in config.yaml.
         try:
             d = pd.read_csv(p)
         except Exception as e:
             print(f"  [WARN] {p.name}: {e}", flush=True)
             continue
 
-        # Inject governorate metadata from the filename
-        meta = GOVERNORATES.get(gov_key, {"name": gov_key, "name_ar": "",
-                                          "lat": float("nan"),
-                                          "lon": float("nan")})
+        meta = GOVERNORATES.get(gov_key, {
+            "name": gov_key,
+            "lat": float("nan"),
+            "lon": float("nan"),
+        })
         d["governorate"] = meta["name"]
         d["latitude"]    = meta["lat"]
         d["longitude"]   = meta["lon"]
@@ -262,7 +345,7 @@ def build_nasa_dataset(force: bool = False) -> Path | None:
     n_govs = df["governorate"].nunique()
     print(f"[INFO] Governorates in merged NASA data: {n_govs}", flush=True)
     if n_govs < len(GOVERNORATES):
-        expected = set(GOVERNORATES[g]["name"] for g in GOVERNORATES)
+        expected = set(v["name"] for v in GOVERNORATES.values())
         found = set(df["governorate"].unique())
         missing_govs = sorted(expected - found)
         print(f"[WARN] Missing governorates: {missing_govs}", flush=True)
@@ -289,9 +372,10 @@ def build_nasa_dataset(force: bool = False) -> Path | None:
           f"governorates={n_govs}  years={start_year}-{end_year}", flush=True)
     return out_path
 
-# ------------------------------------------------------------------
+
+# ==================================================================
 # CLI
-# ------------------------------------------------------------------
+# ==================================================================
 SOURCE_REGISTRY = {
     "fao": build_fao_dataset,
     "nasa": build_nasa_dataset,
@@ -301,7 +385,8 @@ ALL_SOURCES = list(SOURCE_REGISTRY.keys())
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
-        description="Merge raw FAO/NASA CSVs into processed, project-ready files."
+        description="Merge raw FAO/NASA CSVs into processed, project-ready files. "
+                    "CLI flags override config.yaml values."
     )
     parser.add_argument(
         "--source", "-s",
@@ -313,7 +398,21 @@ def main(argv=None) -> int:
         "-f", "--force", action="store_true",
         help="Rebuild even if an output already exists.",
     )
+    parser.add_argument(
+        "--config", type=Path, default=None,
+        help="Path to config.yaml (default: project root).",
+    )
     args = parser.parse_args(argv)
+
+    # --config override
+    if args.config is not None:
+        global CFG
+        if not args.config.is_file():
+            print(f"[error] --config path does not exist: {args.config}",
+                  file=sys.stderr)
+            return 2
+        with args.config.open(encoding="utf-8") as f:
+            CFG = yaml.safe_load(f) or {}
 
     sources = ALL_SOURCES if args.source == "all" else [args.source]
 
@@ -322,6 +421,8 @@ def main(argv=None) -> int:
           flush=True)
     print(f" Raw dir : {RAW_DIR}", flush=True)
     print(f" Out dir : {PROCESSED_DIR}", flush=True)
+    print(f" Config  : {CONFIG_FILE if args.config is None else args.config}",
+          flush=True)
     print("============================================================", flush=True)
 
     for src in sources:

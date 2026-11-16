@@ -61,7 +61,6 @@ call :Log ""
 
 call :LogHeader "[DONE] DVC data tracking and Git commit completed."
 endlocal
-exit /b 0
 
 REM ============================================================
 REM Helper Subroutines for Dual Logging with Timestamps

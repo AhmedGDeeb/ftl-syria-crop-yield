@@ -97,7 +97,6 @@ call :Log "   + dev-requirements.txt created successfully."
 
 call :LogHeader "[DONE] Environment check, wheels cache, and dev-requirements.txt are ready."
 endlocal
-exit /b 0
 
 REM ============================================================
 REM Helper Subroutines for Dual Timed Logging (Console + Log File)

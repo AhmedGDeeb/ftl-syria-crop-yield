@@ -1,0 +1,1422 @@
+[
+  {
+    "crop": "Apples",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 835.9728177578095,
+      "train_mae": 608.4413333333334,
+      "train_r2": 0.7226310563396037,
+      "train_smape": 9.066936333597337,
+      "val_rmse": 403.94108310798157,
+      "val_mae": 335.34642857142876,
+      "val_r2": 0.9370571597972402,
+      "val_smape": 4.523311621083903,
+      "test_rmse": 3833.980536465985,
+      "test_mae": 3156.54,
+      "test_r2": -15.067983283131213,
+      "test_smape": 46.05841171820571
+    },
+    "importances": {
+      "solar_mean": 0.4137558136703549,
+      "t2m_min_extreme": 0.19812126494062257,
+      "precip_total": 0.19665826183547278,
+      "t2m_mean": 0.19146465955354972,
+      "t2m_max_extreme": 0.0,
+      "rh2m_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_apples.pkl"
+  },
+  {
+    "crop": "Apples",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 935.8212740838449,
+      "train_mae": 693.6443710937499,
+      "train_r2": 0.6524163434818074,
+      "train_smape": 10.309112688779157,
+      "val_rmse": 757.3060886410495,
+      "val_mae": 732.120654296875,
+      "val_r2": 0.7787653326556235,
+      "val_smape": 10.30155513405129,
+      "test_rmse": 2474.9974507832176,
+      "test_mae": 2217.8544921875,
+      "test_r2": -5.695932631174161,
+      "test_smape": 36.8471416006538
+    },
+    "importances": {
+      "t2m_max_extreme": 0.18380527198314667,
+      "solar_mean": 0.1601853370666504,
+      "t2m_min_extreme": 0.1535254567861557,
+      "t2m_mean": 0.14981748163700104,
+      "precip_total": 0.13716071844100952,
+      "ws2m_mean": 0.11705365031957626,
+      "rh2m_mean": 0.09845206886529922
+    },
+    "path": "models\\xgb_apples.pkl"
+  },
+  {
+    "crop": "Barley",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 254.10596468265277,
+      "train_mae": 194.18257142857138,
+      "train_r2": 0.20999540761210356,
+      "train_smape": 34.17124474922339,
+      "val_rmse": 434.05368947541757,
+      "val_mae": 385.3125,
+      "val_r2": 0.540003704952245,
+      "val_smape": 41.31032758500274,
+      "test_rmse": 606.828206148806,
+      "test_mae": 555.4733333333332,
+      "test_r2": -0.28128735472135014,
+      "test_smape": 88.12325152101603
+    },
+    "importances": {
+      "precip_total": 0.5496331155331509,
+      "t2m_min_extreme": 0.2806543719274531,
+      "ws2m_mean": 0.1697125125393961,
+      "t2m_mean": 0.0,
+      "t2m_max_extreme": 0.0,
+      "rh2m_mean": 0.0,
+      "solar_mean": 0.0
+    },
+    "path": "models\\dt_barley.pkl"
+  },
+  {
+    "crop": "Barley",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 159.50615950346165,
+      "train_mae": 133.02325439453125,
+      "train_r2": 0.6887174224646544,
+      "train_smape": 26.007676833970926,
+      "val_rmse": 488.6619588617148,
+      "val_mae": 384.5597930908203,
+      "val_r2": 0.4169786043676671,
+      "val_smape": 40.97598551644366,
+      "test_rmse": 435.110085093914,
+      "test_mae": 402.0741943359375,
+      "test_r2": 0.3412610837984117,
+      "test_smape": 68.04457864632333
+    },
+    "importances": {
+      "t2m_mean": 0.22508010268211365,
+      "solar_mean": 0.20015563070774078,
+      "rh2m_mean": 0.19167929887771606,
+      "t2m_max_extreme": 0.12340439110994339,
+      "t2m_min_extreme": 0.10383864492177963,
+      "ws2m_mean": 0.08463790267705917,
+      "precip_total": 0.07120396941900253
+    },
+    "path": "models\\xgb_barley.pkl"
+  },
+  {
+    "crop": "Chick peas, dry",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 62.23350678972653,
+      "train_mae": 46.553714285714285,
+      "train_r2": 0.7245300970689991,
+      "train_smape": 7.086643523479013,
+      "val_rmse": 57.578086951016154,
+      "val_mae": 48.45714285714287,
+      "val_r2": -0.0952144673437163,
+      "val_smape": 8.57667264625637,
+      "test_rmse": 216.33854141137218,
+      "test_mae": 181.03000000000003,
+      "test_r2": -0.6660947349708974,
+      "test_smape": 28.441006154643706
+    },
+    "importances": {
+      "rh2m_mean": 0.6087778506130697,
+      "t2m_mean": 0.12281640664707381,
+      "ws2m_mean": 0.1136036724475741,
+      "t2m_min_extreme": 0.10432896164725992,
+      "solar_mean": 0.0504731086450226,
+      "t2m_max_extreme": 0.0,
+      "precip_total": 0.0
+    },
+    "path": "models\\dt_chick_peas,_dry.pkl"
+  },
+  {
+    "crop": "Chick peas, dry",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 65.3257067359591,
+      "train_mae": 49.08619873046876,
+      "train_r2": 0.6964754370677464,
+      "train_smape": 7.561419871081454,
+      "val_rmse": 27.769258576038542,
+      "val_mae": 25.656900024414057,
+      "val_r2": 0.745250536216183,
+      "val_smape": 4.104622705259823,
+      "test_rmse": 170.6043178793865,
+      "test_mae": 134.583154296875,
+      "test_r2": -0.036124480061981545,
+      "test_smape": 22.26933552834282
+    },
+    "importances": {
+      "rh2m_mean": 0.2633987069129944,
+      "t2m_mean": 0.15736505389213562,
+      "precip_total": 0.14641651511192322,
+      "t2m_max_extreme": 0.14284846186637878,
+      "ws2m_mean": 0.11946139484643936,
+      "t2m_min_extreme": 0.1069447472691536,
+      "solar_mean": 0.06356509774923325
+    },
+    "path": "models\\xgb_chick_peas,_dry.pkl"
+  },
+  {
+    "crop": "Grapes",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 695.1278080893744,
+      "train_mae": 533.4295238095237,
+      "train_r2": 0.650172298878379,
+      "train_smape": 8.963201016102778,
+      "val_rmse": 946.5718984524682,
+      "val_mae": 807.7607142857144,
+      "val_r2": -5.07624746775274,
+      "val_smape": 14.382996823671293,
+      "test_rmse": 1371.0817165244953,
+      "test_mae": 1302.0857142857146,
+      "test_r2": -29.82979537222183,
+      "test_smape": 24.09287411772848
+    },
+    "importances": {
+      "t2m_min_extreme": 0.4479834195192069,
+      "t2m_max_extreme": 0.2963532802715379,
+      "rh2m_mean": 0.22073600968150925,
+      "solar_mean": 0.03492729052774596,
+      "t2m_mean": 0.0,
+      "precip_total": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_grapes.pkl"
+  },
+  {
+    "crop": "Grapes",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 634.4127085111492,
+      "train_mae": 506.82391796874987,
+      "train_r2": 0.7086140417829156,
+      "train_smape": 8.601878126834995,
+      "val_rmse": 490.9060970740347,
+      "val_mae": 418.84970703124986,
+      "val_r2": -0.6342748261972764,
+      "val_smape": 7.715935661950904,
+      "test_rmse": 774.1265220054513,
+      "test_mae": 710.4043945312502,
+      "test_r2": -8.828061306028143,
+      "test_smape": 12.658496856923875
+    },
+    "importances": {
+      "t2m_min_extreme": 0.18135957419872284,
+      "precip_total": 0.16614678502082825,
+      "t2m_max_extreme": 0.15462446212768555,
+      "rh2m_mean": 0.1481574922800064,
+      "t2m_mean": 0.129279226064682,
+      "solar_mean": 0.11059994250535965,
+      "ws2m_mean": 0.10983249545097351
+    },
+    "path": "models\\xgb_grapes.pkl"
+  },
+  {
+    "crop": "Lentils, dry",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 147.26397583176197,
+      "train_mae": 108.68533333333333,
+      "train_r2": 0.6988143262269818,
+      "train_smape": 14.145524402389603,
+      "val_rmse": 137.89677500056177,
+      "val_mae": 118.28333333333342,
+      "val_r2": 0.26962867480485464,
+      "val_smape": 14.826542978150147,
+      "test_rmse": 325.4875174257839,
+      "test_mae": 300.4799999999999,
+      "test_r2": -0.7585746340179773,
+      "test_smape": 45.46007112602556
+    },
+    "importances": {
+      "rh2m_mean": 0.6628140991537562,
+      "t2m_mean": 0.3036539738995634,
+      "ws2m_mean": 0.03353192694668043,
+      "t2m_max_extreme": 0.0,
+      "t2m_min_extreme": 0.0,
+      "precip_total": 0.0,
+      "solar_mean": 0.0
+    },
+    "path": "models\\dt_lentils,_dry.pkl"
+  },
+  {
+    "crop": "Lentils, dry",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 132.3762996136245,
+      "train_mae": 110.22785498046875,
+      "train_r2": 0.756632970461095,
+      "train_smape": 15.250754267164526,
+      "val_rmse": 130.30230474726264,
+      "val_mae": 115.42803649902339,
+      "val_r2": 0.34786172517516956,
+      "val_smape": 14.361133324169092,
+      "test_rmse": 307.69766455891886,
+      "test_mae": 235.79747070312501,
+      "test_r2": -0.5715946028552947,
+      "test_smape": 34.2438010651872
+    },
+    "importances": {
+      "rh2m_mean": 0.28231415152549744,
+      "t2m_mean": 0.16513773798942566,
+      "t2m_min_extreme": 0.14494827389717102,
+      "t2m_max_extreme": 0.12781476974487305,
+      "solar_mean": 0.11218942701816559,
+      "ws2m_mean": 0.10012829303741455,
+      "precip_total": 0.06746739149093628
+    },
+    "path": "models\\xgb_lentils,_dry.pkl"
+  },
+  {
+    "crop": "Maize (corn)",
+    "family": "dt",
+    "params": {
+      "max_depth": 5,
+      "min_samples_leaf": 2,
+      "min_samples_split": 6,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 292.65841552150096,
+      "train_mae": 189.41879999999998,
+      "train_r2": 0.7990972001394534,
+      "train_smape": 4.673634489917052,
+      "val_rmse": 129.85413959302358,
+      "val_mae": 104.67916666666656,
+      "val_r2": 0.8978561616380577,
+      "val_smape": 2.8006931893260214,
+      "test_rmse": 2236.170441041758,
+      "test_mae": 1972.8633333333332,
+      "test_r2": -5.794289435139412,
+      "test_smape": 41.45270571263615
+    },
+    "importances": {
+      "precip_total": 0.43067673635090636,
+      "t2m_mean": 0.34424211976989355,
+      "t2m_max_extreme": 0.10686247680957248,
+      "rh2m_mean": 0.1030039075317019,
+      "solar_mean": 0.01521475953792578,
+      "t2m_min_extreme": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_maize_(corn).pkl"
+  },
+  {
+    "crop": "Maize (corn)",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.01,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 556.6751263962402,
+      "train_mae": 420.8278515625001,
+      "train_r2": 0.27311185118475534,
+      "train_smape": 10.76577543299663,
+      "val_rmse": 296.734794460142,
+      "val_mae": 261.2970336914062,
+      "val_r2": 0.46661902217064366,
+      "val_smape": 6.726642569476975,
+      "test_rmse": 2022.4705968588537,
+      "test_mae": 1813.60001953125,
+      "test_r2": -4.557745706379763,
+      "test_smape": 36.456754493638414
+    },
+    "importances": {
+      "precip_total": 0.43800511956214905,
+      "rh2m_mean": 0.2255917340517044,
+      "t2m_min_extreme": 0.17850778996944427,
+      "t2m_mean": 0.15789537131786346,
+      "t2m_max_extreme": 0.0,
+      "solar_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\xgb_maize_(corn).pkl"
+  },
+  {
+    "crop": "Oats",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 22,
+    "n_val": 2,
+    "n_test": 4,
+    "metrics": {
+      "train_rmse": 224.48800608541762,
+      "train_mae": 177.8137373737374,
+      "train_r2": 0.7413748630475058,
+      "train_smape": 14.226746440792205,
+      "val_rmse": 188.89212787419038,
+      "val_mae": 187.88555555555553,
+      "val_r2": -3.0081494725256794,
+      "val_smape": 16.748571234938876,
+      "test_rmse": 700.2955451490146,
+      "test_mae": 516.7,
+      "test_r2": -90.15609213783347,
+      "test_smape": 34.00439643549306
+    },
+    "importances": {
+      "t2m_max_extreme": 0.9769555119822368,
+      "rh2m_mean": 0.02304448801776316,
+      "t2m_mean": 0.0,
+      "t2m_min_extreme": 0.0,
+      "precip_total": 0.0,
+      "solar_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_oats.pkl"
+  },
+  {
+    "crop": "Oats",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 22,
+    "n_val": 2,
+    "n_test": 4,
+    "metrics": {
+      "train_rmse": 212.66723227083992,
+      "train_mae": 156.27397017045453,
+      "train_r2": 0.7678944064753099,
+      "train_smape": 12.64402172597117,
+      "val_rmse": 24.71323232393577,
+      "val_mae": 24.175500488281273,
+      "val_r2": 0.9313919154096406,
+      "val_smape": 1.9915221584231584,
+      "test_rmse": 460.1661351313527,
+      "test_mae": 438.28358764648436,
+      "test_r2": -38.35974540988435,
+      "test_smape": 33.019054333096165
+    },
+    "importances": {
+      "t2m_max_extreme": 0.2337963730096817,
+      "rh2m_mean": 0.15201939642429352,
+      "precip_total": 0.14208285510540009,
+      "t2m_min_extreme": 0.12707921862602234,
+      "ws2m_mean": 0.1258910894393921,
+      "solar_mean": 0.1236240342259407,
+      "t2m_mean": 0.09550704061985016
+    },
+    "path": "models\\xgb_oats.pkl"
+  },
+  {
+    "crop": "Olives",
+    "family": "dt",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 5,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 309.9139097448408,
+      "train_mae": 233.2608,
+      "train_r2": 0.4244032774915866,
+      "train_smape": 19.271311497627615,
+      "val_rmse": 164.78165098092686,
+      "val_mae": 141.925,
+      "val_r2": -0.6037493772497633,
+      "val_smape": 12.809656054716466,
+      "test_rmse": 501.7655981631262,
+      "test_mae": 472.4699999999999,
+      "test_r2": -4.729148321860016,
+      "test_smape": 36.247135123919115
+    },
+    "importances": {
+      "t2m_max_extreme": 0.624996058884872,
+      "precip_total": 0.3750039411151281,
+      "t2m_mean": 0.0,
+      "t2m_min_extreme": 0.0,
+      "rh2m_mean": 0.0,
+      "solar_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_olives.pkl"
+  },
+  {
+    "crop": "Olives",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 3,
+      "learning_rate": 0.01,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 334.36050312704,
+      "train_mae": 270.86336132812494,
+      "train_r2": 0.330013403282311,
+      "train_smape": 22.31288553012962,
+      "val_rmse": 168.77596284613168,
+      "val_mae": 137.03452758789064,
+      "val_r2": -0.6824415668847086,
+      "val_smape": 12.448683854370053,
+      "test_rmse": 274.0343298202365,
+      "test_mae": 250.5944482421875,
+      "test_r2": -0.7088275892256692,
+      "test_smape": 21.64204988130344
+    },
+    "importances": {
+      "t2m_max_extreme": 0.23562577366828918,
+      "ws2m_mean": 0.1664302796125412,
+      "t2m_mean": 0.13989394903182983,
+      "t2m_min_extreme": 0.13464711606502533,
+      "solar_mean": 0.1313350647687912,
+      "precip_total": 0.1123129352927208,
+      "rh2m_mean": 0.07975494116544724
+    },
+    "path": "models\\xgb_olives.pkl"
+  },
+  {
+    "crop": "Potatoes",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 1142.0889393037653,
+      "train_mae": 868.2159999999999,
+      "train_r2": 0.5680822662942311,
+      "train_smape": 4.476101681903589,
+      "val_rmse": 260.04965871925333,
+      "val_mae": 215.05000000000018,
+      "val_r2": 0.9603479660560683,
+      "val_smape": 0.9045824468733563,
+      "test_rmse": 3020.9747225423744,
+      "test_mae": 2537.3279999999977,
+      "test_r2": -12.513071877895953,
+      "test_smape": 11.435770527179223
+    },
+    "importances": {
+      "rh2m_mean": 0.4816906164140257,
+      "t2m_mean": 0.37893133354118586,
+      "t2m_min_extreme": 0.13937805004478845,
+      "t2m_max_extreme": 0.0,
+      "precip_total": 0.0,
+      "solar_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_potatoes.pkl"
+  },
+  {
+    "crop": "Potatoes",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 1061.0993404665255,
+      "train_mae": 838.9457968750003,
+      "train_r2": 0.6271679200228217,
+      "train_smape": 4.413962508203318,
+      "val_rmse": 1976.240388024463,
+      "val_mae": 1935.6554687500002,
+      "val_r2": -1.2899839276855394,
+      "val_smape": 8.283933649125759,
+      "test_rmse": 2603.7463398208833,
+      "test_mae": 2529.556640625001,
+      "test_r2": -9.038232467213746,
+      "test_smape": 11.261504811391701
+    },
+    "importances": {
+      "solar_mean": 0.165544331073761,
+      "t2m_mean": 0.16187874972820282,
+      "precip_total": 0.1545301228761673,
+      "ws2m_mean": 0.1465953141450882,
+      "t2m_max_extreme": 0.14233139157295227,
+      "rh2m_mean": 0.11468774825334549,
+      "t2m_min_extreme": 0.11443234980106354
+    },
+    "path": "models\\xgb_potatoes.pkl"
+  },
+  {
+    "crop": "Rice",
+    "family": "dt",
+    "skipped": "empty val (0) or test (0)"
+  },
+  {
+    "crop": "Rice",
+    "family": "xgb",
+    "skipped": "empty val (0) or test (0)"
+  },
+  {
+    "crop": "Sesame seed",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 75.5501757610385,
+      "train_mae": 62.73184761904763,
+      "train_r2": 0.8858240709071382,
+      "train_smape": 10.660491316321073,
+      "val_rmse": 47.56934884986341,
+      "val_mae": 40.69999999999999,
+      "val_r2": 0.0425780048445612,
+      "val_smape": 5.406796279588028,
+      "test_rmse": 280.6650264719312,
+      "test_mae": 204.8277142857143,
+      "test_r2": -12.778178752886157,
+      "test_smape": 31.07081784510765
+    },
+    "importances": {
+      "t2m_mean": 0.3758917088067119,
+      "rh2m_mean": 0.32345776521079384,
+      "ws2m_mean": 0.2789006994459176,
+      "t2m_min_extreme": 0.02174982653657663,
+      "t2m_max_extreme": 0.0,
+      "precip_total": 0.0,
+      "solar_mean": 0.0
+    },
+    "path": "models\\dt_sesame_seed.pkl"
+  },
+  {
+    "crop": "Sesame seed",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 133.6920698475998,
+      "train_mae": 91.1308469238281,
+      "train_r2": 0.6424680228009207,
+      "train_smape": 14.669328250796413,
+      "val_rmse": 64.38232113845747,
+      "val_mae": 51.83627929687498,
+      "val_r2": -0.7538088091371673,
+      "val_smape": 6.983161832144599,
+      "test_rmse": 166.92359806366272,
+      "test_mae": 136.76064208984377,
+      "test_r2": -3.8736090946812904,
+      "test_smape": 17.967352765788096
+    },
+    "importances": {
+      "rh2m_mean": 0.2332516610622406,
+      "solar_mean": 0.1694701761007309,
+      "ws2m_mean": 0.16165386140346527,
+      "t2m_mean": 0.11828923225402832,
+      "precip_total": 0.1157517060637474,
+      "t2m_max_extreme": 0.11115298420190811,
+      "t2m_min_extreme": 0.0904303714632988
+    },
+    "path": "models\\xgb_sesame_seed.pkl"
+  },
+  {
+    "crop": "Sorghum",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 178.58964092698258,
+      "train_mae": 120.12242857142854,
+      "train_r2": 0.8855852449856615,
+      "train_smape": 11.463673569916223,
+      "val_rmse": 205.3521004427517,
+      "val_mae": 184.88124999999997,
+      "val_r2": -0.385080056416343,
+      "val_smape": 10.607749059798214,
+      "test_rmse": 517.0807458754406,
+      "test_mae": 436.4485714285714,
+      "test_r2": -1.101408017105979,
+      "test_smape": 28.810698604141077
+    },
+    "importances": {
+      "solar_mean": 0.578821060094455,
+      "rh2m_mean": 0.24302435358473334,
+      "ws2m_mean": 0.1781545863208116,
+      "t2m_mean": 0.0,
+      "t2m_max_extreme": 0.0,
+      "t2m_min_extreme": 0.0,
+      "precip_total": 0.0
+    },
+    "path": "models\\dt_sorghum.pkl"
+  },
+  {
+    "crop": "Sorghum",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 265.8862942901767,
+      "train_mae": 199.92151708984377,
+      "train_r2": 0.746392899192772,
+      "train_smape": 18.253869143774963,
+      "val_rmse": 295.0760685644299,
+      "val_mae": 262.6416625976562,
+      "val_r2": -1.859858556438037,
+      "val_smape": 15.141395315318876,
+      "test_rmse": 384.378163832908,
+      "test_mae": 313.3433447265625,
+      "test_r2": -0.16121080236362362,
+      "test_smape": 19.30754891604811
+    },
+    "importances": {
+      "rh2m_mean": 0.21215702593326569,
+      "t2m_mean": 0.1754329800605774,
+      "solar_mean": 0.16314736008644104,
+      "t2m_min_extreme": 0.14739646017551422,
+      "ws2m_mean": 0.10596401989459991,
+      "t2m_max_extreme": 0.100337453186512,
+      "precip_total": 0.09556468576192856
+    },
+    "path": "models\\xgb_sorghum.pkl"
+  },
+  {
+    "crop": "Sugar beet",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 3,
+    "metrics": {
+      "train_rmse": 4678.43761212309,
+      "train_mae": 3559.9264000000003,
+      "train_r2": 0.5334335821096596,
+      "train_smape": 7.78835510804101,
+      "val_rmse": 5062.409040313715,
+      "val_mae": 4750.650000000003,
+      "val_r2": 0.3182259921016275,
+      "val_smape": 11.587727852440723,
+      "test_rmse": 18444.73292308132,
+      "test_mae": 18330.106666666663,
+      "test_r2": -1.3485179297339682,
+      "test_smape": 39.9353675579834
+    },
+    "importances": {
+      "ws2m_mean": 0.36162949182356036,
+      "t2m_mean": 0.2701742105804666,
+      "t2m_min_extreme": 0.25346498543070506,
+      "precip_total": 0.11473131216526791,
+      "t2m_max_extreme": 0.0,
+      "rh2m_mean": 0.0,
+      "solar_mean": 0.0
+    },
+    "path": "models\\dt_sugar_beet.pkl"
+  },
+  {
+    "crop": "Sugar beet",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 3,
+    "metrics": {
+      "train_rmse": 4272.00556649522,
+      "train_mae": 2793.2838437500004,
+      "train_r2": 0.6109768812263335,
+      "train_smape": 6.071156572060479,
+      "val_rmse": 4223.884262026616,
+      "val_mae": 3351.2193359375015,
+      "val_r2": 0.5253756741149964,
+      "val_smape": 8.601562758673783,
+      "test_rmse": 11800.19257859881,
+      "test_mae": 11779.971614583332,
+      "test_r2": 0.03876997488419798,
+      "test_smape": 26.791953955106003
+    },
+    "importances": {
+      "t2m_min_extreme": 0.19830399751663208,
+      "solar_mean": 0.1689707338809967,
+      "t2m_max_extreme": 0.1536150723695755,
+      "precip_total": 0.14080733060836792,
+      "rh2m_mean": 0.12255121767520905,
+      "ws2m_mean": 0.10794200748205185,
+      "t2m_mean": 0.1078096255660057
+    },
+    "path": "models\\xgb_sugar_beet.pkl"
+  },
+  {
+    "crop": "Sunflower seed",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 101.01240375540247,
+      "train_mae": 77.05520000000006,
+      "train_r2": 0.8845396333001685,
+      "train_smape": 4.5780186669905705,
+      "val_rmse": 32.81808199081045,
+      "val_mae": 25.859999999999957,
+      "val_r2": 0.7045344734065471,
+      "val_smape": 1.5801666055694452,
+      "test_rmse": 453.90835295550335,
+      "test_mae": 320.17766666666665,
+      "test_r2": -58.30567245117091,
+      "test_smape": 18.249982976807537
+    },
+    "importances": {
+      "rh2m_mean": 0.3849073893485497,
+      "t2m_max_extreme": 0.33930528189534614,
+      "t2m_min_extreme": 0.16409889088987428,
+      "t2m_mean": 0.06324698574331382,
+      "solar_mean": 0.04844145212291612,
+      "precip_total": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_sunflower_seed.pkl"
+  },
+  {
+    "crop": "Sunflower seed",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 142.35449412019696,
+      "train_mae": 95.89117968749999,
+      "train_r2": 0.7706884735969659,
+      "train_smape": 5.73453905301363,
+      "val_rmse": 54.61393069191965,
+      "val_mae": 39.749719238281216,
+      "val_r2": 0.18174758602874774,
+      "val_smape": 2.3572481661570617,
+      "test_rmse": 284.36200892385784,
+      "test_mae": 239.24164062500003,
+      "test_r2": -22.27571508356053,
+      "test_smape": 14.852380909536263
+    },
+    "importances": {
+      "rh2m_mean": 0.2339218705892563,
+      "t2m_min_extreme": 0.17888547480106354,
+      "solar_mean": 0.13538968563079834,
+      "t2m_max_extreme": 0.11768493801355362,
+      "ws2m_mean": 0.11343593895435333,
+      "t2m_mean": 0.11072762310504913,
+      "precip_total": 0.10995444655418396
+    },
+    "path": "models\\xgb_sunflower_seed.pkl"
+  },
+  {
+    "crop": "Tomatoes",
+    "family": "dt",
+    "params": {
+      "max_depth": 3,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 8155.711592986777,
+      "train_mae": 5816.140476190477,
+      "train_r2": 0.7834348835050027,
+      "train_smape": 13.00657819958189,
+      "val_rmse": 15350.81729696612,
+      "val_mae": 13229.080357142857,
+      "val_r2": -2.6632825822304405,
+      "val_smape": 21.340251041588417,
+      "test_rmse": 13532.344803199952,
+      "test_mae": 12528.422380952383,
+      "test_r2": -8.481725125143683,
+      "test_smape": 24.432749733965714
+    },
+    "importances": {
+      "solar_mean": 0.6236355213378104,
+      "rh2m_mean": 0.1936316278063428,
+      "t2m_max_extreme": 0.10737482112382224,
+      "t2m_min_extreme": 0.0744482249343571,
+      "t2m_mean": 0.0009098047976674136,
+      "precip_total": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_tomatoes.pkl"
+  },
+  {
+    "crop": "Tomatoes",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 50,
+      "max_depth": 2,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 7739.542507628021,
+      "train_mae": 6423.994875,
+      "train_r2": 0.8049727199708658,
+      "train_smape": 17.47067710616586,
+      "val_rmse": 12837.154500631352,
+      "val_mae": 10401.6396484375,
+      "val_r2": -1.5617984096360842,
+      "val_smape": 15.938220026462846,
+      "test_rmse": 8518.606804866917,
+      "test_mae": 7727.260781250001,
+      "test_r2": -2.757321837761071,
+      "test_smape": 13.791062966344475
+    },
+    "importances": {
+      "solar_mean": 0.29253122210502625,
+      "t2m_mean": 0.14737996459007263,
+      "ws2m_mean": 0.14224107563495636,
+      "precip_total": 0.13505427539348602,
+      "t2m_max_extreme": 0.10709886997938156,
+      "t2m_min_extreme": 0.10494038462638855,
+      "rh2m_mean": 0.07075423002243042
+    },
+    "path": "models\\xgb_tomatoes.pkl"
+  },
+  {
+    "crop": "Wheat",
+    "family": "dt",
+    "params": {
+      "max_depth": 2,
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "ccp_alpha": 0.0
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 278.13467305556424,
+      "train_mae": 203.95119047619045,
+      "train_r2": 0.5289043289053695,
+      "train_smape": 9.220558447473064,
+      "val_rmse": 139.97614170619562,
+      "val_mae": 138.45565476190478,
+      "val_r2": 0.8946913943399184,
+      "val_smape": 9.25032646242018,
+      "test_rmse": 708.5997669700434,
+      "test_mae": 665.4799999999999,
+      "test_r2": -1.7675840847159665,
+      "test_smape": 40.53742798251191
+    },
+    "importances": {
+      "t2m_mean": 0.6969881722807555,
+      "rh2m_mean": 0.25038768441271897,
+      "precip_total": 0.0526241433065256,
+      "t2m_max_extreme": 0.0,
+      "t2m_min_extreme": 0.0,
+      "solar_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\dt_wheat.pkl"
+  },
+  {
+    "crop": "Wheat",
+    "family": "xgb",
+    "params": {
+      "n_estimators": 100,
+      "max_depth": 3,
+      "learning_rate": 0.01,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "min_child_weight": 1
+    },
+    "features": [
+      "t2m_mean",
+      "t2m_max_extreme",
+      "t2m_min_extreme",
+      "precip_total",
+      "rh2m_mean",
+      "solar_mean",
+      "ws2m_mean"
+    ],
+    "n_train": 25,
+    "n_val": 4,
+    "n_test": 5,
+    "metrics": {
+      "train_rmse": 236.7183347310099,
+      "train_mae": 191.8822666015625,
+      "train_r2": 0.6587578714682569,
+      "train_smape": 8.80423152373824,
+      "val_rmse": 384.4083015359775,
+      "val_mae": 321.46136474609375,
+      "val_r2": 0.20577904494232813,
+      "val_smape": 20.631111336227512,
+      "test_rmse": 455.2837006414241,
+      "test_mae": 423.0652783203124,
+      "test_r2": -0.14251791705335903,
+      "test_smape": 24.454048738750448
+    },
+    "importances": {
+      "t2m_mean": 0.5168749690055847,
+      "rh2m_mean": 0.28784602880477905,
+      "t2m_max_extreme": 0.19049139320850372,
+      "precip_total": 0.004787611309438944,
+      "t2m_min_extreme": 0.0,
+      "solar_mean": 0.0,
+      "ws2m_mean": 0.0
+    },
+    "path": "models\\xgb_wheat.pkl"
+  }
+]

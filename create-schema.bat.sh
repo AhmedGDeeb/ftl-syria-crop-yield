@@ -162,6 +162,7 @@ Log "[4/5] Checking requirements.txt ..."
 if [ ! -e "requirements.txt" ]; then
     cat > "requirements.txt" <<'EOF'
 # ---- Core data & ML ----
+pyyaml>=6.0
 pandas>=2.0
 numpy>=1.24
 scikit-learn>=1.3

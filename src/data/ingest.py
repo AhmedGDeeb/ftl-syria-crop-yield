@@ -1,4 +1,20 @@
 #!/usr/bin/env python
+# src/data/ingest.py
+#
+# Config-aware FAO + NASA POWER ingestor for Syria.
+#
+# Behavior:
+#   - All defaults come from config.yaml at the project root.
+#   - CLI flags override config values.
+#   - If config.yaml is missing, in-code fallbacks are used (so the script
+#     still runs standalone, e.g. in a fresh clone before config is added).
+#   - The 13 governorates ARE defined in config.yaml (single source of truth).
+#     syria_governorates_reference.csv is regenerated from config every run.
+#
+#   - This version uses "760" (Syria). Verify by inspecting the
+#    "Area" column of any downloaded QCL_Syria_AllCrops_*.csv. If your
+#    historical data really is Syrian despite "210", revert the config value.
+
 import argparse
 import json
 import sys
@@ -9,36 +25,75 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+import yaml
 from requests.exceptions import ConnectionError, Timeout
 
 # ------------------------------------------------------------------
 # Paths (anchored to project root, not CWD)
 # ------------------------------------------------------------------
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
-TOKEN_FILE = PROJECT_ROOT / ".faostat_token"
+CONFIG_FILE = PROJECT_ROOT / "config.yaml"
+
+
+# ==================================================================
+# Config loading
+# ==================================================================
+def _load_config() -> dict:
+    """Load config.yaml from the project root; return {} if missing/invalid."""
+    if not CONFIG_FILE.is_file():
+        print(f"[config] {CONFIG_FILE} not found — using in-code defaults.",
+              flush=True)
+        return {}
+    try:
+        with CONFIG_FILE.open(encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    except Exception as exc:
+        print(f"[config] failed to parse {CONFIG_FILE}: {exc} — using in-code defaults.",
+              flush=True)
+        return {}
+
+
+CFG = _load_config()
+
+
+def _cfg(*keys, default):
+    """Nested config lookup: _cfg('fao', 'base_url', default='https://...')."""
+    node = CFG
+    for k in keys:
+        if not isinstance(node, dict) or k not in node:
+            return default
+        node = node[k]
+    return node if node is not None else default
+
 
 # ------------------------------------------------------------------
-# FAOSTAT constants
+# FAOSTAT constants (from config with in-code fallbacks)
 # ------------------------------------------------------------------
-FAO_BASE_URL = "https://faostatservices.fao.org/api/v1/en"
-FAO_DATA_ENDPOINT = f"{FAO_BASE_URL}/data/QCL"
+FAO_BASE_URL      = _cfg("fao", "base_url",      default="https://faostatservices.fao.org/api/v1/en")
+FAO_DATA_ENDPOINT = _cfg("fao", "data_endpoint", default=f"{FAO_BASE_URL}/data/QCL")
+FAO_COUNTRY_CODE  = str(_cfg("fao", "country_code", default="760"))   # ⚠️ was "210" in old code
+FAO_OUTPUT_TYPE   = _cfg("fao", "output_type",   default="table")
+TOKEN_FILE        = PROJECT_ROOT / _cfg("fao", "token_file", default=".faostat_token")
 
-DEFAULT_START_YEAR = 1991
+DEFAULT_START_YEAR   = _cfg("defaults", "start_year", default=1991)
 DEFAULT_CURRENT_YEAR = date.today().year
-MAX_RETRIES = 3
-MAX_DEBUG_BYTES = 2000
+
+MAX_RETRIES          = _cfg("http", "max_retries",             default=3)
+MAX_DEBUG_BYTES      = _cfg("http", "max_debug_bytes",         default=2000)
+RETRY_DELAY          = _cfg("http", "retry_delay_seconds",     default=2)
+FAO_TIMEOUT          = _cfg("http", "faostat_timeout_seconds", default=25)
+NASA_TIMEOUT         = _cfg("http", "nasa_timeout_seconds",    default=120)
 
 # ------------------------------------------------------------------
-# NASA POWER constants
+# NASA POWER constants (from config with in-code fallbacks)
 # ------------------------------------------------------------------
-NASA_URL = "https://power.larc.nasa.gov/api/temporal/daily/point"
-NASA_PARAMETERS = [
+NASA_URL         = _cfg("nasa", "base_url", default="https://power.larc.nasa.gov/api/temporal/daily/point")
+NASA_PARAMETERS  = _cfg("nasa", "parameters", default=[
     "T2M", "T2M_MAX", "T2M_MIN",
     "PRECTOTCORR", "RH2M",
     "ALLSKY_SFC_SW_DWN", "WS2M",
-]
-NASA_COLUMN_MAPPING = {
+])
+NASA_COLUMN_MAPPING = _cfg("nasa", "column_mapping", default={
     "T2M": "t2m",
     "T2M_MAX": "t2m_max",
     "T2M_MIN": "t2m_min",
@@ -46,23 +101,39 @@ NASA_COLUMN_MAPPING = {
     "RH2M": "rh2m",
     "ALLSKY_SFC_SW_DWN": "solar_kwh_m2",
     "WS2M": "ws2m",
-}
+})
+NASA_FILL_VALUE  = _cfg("nasa", "fill_value", default=-999.0)
+NASA_COMMUNITY   = _cfg("nasa", "community",  default="AG")
+NASA_FORMAT      = _cfg("nasa", "format",     default="JSON")
 
-GOVERNORATES = [
-    {"name": "Aleppo",     "name_ar": "حلب",       "lat": 36.17, "lon": 37.61},
-    {"name": "Al-Hasakah", "name_ar": "الحسكة",    "lat": 36.42, "lon": 40.91},
-    {"name": "Ar-Raqqah",  "name_ar": "الرقة",      "lat": 36.01, "lon": 38.91},
-    {"name": "As-Suwayda", "name_ar": "السويداء",  "lat": 32.77, "lon": 36.92},
-    {"name": "Daraa",      "name_ar": "درعا",       "lat": 32.83, "lon": 36.17},
-    {"name": "Deir ez-Zor","name_ar": "دير الزور", "lat": 35.25, "lon": 40.28},
-    {"name": "Hama",       "name_ar": "حماة",       "lat": 35.30, "lon": 37.25},
-    {"name": "Homs",       "name_ar": "حمص",        "lat": 34.26, "lon": 38.16},
-    {"name": "Idlib",      "name_ar": "إدلب",       "lat": 35.83, "lon": 36.68},
-    {"name": "Latakia",    "name_ar": "اللاذقية",   "lat": 35.57, "lon": 36.01},
-    {"name": "Quneitra",   "name_ar": "القنيطرة",   "lat": 33.02, "lon": 35.79},
-    {"name": "Tartus",     "name_ar": "طرطوس",      "lat": 34.95, "lon": 36.09},
-    {"name": "Damascus",   "name_ar": "دمشق",       "lat": 33.46, "lon": 37.05},
-]
+# ------------------------------------------------------------------
+# Governorates — authoritative source is config.yaml
+# ------------------------------------------------------------------
+GOVERNORATES = _cfg("governorates", "list", default=[])
+
+# In-code fallback used ONLY if config.yaml is missing governorates.list.
+# Mirrors the config list so the script still works without config.
+if not GOVERNORATES:
+    print("[config] no governorates.list in config.yaml — using in-code fallback.",
+          flush=True)
+    GOVERNORATES = [
+        {"name": "Aleppo",      "lat": 36.17, "lon": 37.61},
+        {"name": "Al-Hasakah",  "lat": 36.42, "lon": 40.91},
+        {"name": "Ar-Raqqah",   "lat": 36.01, "lon": 38.91},
+        {"name": "As-Suwayda",  "lat": 32.77, "lon": 36.92},
+        {"name": "Daraa",       "lat": 32.83, "lon": 36.17},
+        {"name": "Deir ez-Zor", "lat": 35.25, "lon": 40.28},
+        {"name": "Hama",        "lat": 35.30, "lon": 37.25},
+        {"name": "Homs",        "lat": 34.26, "lon": 38.16},
+        {"name": "Idlib",       "lat": 35.83, "lon": 36.68},
+        {"name": "Latakia",     "lat": 35.57, "lon": 36.01},
+        {"name": "Quneitra",    "lat": 33.02, "lon": 35.79},
+        {"name": "Tartus",      "lat": 34.95, "lon": 36.09},
+        {"name": "Damascus",    "lat": 33.46, "lon": 37.05},
+    ]
+
+# Output directory (from config; resolved against PROJECT_ROOT)
+RAW_DATA_DIR = PROJECT_ROOT / _cfg("defaults", "output_dir", default="data/raw")
 
 
 # ==================================================================
@@ -142,12 +213,19 @@ def resolve_year_range(args) -> tuple[int, int, int | None]:
     """Return (start_year, end_year, single_year_or_None)."""
     if args.year:
         return args.year, args.year, args.year
-    if args.start_year > args.end_year:
+
+    # Resolve end year: CLI > config > current year
+    if args.end_year is not None:
+        end = args.end_year
+    else:
+        end = _cfg("defaults", "end_year", default=DEFAULT_CURRENT_YEAR)
+
+    if args.start_year > end:
         raise SystemExit(
             f"--start-year ({args.start_year}) must be <= "
-            f"--end-year ({args.end_year})."
+            f"--end-year ({end})."
         )
-    return args.start_year, args.end_year, None
+    return args.start_year, end, None
 
 
 # ==================================================================
@@ -193,7 +271,11 @@ def download_fao(start_year: int, end_year: int, force: bool) -> None:
             continue
 
         print(f"[INFO] FAOSTAT year {year} -> {file_name} ...", flush=True)
-        params = {"area": "210", "years": str(year), "output_type": "table"}
+        params = {
+            "area": FAO_COUNTRY_CODE,        # from config; was hardcoded "210"
+            "years": str(year),
+            "output_type": FAO_OUTPUT_TYPE,
+        }
 
         success = False
         for attempt in range(1, MAX_RETRIES + 1):
@@ -201,14 +283,14 @@ def download_fao(start_year: int, end_year: int, force: bool) -> None:
                   f"params={params}", flush=True)
             try:
                 r = requests.get(FAO_DATA_ENDPOINT, headers=headers,
-                                 params=params, stream=True, timeout=25)
+                                 params=params, stream=True, timeout=FAO_TIMEOUT)
                 log_response(r)
 
                 if r.status_code == 200 and len(r.content) > 100:
                     if not looks_like_csv(r):
                         print("   [WARN] 200 OK but body is not CSV — skipping.",
                               flush=True)
-                        time.sleep(2)
+                        time.sleep(RETRY_DELAY)
                         continue
                     with open(file_path, "wb") as f:
                         for chunk in r.iter_content(chunk_size=8192):
@@ -220,13 +302,13 @@ def download_fao(start_year: int, end_year: int, force: bool) -> None:
                 else:
                     print(f"   [WARN] Attempt {attempt}/{MAX_RETRIES}: "
                           f"status {r.status_code}", flush=True)
-                    time.sleep(2)
+                    time.sleep(RETRY_DELAY)
             except (ConnectionError, Timeout) as e:
                 print(f"   [WARN] Attempt {attempt}/{MAX_RETRIES}: {e}", flush=True)
-                time.sleep(2)
+                time.sleep(RETRY_DELAY)
             except Exception as e:
                 print(f"   [WARN] Attempt {attempt}/{MAX_RETRIES}: {e}", flush=True)
-                time.sleep(2)
+                time.sleep(RETRY_DELAY)
 
         if not success:
             print(f"   [ERROR] FAOSTAT {year} failed after {MAX_RETRIES} attempts.",
@@ -261,27 +343,27 @@ def fetch_nasa_month(gov: dict, year: int, month: int,
         "start":      start,
         "end":        end,
         "parameters": ",".join(NASA_PARAMETERS),
-        "community":  "AG",
-        "format":     "JSON",
+        "community":  NASA_COMMUNITY,
+        "format":     NASA_FORMAT,
     }
 
     print(f"  [GET] {gov['name']} {year}-{month:02d} ({start}..{end})", flush=True)
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(NASA_URL, params=params, timeout=120)
+            r = requests.get(NASA_URL, params=params, timeout=NASA_TIMEOUT)
             log_response(r)
             if r.status_code != 200:
                 print(f"   [WARN] attempt {attempt}/{MAX_RETRIES}: "
                       f"status {r.status_code}", flush=True)
-                time.sleep(2)
+                time.sleep(RETRY_DELAY)
                 continue
 
             data = r.json()
             param_data = data.get("properties", {}).get("parameter", {})
             if not param_data:
                 print("   [WARN] NASA response has no 'parameter' data.", flush=True)
-                time.sleep(2)
+                time.sleep(RETRY_DELAY)
                 continue
 
             df = pd.DataFrame()
@@ -291,18 +373,17 @@ def fetch_nasa_month(gov: dict, year: int, month: int,
 
             if df.empty:
                 print("   [WARN] No matching parameters in response.", flush=True)
-                time.sleep(2)
+                time.sleep(RETRY_DELAY)
                 continue
 
             df.index = pd.to_datetime(df.index, format="%Y%m%d")
             df.index.name = "date"
-            df = df.replace(-999.0, pd.NA)
+            df = df.replace(NASA_FILL_VALUE, pd.NA)
 
             df = df.reset_index()
             df.insert(0, "governorate", gov["name"])
-            df.insert(1, "governorate_ar", gov["name_ar"])
-            df.insert(2, "latitude", gov["lat"])
-            df.insert(3, "longitude", gov["lon"])
+            df.insert(1, "latitude", gov["lat"])
+            df.insert(2, "longitude", gov["lon"])
 
             df.to_csv(file_path, index=False)
             print(f"  [SAVED] {file_path.name} ({len(df)} rows)", flush=True)
@@ -310,10 +391,10 @@ def fetch_nasa_month(gov: dict, year: int, month: int,
 
         except (ConnectionError, Timeout) as e:
             print(f"   [WARN] attempt {attempt}/{MAX_RETRIES}: {e}", flush=True)
-            time.sleep(2)
+            time.sleep(RETRY_DELAY)
         except Exception as e:
             print(f"   [WARN] attempt {attempt}/{MAX_RETRIES}: {e}", flush=True)
-            time.sleep(2)
+            time.sleep(RETRY_DELAY)
 
     print(f"  [ERROR] {gov['name']} {year}-{month:02d} failed.", flush=True)
     return None
@@ -323,10 +404,10 @@ def download_nasa(start_year: int, end_year: int, force: bool) -> None:
     """Download NASA POWER daily data per governorate, saved by month."""
     RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Regenerate reference CSV from config every run (config is source of truth).
     ref_path = RAW_DATA_DIR / "syria_governorates_reference.csv"
-    if not ref_path.exists() or force:
-        pd.DataFrame(GOVERNORATES).to_csv(ref_path, index=False)
-        print(f"[SAVED] {ref_path}", flush=True)
+    pd.DataFrame(GOVERNORATES).to_csv(ref_path, index=False)
+    print(f"[SAVED] {ref_path}", flush=True)
 
     print(f"\n[INFO] NASA POWER: {len(GOVERNORATES)} governorates, "
           f"months {start_year}-01 .. {end_year}-12\n", flush=True)
@@ -363,22 +444,25 @@ ALL_SOURCES = list(SOURCE_REGISTRY.keys())
 # ==================================================================
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Ingest climate/agriculture datasets into data/raw."
+        description="Ingest climate/agriculture datasets into data/raw. "
+                    "CLI flags override config.yaml values."
     )
     parser.add_argument(
         "--source", "-s",
         choices=ALL_SOURCES + ["all"],
-        default="all",
-        help="Which upstream dataset to download (default: all).",
+        default=None,
+        help="Which upstream dataset to download (default from config: 'all').",
     )
     parser.add_argument("-y", "--year", type=int,
                         help="Download a single specific year (e.g. 2020).")
-    parser.add_argument("--start-year", type=int, default=DEFAULT_START_YEAR,
-                        help=f"Start year for range (default: {DEFAULT_START_YEAR}).")
-    parser.add_argument("--end-year", type=int, default=DEFAULT_CURRENT_YEAR,
-                        help=f"End year for range (default: {DEFAULT_CURRENT_YEAR}).")
+    parser.add_argument("--start-year", type=int, default=None,
+                        help=f"Start year for range (default from config: {DEFAULT_START_YEAR}).")
+    parser.add_argument("--end-year", type=int, default=None,
+                        help=f"End year for range (default from config or current year: {DEFAULT_CURRENT_YEAR}).")
     parser.add_argument("-f", "--force", action="store_true",
                         help="Force re-download and overwrite existing files.")
+    parser.add_argument("--config", type=Path, default=None,
+                        help="Path to config.yaml (default: project root).")
     return parser
 
 
@@ -386,21 +470,46 @@ def main(argv=None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
+    # --config override (rarely used, but lets you point at a different file)
+    if args.config is not None:
+        global CFG
+        if not args.config.is_file():
+            print(f"[error] --config path does not exist: {args.config}", file=sys.stderr)
+            return 2
+        with args.config.open(encoding="utf-8") as f:
+            CFG = yaml.safe_load(f) or {}
+
+    # Resolve effective values: CLI > config > in-code default
+    source = args.source if args.source is not None else _cfg("defaults", "source", default="all")
+    if source == "both":     # tolerate the alias people might type
+        source = "all"
+    if source not in ALL_SOURCES + ["all"]:
+        print(f"[error] invalid source '{source}'", file=sys.stderr)
+        return 2
+
+    start_arg = args.start_year if args.start_year is not None else DEFAULT_START_YEAR
+    # end_year is resolved inside resolve_year_range via config + today
+    args.start_year = start_arg
+
     start_year, end_year, _ = resolve_year_range(args)
-    sources = ALL_SOURCES if args.source == "all" else [args.source]
+    sources = ALL_SOURCES if source == "all" else [source]
 
     print("============================================================", flush=True)
     print(f" FTL Syria Ingest — sources={sources} ({start_year}..{end_year})",
           flush=True)
     print(f" Output dir: {RAW_DATA_DIR}", flush=True)
+    print(f" Config:     {CONFIG_FILE if args.config is None else args.config}",
+          flush=True)
     print("============================================================", flush=True)
+
+    force = args.force or bool(_cfg("defaults", "force_redownload", default=False))
 
     for src in sources:
         print(f"\n>>> Running source: {src}", flush=True)
         SOURCE_REGISTRY[src](
             start_year=start_year,
             end_year=end_year,
-            force=args.force,
+            force=force,
         )
 
     print("\n============================================================", flush=True)

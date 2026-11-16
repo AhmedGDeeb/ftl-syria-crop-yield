@@ -1,0 +1,239 @@
+# ============================================================
+# config.yaml — defaults for src/data/ingest.py
+#
+# Every value here can be overridden by a CLI flag (the CLI wins).
+# If this file is missing, ingest.py falls back to in-code defaults.
+#
+# The 13 governorates are the authoritative source. The CSV at
+# governorates.reference_csv is regenerated from this list every run.
+# ============================================================
+
+defaults:
+  source: "all"                     # "fao" | "nasa" | "all"
+  start_year: 1991
+  end_year: null                    # null == use date.today().year
+  output_dir: "data/raw"
+  force_redownload: false
+
+http:
+  max_retries: 3
+  max_debug_bytes: 2000
+  faostat_timeout_seconds: 25
+  nasa_timeout_seconds: 120
+  retry_delay_seconds: 2
+
+fao:
+  base_url: "https://faostatservices.fao.org/api/v1/en"
+  data_endpoint: "https://faostatservices.fao.org/api/v1/en/data/QCL"
+  country_code: "760" # Syria code, for other see m49.csv (https://data.apps.fao.org/catalog/dataset/m49-code-list-global-region-country/resource/9501e2b0-7767-4edc-bff5-c02e4c987db0)
+  output_type: "objects"
+  token_file: ".faostat_token"
+
+nasa:
+  base_url: "https://power.larc.nasa.gov/api/temporal/daily/point"
+  community: "AG"
+  format: "JSON"
+  parameters:
+    - T2M
+    - T2M_MAX
+    - T2M_MIN
+    - PRECTOTCORR
+    - RH2M
+    - ALLSKY_SFC_SW_DWN
+    - WS2M
+  column_mapping:
+    T2M: t2m
+    T2M_MAX: t2m_max
+    T2M_MIN: t2m_min
+    PRECTOTCORR: prectotcorr
+    RH2M: rh2m
+    ALLSKY_SFC_SW_DWN: solar_kwh_m2
+    WS2M: ws2m
+  fill_value: -999.0
+
+governorates:
+  # AUTHORITATIVE SOURCE. Regenerated into
+  # data/raw/syria_governorates_reference.csv on every run.
+  reference_csv: "data/raw/syria_governorates_reference.csv"
+  list:
+    - name: Aleppo
+      lat: 36.17
+      lon: 37.61
+    - name: Al-Hasakah
+      lat: 36.42
+      lon: 40.91
+    - name: Ar-Raqqah
+      lat: 36.01
+      lon: 38.91
+    - name: As-Suwayda
+      lat: 32.77
+      lon: 36.92
+    - name: Daraa
+      lat: 32.83
+      lon: 36.17
+    - name: Deir ez-Zor
+      lat: 35.25
+      lon: 40.28
+    - name: Hama
+      lat: 35.30
+      lon: 37.25
+    - name: Homs
+      lat: 34.26
+      lon: 38.16
+    - name: Idlib
+      lat: 35.83
+      lon: 36.68
+    - name: Latakia
+      lat: 35.57
+      lon: 36.01
+    - name: Quneitra
+      lat: 33.02
+      lon: 35.79
+    - name: Tartus
+      lat: 34.95
+      lon: 36.09
+    - name: Damascus
+      lat: 33.46
+      lon: 37.05
+    
+build_dataset:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  timestamp_format: "%Y%m%d-%H%M%S"
+
+  fao:
+    output_prefix: "fao_syria_yield"
+    csv_encoding: "latin-1"
+    keep_columns:
+      - "Area"
+      - "Item"
+      - "Item Code (CPC)"
+      - "Element"
+      - "Year"
+      - "Unit"
+      - "Value"
+      - "Flag"
+    yield_element_code: 5412
+    primary_crops:
+      - "Wheat"
+      - "Barley"
+      - "Maize"
+      - "Olives"
+      - "Grapes"
+      - "Apples"
+      - "Potatoes"
+      - "Tomatoes"
+      - "Rice"
+      - "Oats"
+      - "Rye"
+      - "Sorghum"
+      - "Chick peas, dry"
+      - "Lentils, dry"
+      - "Broad beans, dry"
+      - "Sugar beet"
+      - "Cotton seed"
+      - "Sunflower seed"
+      - "Sesame seed"
+
+  nasa:
+    output_prefix: "nasa_syria_climate"
+    keep_columns:
+      - "governorate"
+      - "latitude"
+      - "longitude"
+      - "date"
+      - "t2m"
+      - "t2m_max"
+      - "t2m_min"
+      - "prectotcorr"
+      - "rh2m"
+      - "solar_kwh_m2"
+      - "ws2m"
+    filename_regex: 'nasa_daily_(.+)_(\d{4})_(\d{2})$'
+
+
+training:
+  # ── Feature and target definitions ────────────────────────────
+  feature_cols:
+    - "t2m_mean"
+    - "t2m_max_extreme"
+    - "t2m_min_extreme"
+    - "precip_total"
+    - "rh2m_mean"
+    - "solar_mean"
+    - "ws2m_mean"
+  target: "yield_hg_ha"
+
+  # ── Temporal split ───────────────────────────────────────────
+  # Used by split_dataset.py (to define boundaries) and train.py
+  # (to verify the split inside model_table.csv). Keep in sync with
+  # what is written to data/interim/split_metadata.json.
+  split:
+    train_end:   2015     # years ≤ 2015 → train
+    val_end:     2019     # 2016–2019  → val
+    test_end:    2024     # 2020–2024  → test
+    drop_years_from: 2026 # drop partial / current-year rows
+
+  # ── Anomaly-indicator features (optional, from anomaly_check.py) ──
+  anomaly_features:
+    - "yield_anomaly"
+    - "drought_year"
+    - "conflict_year"
+    - "climate_anomaly"
+
+  # ── Output paths ─────────────────────────────────────────────
+  data_file:      "data/interim/train.csv"   # not used by split_dataset.py
+  models_dir:     "models"
+  log_file:       "models/train.log"
+
+  # ── Default params (used when a crop has no explicit override) ──
+  default_params:
+    dt:
+      max_depth:        3
+      min_samples_leaf: 2
+      min_samples_split: 2
+      ccp_alpha:        0.0
+    xgb:
+      n_estimators:     50
+      max_depth:        2
+      learning_rate:    0.05
+      subsample:        0.8
+      colsample_bytree: 0.8
+      min_child_weight: 3
+
+  # ── Per-crop best params (from grid search in notebooks/02_models.ipynb) ──
+  best_params:
+    Wheat:
+      # GridSearch_DecisionTree_Wheat — CV RMSE 413.39
+      dt:  {max_depth: 2, min_samples_leaf: 2, min_samples_split: 2, ccp_alpha: 0.0}
+      # GridSearch_XGBoost_Wheat — CV RMSE 355.17
+      xgb: {n_estimators: 100, max_depth: 3, learning_rate: 0.01,
+            subsample: 1.0, colsample_bytree: 1.0, min_child_weight: 1}
+
+    Potatoes:
+      # TODO: notebook truncated before GridSearch_DecisionTree_Potatoes / GridSearch_XGBoost_Potatoes.
+      #       Re-run those two cells and replace the values below with grid.best_params_.
+      dt:  {max_depth: 3, min_samples_leaf: 2, min_samples_split: 2, ccp_alpha: 0.0}   # placeholder
+      xgb: {n_estimators: 50, max_depth: 2, learning_rate: 0.05,
+            subsample: 0.8, colsample_bytree: 0.8, min_child_weight: 3}               # placeholder
+
+    Maize (corn):
+      # GridSearch_DecisionTree_Maize (corn) — CV RMSE 653.76
+      dt:  {max_depth: 5, min_samples_leaf: 2, min_samples_split: 6, ccp_alpha: 0.0}
+      # GridSearch_XGBoost_Maize (corn) — CV RMSE 591.55
+      xgb: {n_estimators: 50, max_depth: 2, learning_rate: 0.01,
+            subsample: 1.0, colsample_bytree: 1.0, min_child_weight: 3}
+
+    Olives:
+      # GridSearch_DecisionTree_Olives — CV RMSE 527.96
+      dt:  {max_depth: 2, min_samples_leaf: 5, min_samples_split: 2, ccp_alpha: 0.0}
+      # GridSearch_XGBoost_Olives — CV RMSE 407.47
+      xgb: {n_estimators: 50, max_depth: 3, learning_rate: 0.01,
+            subsample: 0.8, colsample_bytree: 0.8, min_child_weight: 3}
+
+    Sunflower seed:
+      # TODO: crop not yet present in notebooks/02_models.ipynb. Run the per-crop block
+      #       (CROP = "Sunflower seed" → DTR grid search → XGB grid search) and paste results.
+      dt:  {max_depth: 3, min_samples_leaf: 2, min_samples_split: 2, ccp_alpha: 0.0}   # placeholder
+      xgb: {n_estimators: 50, max_depth: 2, learning_rate: 0.05,
+            subsample: 0.8, colsample_bytree: 0.8, min_child_weight: 3}               # placeholder

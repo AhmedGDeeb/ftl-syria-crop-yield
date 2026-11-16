@@ -144,6 +144,7 @@ call :Log "[4/5] Checking requirements.txt ..."
 if not exist "requirements.txt" (
     (
         echo # ---- Core data ^& ML ----
+        echo pyyaml>=6.0
         echo pandas^>=2.0
         echo numpy^>=1.24
         echo scikit-learn^>=1.3

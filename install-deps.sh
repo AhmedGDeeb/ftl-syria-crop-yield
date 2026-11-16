@@ -131,4 +131,3 @@ python -m pip freeze > dev-requirements.txt
 Log "   + dev-requirements.txt created successfully."
 
 LogHeader "[DONE] Environment check, wheels cache, and dev-requirements.txt are ready."
-exit 0

@@ -1,0 +1,96 @@
+{
+  "feature_cols": [
+    "t2m_mean",
+    "t2m_max_extreme",
+    "t2m_min_extreme",
+    "precip_total",
+    "rh2m_mean",
+    "solar_mean",
+    "ws2m_mean"
+  ],
+  "target": "yield_hg_ha",
+  "crops": [
+    "Apples",
+    "Barley",
+    "Chick peas, dry",
+    "Grapes",
+    "Lentils, dry",
+    "Maize (corn)",
+    "Oats",
+    "Olives",
+    "Potatoes",
+    "Sesame seed",
+    "Sorghum",
+    "Sugar beet",
+    "Sunflower seed",
+    "Tomatoes",
+    "Wheat"
+  ],
+  "families": [
+    "dt",
+    "xgb"
+  ],
+  "models": {
+    "Apples": {
+      "dt": "dt_apples.pkl",
+      "xgb": "xgb_apples.pkl"
+    },
+    "Barley": {
+      "dt": "dt_barley.pkl",
+      "xgb": "xgb_barley.pkl"
+    },
+    "Chick peas, dry": {
+      "dt": "dt_chick_peas,_dry.pkl",
+      "xgb": "xgb_chick_peas,_dry.pkl"
+    },
+    "Grapes": {
+      "dt": "dt_grapes.pkl",
+      "xgb": "xgb_grapes.pkl"
+    },
+    "Lentils, dry": {
+      "dt": "dt_lentils,_dry.pkl",
+      "xgb": "xgb_lentils,_dry.pkl"
+    },
+    "Maize (corn)": {
+      "dt": "dt_maize_(corn).pkl",
+      "xgb": "xgb_maize_(corn).pkl"
+    },
+    "Oats": {
+      "dt": "dt_oats.pkl",
+      "xgb": "xgb_oats.pkl"
+    },
+    "Olives": {
+      "dt": "dt_olives.pkl",
+      "xgb": "xgb_olives.pkl"
+    },
+    "Potatoes": {
+      "dt": "dt_potatoes.pkl",
+      "xgb": "xgb_potatoes.pkl"
+    },
+    "Sesame seed": {
+      "dt": "dt_sesame_seed.pkl",
+      "xgb": "xgb_sesame_seed.pkl"
+    },
+    "Sorghum": {
+      "dt": "dt_sorghum.pkl",
+      "xgb": "xgb_sorghum.pkl"
+    },
+    "Sugar beet": {
+      "dt": "dt_sugar_beet.pkl",
+      "xgb": "xgb_sugar_beet.pkl"
+    },
+    "Sunflower seed": {
+      "dt": "dt_sunflower_seed.pkl",
+      "xgb": "xgb_sunflower_seed.pkl"
+    },
+    "Tomatoes": {
+      "dt": "dt_tomatoes.pkl",
+      "xgb": "xgb_tomatoes.pkl"
+    },
+    "Wheat": {
+      "dt": "dt_wheat.pkl",
+      "xgb": "xgb_wheat.pkl"
+    }
+  },
+  "created_at": "2026-11-16T07:21:28.265913+00:00"
+}

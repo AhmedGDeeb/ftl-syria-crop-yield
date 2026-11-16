@@ -76,4 +76,3 @@ fi
 Log ""
 
 LogHeader "[DONE] DVC data tracking and Git commit completed."
-exit 0
